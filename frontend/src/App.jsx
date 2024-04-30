@@ -11,6 +11,19 @@ function App() {
     setTasks([...tasks, newTask]);
   };
 
+  const updateTask = (id, updatedTitle, updatedContent) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id
+        ? {
+            ...task,
+            title: updatedTitle,
+            content: updatedContent
+          }
+        : task
+    );
+    setTasks(updatedTasks);
+  };
+
   return (
     <>
       <h1 className="text-background-gray">HyperDucktivity</h1>
@@ -30,8 +43,8 @@ function App() {
         {tasks.map((task) => (
           <Task
             key={task.id}
-            title={task.title}
-            content={task.content}
+            task={task}
+            updateTask={updateTask}
           />
         ))}
       </div>
