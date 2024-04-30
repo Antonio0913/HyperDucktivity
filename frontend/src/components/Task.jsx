@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import pencil from "../assets/pencil.svg";
+import deleteIcon from "../assets/delete.png";
 
 function Task({ task, updateTask, deleteTask }) {
   const [isEditingTask, setIsEditingTask] = useState(false);
@@ -80,14 +81,18 @@ function Task({ task, updateTask, deleteTask }) {
                 className="w-4 h-4"
               />
             </button>
+            <button onClick={() => deleteTask(task.id)}
+              className="bg-background-gray text-beak-orange rounded-lg py-2 px-4 m-2"
+            >
+              <img 
+                src={deleteIcon} 
+                alt="Delete Button" 
+                className="w-4 h-4"
+                />
+            </button>
           </>
         )}
-        <div>
-          <button onClick={() => deleteTask(task.id)}
-          className="bg-background-gray text-beak-orange rounded-lg py-2 px-4 m-2"
-          >
-            Delete</button>
-        </div>
+          
       </div>
     </div>
   );
