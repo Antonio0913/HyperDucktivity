@@ -83,12 +83,13 @@ function Task({ task, updateTask, deleteTask }) {
             </button>
             <button onClick={() => deleteTask(task.id)}
               className="bg-background-gray text-beak-orange rounded-lg py-2 px-4 m-2"
-            >
-              <img 
+            > 
+              <img
                 src={deleteIcon} 
                 alt="Delete Button" 
                 className="w-4 h-4"
-                />
+              > 
+              </img>
             </button>
           </>
         )}
