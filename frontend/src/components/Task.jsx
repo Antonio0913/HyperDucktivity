@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import pencil from "../assets/pencil.svg";
 
-function Task({ task, updateTask }) {
+function Task({ task, updateTask, deleteTask }) {
   const [isEditingTask, setIsEditingTask] = useState(false);
   const [editedTask, setEditedTask] = useState(task);
 
@@ -82,6 +82,12 @@ function Task({ task, updateTask }) {
             </button>
           </>
         )}
+        <div>
+          <button onClick={() => deleteTask(task.id)}
+          className="bg-background-gray text-beak-orange rounded-lg py-2 px-4 m-2"
+          >
+            Delete</button>
+        </div>
       </div>
     </div>
   );

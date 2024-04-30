@@ -11,6 +11,16 @@ function App() {
     setTasks([...tasks, newTask]);
   };
 
+  function deleteTask(id) {
+    
+    const updated = tasks.filter((task, i) => {
+          return i !== id;
+        });
+        setTasks(updated);
+  
+    }
+
+
   const updateTask = (id, updatedTitle, updatedContent) => {
     const updatedTasks = tasks.map((task) =>
       task.id === id
@@ -45,6 +55,7 @@ function App() {
             key={task.id}
             task={task}
             updateTask={updateTask}
+            deleteTask={deleteTask}
           />
         ))}
       </div>
