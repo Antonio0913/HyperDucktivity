@@ -6,17 +6,16 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-    }
-    // ,
-    // content: {
-    //   type: String,
-    //   required: true,
-    //   trim: true,
-    //   validate(value) {
-    //     if (value.length < 2)
-    //       throw new Error("Invalid job, must be at least 2 characters.");
-    //   },
-    // },
+    },
+    content: {
+      type: String,
+      required: true,
+      trim: true,
+      validate(value) {
+        if (value.length < 2)
+          throw new Error("Invalid job, must be at least 2 characters.");
+      },
+    },
   },
   { collection: "tasks_list" }
 );
