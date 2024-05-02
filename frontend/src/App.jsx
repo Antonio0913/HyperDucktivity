@@ -1,24 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Task from "./components/Task.jsx";
 import NewTask from "./components/NewTask.jsx";
 
 function App() {
   const [tasks, setTasks] = useState([]);
+  useEffect(() => {
+    fetchTasks()
+      .then((res) => res.json())
+      .then((json) => setTasks(json["tasks_list"]))
+      .catch((error) => { console.log(error); });
+  }, [] );
+
 
   const addTask = (title, content) => {
     const newTask = { title, content, id: tasks.length };
     setTasks([...tasks, newTask]);
   };
 
-  function deleteTask(id) {
-    
+  function deleteTask(Id) {  
     const updated = tasks.filter((task, i) => {
-          return i !== id;
+          return i !== Id;
         });
         setTasks(updated);
-  
     }
+
+  function removeOneTask(Id) {
+    const promise = fetch(`http://localhost:8000/tasks/${Id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then(res =>{
+      if(res.status == 204){
+        deleteTask(Id)
+      }else{
+        throw new Error ("failed to delete user with status: " + res.status);
+      }
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
 
 
   const updateTask = (id, updatedTitle, updatedContent) => {
@@ -33,6 +56,37 @@ function App() {
     );
     setTasks(updatedTasks);
   };
+
+  function createTask(task) { 
+    postTasks(task)
+      .then((res) => {
+        if(res.status == 201){
+          res.json().then(newTask =>{
+          setTasks([...tasks, newTask]);
+        });
+      }else{
+        throw new Error ("failed to create user with status: " + res.status);
+      }})
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  function fetchTasks() {
+    const promise = fetch("http://localhost:8000/tasks");
+    return promise;
+  }
+  function postTasks(task) {
+    const promise = fetch("http://localhost:8000/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    });
+
+    return promise;
+  }
 
   return (
     <>
@@ -56,6 +110,7 @@ function App() {
             task={task}
             updateTask={updateTask}
             deleteTask={deleteTask}
+            createTask={createTask}
           />
         ))}
       </div>
