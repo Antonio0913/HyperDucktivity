@@ -25,7 +25,7 @@ function App() {
         deleteTask(Id)
         console.log("good res stat, task deleted")
       }else{
-        throw new Error ("failed to delete user with status: " + res.status);
+        throw new Error ("failed to delete task with status: " + res.status);
       }
     }).catch((error) => {
       console.log(error);
@@ -51,7 +51,7 @@ function App() {
           setTasks([...tasks, newTask]);
         });
       }else{
-        throw new Error ("failed to create user with status: " + res.status);
+        throw new Error ("failed to create task with status: " + res.status);
       }})
       .catch((error) => {
         console.log(error);
