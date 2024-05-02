@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import Task from "./components/Task.jsx";
 import NewTask from "./components/NewTask.jsx";
+import FontSize from './components/fontSize.jsx';
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -38,7 +39,6 @@ function App() {
         });
         setTasks(updated);
     }
-
 
   const addTask = (title, content) => {
     const task = { title, content };
@@ -89,7 +89,7 @@ function App() {
 
     return promise;
   }
-
+const currentSize = 12
   return (
     <>
       <h1 className="text-background-gray">HyperDucktivity</h1>
@@ -106,12 +106,17 @@ function App() {
       </div>
       <div>
         <NewTask addTask={addTask} />
+        <FontSize
+        textSize = {currentSize}
+        >
+        </FontSize>
         {tasks.map((task) => (
           <Task
             key={task._id}
             task={task}
             updateTask={updateTask}
             deleteTask={removeOneTask}
+            textSize={currentSize}
           />
         ))}
       </div>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import pencil from "../assets/pencil.svg";
 import deleteIcon from "../assets/delete.png";
 
-function Task({ task, updateTask, deleteTask}) {
+function Task({ task, updateTask, deleteTask, textSize}) {
   const [isEditingTask, setIsEditingTask] = useState(false);
   const [editedTask, setEditedTask] = useState(task);
 
@@ -20,7 +20,7 @@ function Task({ task, updateTask, deleteTask}) {
             onSubmit={handleSubmit}
             className="flex flex-col space-y-4"
           >
-            <input
+            <input 
               type="text"
               value={editedTask.title}
               onChange={(e) =>
@@ -64,11 +64,13 @@ function Task({ task, updateTask, deleteTask}) {
             </div>
           </form>
         ) : (
-          <>
-            <div className="uppercase text-sm text-beak-orange font-semibold">
+          <div>
+            <div className="uppercase text-beak-orange font-semibold"
+            style={{ fontSize: `${textSize}px` }}>
               {task.title}
             </div>
-            <p className="text-lg font-medium text-black">
+            <p className="font-medium text-black"
+            style={{ fontSize: `${textSize/1.1}px` }}>
               {task.content}
             </p>
             <button
@@ -91,7 +93,7 @@ function Task({ task, updateTask, deleteTask}) {
               > 
               </img>
             </button>
-          </>
+          </div>
         )}
           
       </div>
