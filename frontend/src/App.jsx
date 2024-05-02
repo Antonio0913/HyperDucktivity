@@ -36,9 +36,20 @@ function App() {
     const updated = tasks.filter((task) => {
           return task._id !== Id;
         });
-        setTasks(updated);
+        
     }
+  
 
+  function completeTask(Id) {
+    const updated = tasks.map((task) => {
+      if(task._id === Id){
+        return { ...task, isComplete: !task.isComplete };
+      }
+      return task;
+    });
+    setTasks(updated);
+  }
+  
 
   const addTask = (title, content) => {
     const task = { title, content };
@@ -112,6 +123,7 @@ function App() {
             task={task}
             updateTask={updateTask}
             deleteTask={removeOneTask}
+            completeTask={completeTask}
           />
         ))}
       </div>
