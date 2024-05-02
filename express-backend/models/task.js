@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema(
+const TaskSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -20,6 +20,6 @@ const UserSchema = new mongoose.Schema(
   { collection: "tasks_list" }
 );
 
-const User = mongoose.model("Task", UserSchema);
+const Task = mongoose.model("Task", TaskSchema);
 
-export default User;
+export default Task;

@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 
-import userServices from "./models/user-services.js";
+import taskServices from "./models/task-services.js";
 const app = express();
 const port = 8000;
 
@@ -10,10 +10,10 @@ app.use(express.json());
 
   
   app.get("/tasks", async (req, res) => {
-    const name = req.query["name"];
+    const task = req.query["title"];
     //const job = req.query["job"];
     try {
-      const result = await userServices.getUsers(name);
+      const result = await taskServices.getTasks(task);
       res.send({ tasks_list: result });
     } catch (error) {
       console.log(error);
@@ -22,31 +22,31 @@ app.use(express.json());
   });
 
   app.post("/tasks", async (req, res) => {
-    const user = req.body;
-    const savedUser = await userServices.addUser(user);
-    if (savedUser) res.status(201).send(savedUser);
+    const task = req.body;
+    const savedTask = await taskServices.addTask(task);
+    if (savedTask) res.status(201).send(savedTask);
     else res.status(500).end();
   });
 
   app.get("/tasks/:id", async (req, res) => {
     const id = req.params["id"];
-    const result = await userServices.findUserById(id);
+    const result = await taskServices.findTaskById(id);
     if (result === undefined || result === null)
       res.status(404).send("Resource not found.");
     else {
-      res.send({ users_list: result });
+      res.send({ tasks_list: result });
     }
   });
 
   app.delete("/tasks/:id", async (req, res) => {
     try{
-      const userIdToDel = req.params["id"];
-      console.log(userIdToDel)
-      const delUser = await userServices.removeUser(userIdToDel);
-      if(delUser){
+      const taskIdToDel = req.params["id"];
+      console.log(taskIdToDel)
+      const delTask = await taskServices.removeTask(taskIdToDel);
+      if(delTask){
         res.status(204).send();
       }else{
-        res.status(404).send("404, User not found");
+        res.status(404).send("404, task not found");
       }}catch (error) {
         console.error("Error during deletion:", error);
         res.status(500).send("Internal Server Error");
