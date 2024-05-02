@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import pencil from "../assets/pencil.svg";
 import deleteIcon from "../assets/delete.png";
 
-function Task({ task, updateTask, deleteTask, createTask }) {
+function Task({ task, updateTask, deleteTask}) {
   const [isEditingTask, setIsEditingTask] = useState(false);
   const [editedTask, setEditedTask] = useState(task);
 

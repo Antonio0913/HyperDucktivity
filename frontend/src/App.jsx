@@ -14,8 +14,20 @@ function App() {
 
 
   const addTask = (title, content) => {
-    const newTask = { title, content, id: tasks.length };
-    setTasks([...tasks, newTask]);
+    const task = { title, content, id: tasks.length };
+    // setTasks([...tasks, newTask]);
+    postTasks(task)
+      .then((res) => {
+        if(res.status == 201){
+          res.json().then(newTask =>{
+          setTasks([...tasks, newTask]);
+        });
+      }else{
+        throw new Error ("failed to create user with status: " + res.status);
+      }})
+      .catch((error) => {
+        console.log(error);
+      })
   };
 
   function deleteTask(Id) {  
@@ -57,20 +69,6 @@ function App() {
     setTasks(updatedTasks);
   };
 
-  function createTask(task) { 
-    postTasks(task)
-      .then((res) => {
-        if(res.status == 201){
-          res.json().then(newTask =>{
-          setTasks([...tasks, newTask]);
-        });
-      }else{
-        throw new Error ("failed to create user with status: " + res.status);
-      }})
-      .catch((error) => {
-        console.log(error);
-      })
-  }
 
   function fetchTasks() {
     const promise = fetch("http://localhost:8000/tasks");
@@ -110,7 +108,6 @@ function App() {
             task={task}
             updateTask={updateTask}
             deleteTask={deleteTask}
-            createTask={createTask}
           />
         ))}
       </div>
