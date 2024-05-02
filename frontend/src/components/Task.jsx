@@ -2,11 +2,16 @@ import React, { useState } from "react";
 import pencil from "../assets/pencil.svg";
 import deleteIcon from "../assets/delete.png";
 import colors from "../assets/colors.js";
+import check from "../assets/temp.png";
+import box from "../assets/box.png";
 
-function Task({ task, updateTask, deleteTask}) {
+
+function Task({ task, updateTask, deleteTask, completeTask}) {
   const [isEditingTask, setIsEditingTask] = useState(false);
   const [editedTask, setEditedTask] = useState(task);
   const [isPriority, setIsPriority] = useState(false);
+
+  const taskStyle = `relative max-w-md mx-auto bg-white rounded-xl border border-beak-orange overflow-hidden md:max-w-2xl m-5 ${task.isComplete ? 'opacity-50' : ''}`;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,7 +25,7 @@ function Task({ task, updateTask, deleteTask}) {
   }
 
   return (
-    <div className="relative max-w-md mx-auto bg-white rounded-xl border border-beak-orange overflow-hidden md:max-w-2xl m-5">
+    <div className={taskStyle}>
       <div className="p-4">
         {isEditingTask ? (
           <form
@@ -106,6 +111,16 @@ function Task({ task, updateTask, deleteTask}) {
                 className="w-4 h-4"
               > 
               </img>
+            </button>
+            <button onClick={() => completeTask(task._id)}
+              className="bg-background-gray text-beak-orange rounded-lg  py-2 px-4 m-2"
+            > 
+              {task.isComplete ? (
+                <img src={check} alt="Completed" className="w-4 h-4"/>
+              ) : null}
+              {!task.isComplete ? (
+                <img src={box} alt="Completed" className="w-4 h-4"/>
+              ) : null}
             </button>
           </>
         )}
