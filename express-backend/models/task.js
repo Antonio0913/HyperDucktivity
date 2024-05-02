@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema(
+const TaskSchema = new mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
       trim: true,
     },
-    job: {
+    content: {
       type: String,
       required: true,
       trim: true,
@@ -17,9 +17,9 @@ const UserSchema = new mongoose.Schema(
       },
     },
   },
-  { collection: "users_list" }
+  { collection: "tasks_list" }
 );
 
-const User = mongoose.model("User", UserSchema);
+const Task = mongoose.model("Task", TaskSchema);
 
-export default User;
+export default Task;
