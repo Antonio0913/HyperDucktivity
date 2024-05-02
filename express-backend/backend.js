@@ -9,26 +9,26 @@ app.use(cors());
 app.use(express.json());
 
   
-  app.get("/users", async (req, res) => {
+  app.get("/tasks", async (req, res) => {
     const name = req.query["name"];
-    const job = req.query["job"];
+    //const job = req.query["job"];
     try {
-      const result = await userServices.getUsers(name, job);
-      res.send({ users_list: result });
+      const result = await userServices.getUsers(name);
+      res.send({ tasks_list: result });
     } catch (error) {
       console.log(error);
       res.status(500).send("An error ocurred in the server.");
     }
   });
 
-  app.post("/users", async (req, res) => {
+  app.post("/tasks", async (req, res) => {
     const user = req.body;
     const savedUser = await userServices.addUser(user);
     if (savedUser) res.status(201).send(savedUser);
     else res.status(500).end();
   });
 
-  app.get("/users/:id", async (req, res) => {
+  app.get("/tasks/:id", async (req, res) => {
     const id = req.params["id"];
     const result = await userServices.findUserById(id);
     if (result === undefined || result === null)
@@ -38,7 +38,7 @@ app.use(express.json());
     }
   });
 
-  app.delete("/users/:id", async (req, res) => {
+  app.delete("/tasks/:id", async (req, res) => {
     try{
       const userIdToDel = req.params["id"];
       console.log(userIdToDel)
