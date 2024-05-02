@@ -13,30 +13,6 @@ function App() {
   }, [] );
 
 
-  const addTask = (title, content) => {
-    const task = { title, content, id: tasks.length };
-    // setTasks([...tasks, newTask]);
-    postTasks(task)
-      .then((res) => {
-        if(res.status == 201){
-          res.json().then(newTask =>{
-          setTasks([...tasks, newTask]);
-        });
-      }else{
-        throw new Error ("failed to create user with status: " + res.status);
-      }})
-      .catch((error) => {
-        console.log(error);
-      })
-  };
-
-  function deleteTask(Id) {  
-    const updated = tasks.filter((task, i) => {
-          return i !== Id;
-        });
-        setTasks(updated);
-    }
-
   function removeOneTask(Id) {
     const promise = fetch(`http://localhost:8000/tasks/${Id}`, {
       method: "DELETE",
@@ -47,6 +23,7 @@ function App() {
     .then(res =>{
       if(res.status == 204){
         deleteTask(Id)
+        console.log("good res stat, task deleted")
       }else{
         throw new Error ("failed to delete user with status: " + res.status);
       }
@@ -55,10 +32,37 @@ function App() {
     })
   }
 
+  function deleteTask(Id) {  
+    const updated = tasks.filter((task) => {
+          return task._id !== Id;
+        });
+        setTasks(updated);
+    }
+
+
+  const addTask = (title, content) => {
+    const task = { title, content };
+    // setTasks([...tasks, newTask]);
+    postTasks(task)
+      .then((res) => {
+        if(res.status == 201){
+          res.json().then(newTask =>{
+          console.log("post works")
+          setTasks([...tasks, newTask]);
+        });
+      }else{
+        throw new Error ("failed to create user with status: " + res.status);
+      }})
+      .catch((error) => {
+        console.log(error);
+      })
+  };
+
+
 
   const updateTask = (id, updatedTitle, updatedContent) => {
     const updatedTasks = tasks.map((task) =>
-      task.id === id
+      task._id === id
         ? {
             ...task,
             title: updatedTitle,
@@ -104,10 +108,10 @@ function App() {
         <NewTask addTask={addTask} />
         {tasks.map((task) => (
           <Task
-            key={task.id}
+            key={task._id}
             task={task}
             updateTask={updateTask}
-            deleteTask={deleteTask}
+            deleteTask={removeOneTask}
           />
         ))}
       </div>
