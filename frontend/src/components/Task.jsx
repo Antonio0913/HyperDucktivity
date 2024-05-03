@@ -70,7 +70,7 @@ function Task({ task, updateTask, deleteTask, textSize}) {
               {task.title}
             </div>
             <p className="font-medium text-black"
-            style={{ fontSize: `${textSize/1.1}px` }}>
+            style={{ fontSize: `${textSize/1.2}px` }}>
               {task.content}
             </p>
             <button

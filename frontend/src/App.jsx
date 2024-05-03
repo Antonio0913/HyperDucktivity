@@ -6,6 +6,7 @@ import FontSize from './components/fontSize.jsx';
 
 function App() {
   const [tasks, setTasks] = useState([]);
+  const [textSize, setTextSize] = useState(12);
   useEffect(() => {
     fetchTasks()
       .then((res) => res.json())
@@ -89,7 +90,6 @@ function App() {
 
     return promise;
   }
-const currentSize = 12
   return (
     <>
       <h1 className="text-background-gray">HyperDucktivity</h1>
@@ -107,7 +107,8 @@ const currentSize = 12
       <div>
         <NewTask addTask={addTask} />
         <FontSize
-        textSize = {currentSize}
+        textSize = {textSize}
+        setTextSize={setTextSize}
         >
         </FontSize>
         {tasks.map((task) => (
@@ -116,7 +117,7 @@ const currentSize = 12
             task={task}
             updateTask={updateTask}
             deleteTask={removeOneTask}
-            textSize={currentSize}
+            textSize={textSize}
           />
         ))}
       </div>
