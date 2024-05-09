@@ -5,8 +5,7 @@ import colors from "../assets/colors.js";
 import check from "../assets/temp.png";
 import box from "../assets/box.png";
 
-
-function Task({ task, updateTask, deleteTask, completeTask}) {
+function Task({ task, updateTask, deleteTask, completeTask, textSize}) {
   const [isEditingTask, setIsEditingTask] = useState(false);
   const [editedTask, setEditedTask] = useState(task);
   const [isPriority, setIsPriority] = useState(false);
@@ -32,7 +31,7 @@ function Task({ task, updateTask, deleteTask, completeTask}) {
             onSubmit={handleSubmit}
             className="flex flex-col space-y-4"
           >
-            <input
+            <input 
               type="text"
               value={editedTask.title}
               onChange={(e) =>
@@ -77,6 +76,9 @@ function Task({ task, updateTask, deleteTask, completeTask}) {
             </div>
           </form>
         ) : (
+          <div>
+            <div className="uppercase text-beak-orange font-semibold"
+            style={{ fontSize: `${textSize}px` }}>
           <>
           <button
               onClick={() => togglePriority()}
@@ -89,7 +91,8 @@ function Task({ task, updateTask, deleteTask, completeTask}) {
             <div className="uppercase text-sm text-beak-orange font-semibold">
               {task.title}
             </div>
-            <p className="text-lg font-medium text-black">
+            <p className="font-medium text-black"
+            style={{ fontSize: `${textSize/1.2}px` }}>
               {task.content}
             </p>
             <button
@@ -112,6 +115,7 @@ function Task({ task, updateTask, deleteTask, completeTask}) {
               > 
               </img>
             </button>
+          
             <button onClick={() => completeTask(task._id)}
               className="bg-background-gray text-beak-orange rounded-lg  py-2 px-4 m-2"
             > 
@@ -123,6 +127,7 @@ function Task({ task, updateTask, deleteTask, completeTask}) {
               ) : null}
             </button>
           </>
+          </div>
         )}
           
       </div>
