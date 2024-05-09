@@ -38,9 +38,19 @@ function App() {
     const updated = tasks.filter((task) => {
           return task._id !== Id;
         });
-        setTasks(updated);
+        
     }
-
+  
+  function completeTask(Id) {
+    const updated = tasks.map((task) => {
+      if(task._id === Id){
+        return { ...task, isComplete: !task.isComplete };
+      }
+      return task;
+    });
+    setTasks(updated);
+  }
+  
   const addTask = (title, content) => {
     const task = { title, content };
     // setTasks([...tasks, newTask]);
@@ -73,7 +83,6 @@ function App() {
     );
     setTasks(updatedTasks);
   };
-
 
   function fetchTasks() {
     const promise = fetch("http://localhost:8000/tasks");
@@ -118,6 +127,7 @@ function App() {
             updateTask={updateTask}
             deleteTask={removeOneTask}
             textSize={textSize}
+            completeTask={completeTask}
           />
         ))}
       </div>
