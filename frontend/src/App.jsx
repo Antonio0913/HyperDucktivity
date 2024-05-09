@@ -38,7 +38,7 @@ function App() {
     const updated = tasks.filter((task) => {
           return task._id !== Id;
         });
-        
+        setTasks(updated)
     }
   
   function completeTask(Id) {
