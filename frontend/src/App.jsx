@@ -8,6 +8,7 @@ import {
 import Home from "./routes/Home.jsx";
 import Categories from "./routes/Categories.jsx";
 import NewTask from "./components/NewTask.jsx";
+import FontSize from "./components/fontSize.jsx";
 import Task from "./components/Task.jsx";
 import TaskPage from "./routes/TaskPage.jsx";
 

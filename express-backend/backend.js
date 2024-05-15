@@ -11,7 +11,6 @@ app.use(express.json());
   
   app.get("/tasks", async (req, res) => {
     const task = req.query["title"];
-    //const job = req.query["job"];
     try {
       const result = await taskServices.getTasks(task);
       res.send({ tasks_list: result });
