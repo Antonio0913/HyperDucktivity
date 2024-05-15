@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import "../App.css";
 import Task from "../components/Task.jsx";
 import NewTask from "../components/NewTask.jsx";
+import FontSize from "../components/fontSize.jsx";
 
 const TaskPage = () => {
   const [tasks, setTasks] = useState([]);
+  const [textSize, setTextSize] = useState(12);
   useEffect(() => {
     fetchTasks()
       .then((res) => res.json())
@@ -41,6 +43,16 @@ const TaskPage = () => {
   function deleteTask(Id) {
     const updated = tasks.filter((task) => {
       return task._id !== Id;
+    });
+    setTasks(updated);
+  }
+
+  function completeTask(Id) {
+    const updated = tasks.map((task) => {
+      if (task._id === Id) {
+        return { ...task, isComplete: !task.isComplete };
+      }
+      return task;
     });
     setTasks(updated);
   }
@@ -94,7 +106,6 @@ const TaskPage = () => {
 
     return promise;
   }
-
   return (
     <>
       <h1 className="text-background-gray">HyperDucktivity</h1>
@@ -111,12 +122,18 @@ const TaskPage = () => {
       </div>
       <div>
         <NewTask addTask={addTask} />
+        <FontSize
+          textSize={textSize}
+          setTextSize={setTextSize}
+        ></FontSize>
         {tasks.map((task) => (
           <Task
             key={task._id}
             task={task}
             updateTask={updateTask}
             deleteTask={removeOneTask}
+            textSize={textSize}
+            completeTask={completeTask}
           />
         ))}
       </div>
