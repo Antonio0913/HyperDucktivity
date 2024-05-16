@@ -1,10 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+  useUser,
+  SignUpButton
+} from "@clerk/clerk-react";
 import ProfileIcon from "../assets/ProfileIcon.png"
 import SettingsIcon from "../assets/SettingsIcon.png"
 import LogoutIcon from "../assets/LogoutIcon.png"
 
 const Home = () => {
+  const { user, isLoaded } = useUser();
+
   return (
     <>
     <div className="absolute top-0 left-0">
@@ -28,6 +38,20 @@ const Home = () => {
       <nav>
         <Link to="/taskPage">View TaskPage</Link>
       </nav>
+      <br />
+
+      <header>
+        <SignedOut>
+          <SignInButton />
+          <SignUpButton style={{ marginLeft: "10px" }} />
+          <p>User is not signed in</p>
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+          <p>User is signed in</p>
+          {isLoaded && user && <p>Clerk User ID: {user.id}</p>}
+        </SignedIn>
+      </header>
     </div>
     <div className="absolute bottom-0 left-0 flex items-center space-x-4">
     <button>
