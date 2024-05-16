@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Home from "./routes/Home.jsx";
 import Categories from "./routes/Categories.jsx";
+import Settings from "./routes/Settings.jsx";
 import NewTask from "./components/NewTask.jsx";
 import FontSize from "./components/fontSize.jsx";
 import Task from "./components/Task.jsx";
@@ -26,6 +27,10 @@ function App() {
     {
       path: "/taskPage",
       element: <TaskPage />
+    },
+    {
+      path: "/settings",
+      element: <Settings />
     }
   ]);
 
