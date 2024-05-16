@@ -5,7 +5,8 @@ import {
   SignedOut,
   SignInButton,
   UserButton,
-  useUser
+  useUser,
+  SignUpButton
 } from "@clerk/clerk-react";
 
 const Home = () => {
@@ -26,6 +27,7 @@ const Home = () => {
       <header>
         <SignedOut>
           <SignInButton />
+          <SignUpButton style={{ marginLeft: "10px" }} />
           <p>User is not signed in</p>
         </SignedOut>
         <SignedIn>
