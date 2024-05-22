@@ -5,10 +5,24 @@ import "../App.css";
 import Task from "../components/Task.jsx";
 import NewTask from "../components/NewTask.jsx";
 import FontSize from "../components/fontSize.jsx";
+import SearchBar from "../components/SearchBar.jsx";
 
 const TaskPage = () => {
   const [tasks, setTasks] = useState([]);
   const [textSize, setTextSize] = useState(12);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  const filteredTasks = searchQuery
+    ? tasks.filter((task) =>
+        task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        task.content.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : tasks;
+
   useEffect(() => {
     fetchTasks()
       .then((res) => res.json())
@@ -121,12 +135,13 @@ const TaskPage = () => {
         </p>
       </div>
       <div>
+      <SearchBar placeholder="Search your tasks..." onSearch={handleSearch} />
         <NewTask addTask={addTask} />
         <FontSize
           textSize={textSize}
           setTextSize={setTextSize}
         ></FontSize>
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <Task
             key={task._id}
             task={task}
