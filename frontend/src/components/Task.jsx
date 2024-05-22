@@ -8,7 +8,7 @@ import box from "../assets/box.png";
 function Task({ task, updateTask, deleteTask, completeTask, textSize}) {
   const [isEditingTask, setIsEditingTask] = useState(false);
   const [editedTask, setEditedTask] = useState(task);
-  const [isPriority, setIsPriority] = useState(false);
+  const [isPriority, setIsPriority] = useState(task.priority ?? false);
 
   const taskStyle = `relative max-w-md mx-auto bg-white rounded-xl border border-beak-orange overflow-hidden md:max-w-2xl m-5 ${task.isComplete ? 'opacity-50' : ''}`;
 
@@ -16,12 +16,16 @@ function Task({ task, updateTask, deleteTask, completeTask, textSize}) {
     e.preventDefault();
     updateTask(task._id, editedTask.title, editedTask.content);
     setIsEditingTask(false);
-    setIsPriority(false);
+    setIsPriority(isPriority);
   };
 
   const togglePriority = () => {
+    const updatedTask = { ...task, priority: !task.priority };
+    console.log(task.priority);
+    setEditedTask(updatedTask);
+    updateTask(task._id, updatedTask.title, updatedTask.content);
     setIsPriority(!isPriority);
-  }
+  };
 
   return (
     <div className={taskStyle}>

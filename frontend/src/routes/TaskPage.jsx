@@ -58,7 +58,7 @@ const TaskPage = () => {
   }
 
   const addTask = (title, content) => {
-    const task = { title, content };
+    const task = { title, content, priority: false };
     // setTasks([...tasks, newTask]);
     postTasks(task)
       .then((res) => {
@@ -95,6 +95,7 @@ const TaskPage = () => {
     const promise = fetch("http://localhost:8000/tasks");
     return promise;
   }
+
   function postTasks(task) {
     const promise = fetch("http://localhost:8000/tasks", {
       method: "POST",
@@ -106,6 +107,7 @@ const TaskPage = () => {
 
     return promise;
   }
+
   return (
     <>
       <h1 className="text-background-gray">HyperDucktivity</h1>
@@ -126,7 +128,7 @@ const TaskPage = () => {
           textSize={textSize}
           setTextSize={setTextSize}
         ></FontSize>
-        {tasks.map((task) => (
+        {tasks.sort((a, b) => b.priority - a.priority).map((task) => (
           <Task
             key={task._id}
             task={task}
