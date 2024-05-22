@@ -10,17 +10,18 @@ import SearchBar from "../components/SearchBar.jsx";
 const TaskPage = () => {
   const [tasks, setTasks] = useState([]);
   const [textSize, setTextSize] = useState(12);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const handleSearch = (query, tasks) => {
-    const upated = tasks.map((task) => {
-      if(task.title.toLowerCase().includes(query.toLowerCase()) ||
-      task.content.toLowerCase().includes(query.toLowerCase())){
-        return task;
-      }}
-    );
-
-    setTasks(updated);
+  const handleSearch = (query) => {
+    setSearchQuery(query);
   };
+
+  const filteredTasks = searchQuery
+    ? tasks.filter((task) =>
+        task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        task.content.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : tasks;
 
   useEffect(() => {
     fetchTasks()
@@ -140,7 +141,7 @@ const TaskPage = () => {
           textSize={textSize}
           setTextSize={setTextSize}
         ></FontSize>
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <Task
             key={task._id}
             task={task}
