@@ -95,6 +95,7 @@ const Home = () => {
         <br />
         <p>User is signed in</p>
         {isLoaded && user && <p>Clerk User ID: {user.id}</p>}
+        <NewCategory />
       </div>
 
       <div className="absolute bottom-3 left-3 flex items-center space-x-4">
@@ -115,7 +116,7 @@ const Home = () => {
         </Link>
         {/* <img src={LogoutIcon} alt="Logout Icon" className="w-31 h-17" /> */}
       </div>
-      <NewCategory />
+      
     </>
   );
 };
