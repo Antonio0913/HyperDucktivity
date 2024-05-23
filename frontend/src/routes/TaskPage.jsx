@@ -71,8 +71,20 @@ const TaskPage = () => {
     setTasks(updated);
   }
 
+  const prioritizeTask = (id) => {
+    const updatedTask = tasks.map((task) =>
+      task._id === id
+        ? {
+            ...task,
+            isPriority : !task.isPriority
+          }
+        : task
+    );
+    setTasks(updatedTask);
+  };
+
   const addTask = (title, content) => {
-    const task = { title, content };
+    const task = { title, content, isPriority: false };
     // setTasks([...tasks, newTask]);
     postTasks(task)
       .then((res) => {
@@ -109,6 +121,7 @@ const TaskPage = () => {
     const promise = fetch("http://localhost:8000/tasks");
     return promise;
   }
+
   function postTasks(task) {
     const promise = fetch("http://localhost:8000/tasks", {
       method: "POST",
@@ -120,6 +133,7 @@ const TaskPage = () => {
 
     return promise;
   }
+
   return (
     <>
       <h1 className="text-background-gray">HyperDucktivity</h1>
@@ -141,17 +155,22 @@ const TaskPage = () => {
           textSize={textSize}
           setTextSize={setTextSize}
         ></FontSize>
-        {filteredTasks.map((task) => (
-          <Task
-            key={task._id}
-            task={task}
-            updateTask={updateTask}
-            deleteTask={removeOneTask}
-            textSize={textSize}
-            completeTask={completeTask}
-          />
-        ))}
-      </div>
+        {filteredTasks.sort((a, b) => b.isPriority - a.isPriority)
+        .map((task, index) => {
+          console.log(task.isPriority);
+          return (
+            <Task
+              key={task._id}
+              task={task}
+              updateTask={updateTask}
+              deleteTask={removeOneTask}
+              textSize={textSize}
+              completeTask={completeTask}
+              prioritizeTask={prioritizeTask}
+            />
+          );
+        })}
+    </div>
     </>
   );
 };
