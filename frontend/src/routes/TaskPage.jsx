@@ -11,10 +11,12 @@ const TaskPage = () => {
   const [tasks, setTasks] = useState([]);
   const [textSize, setTextSize] = useState(12);
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortDirection, setSortDirection] = useState('asc');
 
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
+
 
   const filteredTasks = searchQuery
     ? tasks.filter((task) =>
@@ -31,6 +33,18 @@ const TaskPage = () => {
         console.log(error);
       });
   }, []);
+  function sortTasksByDueDate() {
+    const sortedTasks = [...filteredTasks].sort((a, b) => {
+      if (!a.dueDate && !b.dueDate) return 0;
+      if (!a.dueDate) return sortDirection === 'asc' ? 1 : -1;
+      if (!b.dueDate) return sortDirection === 'asc' ? -1 : 1;
+      return sortDirection === 'asc'
+        ? new Date(a.dueDate) - new Date(b.dueDate)
+        : new Date(b.dueDate) - new Date(a.dueDate);
+    });
+    setTasks(sortedTasks);
+    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+  }
 
   function removeOneTask(Id) {
     const promise = fetch(`http://localhost:8000/tasks/${Id}`, {
@@ -83,8 +97,8 @@ const TaskPage = () => {
     setTasks(updatedTask);
   };
 
-  const addTask = (title, content) => {
-    const task = { title, content, isPriority: false };
+  const addTask = (title, content, dueDate) => {
+    const task = { title, content, dueDate, isPriority: false };
     // setTasks([...tasks, newTask]);
     postTasks(task)
       .then((res) => {
@@ -104,14 +118,10 @@ const TaskPage = () => {
       });
   };
 
-  const updateTask = (id, updatedTitle, updatedContent) => {
+  const updateTask = (id, { title, content, dueDate }) => {
     const updatedTasks = tasks.map((task) =>
       task._id === id
-        ? {
-            ...task,
-            title: updatedTitle,
-            content: updatedContent
-          }
+        ? { ...task, title, content, dueDate }
         : task
     );
     setTasks(updatedTasks);
@@ -150,6 +160,9 @@ const TaskPage = () => {
       </div>
       <div>
       <SearchBar placeholder="Search your tasks..." onSearch={handleSearch} />
+      <button onClick={sortTasksByDueDate} className="sort-button">
+          Sort by Due Date {sortDirection === 'asc' ? '↑' : '↓'}
+      </button>
         <NewTask addTask={addTask} />
         <FontSize
           textSize={textSize}
