@@ -9,13 +9,18 @@ const UserSchema = new mongoose.Schema(
       trim: true,
     },
     password: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+    clerkUserId: {
       type: String,
       required: true,
-      trim: true,
+      unique: true,
     },
-    themes: [{
+    categories: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Theme'
+      ref: 'Category'
     }],
   },
   { collection: 'users_list' }

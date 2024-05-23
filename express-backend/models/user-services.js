@@ -24,10 +24,14 @@ function removeUser(id) {
   return userModel.findByIdAndDelete(id);
 }
 
+function findUserByClerkUserId(clerkUserId) {
+  return userModel.findOne({ clerkUserId: clerkUserId });
+}
 export default {
   addUser,
   getUsers,
   findUserById,
   findUserByUsername,
   removeUser,
+  findUserByClerkUserId,
 };
