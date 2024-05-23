@@ -170,6 +170,37 @@ app.delete("/categories/:id", async (req, res) => {
   }
 });
 
+app.get("/categories/:id", async (req, res) => {
+  const id = req.params["id"];
+  const result = await categoryServices.findCategoryById(id);
+  if (result === undefined || result === null)
+    res.status(404).send("Resource not found.");
+  else {
+    res.send({ category_list: result });
+  }
+});
+
+app.put("/categories/:id", async (req, res) => {
+  const id = req.params["id"];
+  const { title } = req.body;
+
+  console.log(`Received PUT request to update category with ID: ${id} and title: ${title}`);
+
+  try {
+    const updatedCategory = await categoryServices.updateCategory(id, { title });
+
+    if (updatedCategory) {
+      res.status(200).send(updatedCategory);
+    } else {
+      res.status(404).send("Category not found.");
+    }
+  } catch (error) {
+    console.error("Error updating category:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });

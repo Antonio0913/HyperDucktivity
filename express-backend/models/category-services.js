@@ -45,11 +45,22 @@ function addTaskToCategory(categoryId, taskId) {
     .populate("taskList");
 }
 
+const updateCategory = async (id, updatedFields) => {
+  console.log(`Updating category with ID: ${id} with fields: ${JSON.stringify(updatedFields)}`);
+
+  const updatedCategory = await categoryModel.findByIdAndUpdate(id, updatedFields, { new: true });
+  if (!updatedCategory) {
+    throw new Error("Category not found");
+  }
+  return updatedCategory;
+};
+
 export default {
   addCategory,
   getCategories,
   findCategoryById,
   //   findCategoryByName,
   removeCategory,
-  addTaskToCategory
+  addTaskToCategory,
+  updateCategory
 };
