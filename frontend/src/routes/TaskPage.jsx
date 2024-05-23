@@ -99,6 +99,7 @@ const TaskPage = () => {
 
   const addTask = (title, content, dueDate) => {
     const task = { title, content, dueDate, isPriority: false };
+    //console.log(task);
     // setTasks([...tasks, newTask]);
     postTasks(task)
       .then((res) => {
@@ -170,7 +171,6 @@ const TaskPage = () => {
         ></FontSize>
         {filteredTasks.sort((a, b) => b.isPriority - a.isPriority)
         .map((task, index) => {
-          console.log(task.isPriority);
           return (
             <Task
               key={task._id}

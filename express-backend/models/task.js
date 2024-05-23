@@ -14,7 +14,7 @@ const TaskSchema = new mongoose.Schema(
       validate(value) {
         if (value.length < 2)
           throw new Error(
-            "Invalid job, must be at least 2 characters."
+            "Invalid content, must be at least 2 characters."
           );
       }
     },

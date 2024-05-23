@@ -49,7 +49,10 @@ function NewTask({ addTask }) {
             <input
               type="date"
               value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
+              onChange={(e) => {
+                console.log('Date selected:', e.target.value); 
+                setDueDate(e.target.value);
+              }}
               className="p-2 border border-gray-300 focus:outline-none focus:border-beak-orange focus:ring-2 focus:ring-beak-orange rounded-lg"
             />
             <button

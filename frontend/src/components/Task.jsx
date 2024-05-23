@@ -99,10 +99,10 @@ function Task({ task, updateTask, deleteTask, completeTask, prioritizeTask, text
                 {task.content}
               </p>
               {task.dueDate && (
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-beak-yellow absolute top-2 right-2">
                 Due: {new Date(task.dueDate).toLocaleDateString()}
               </p>
-            )}
+             )}
               <button
                 onClick={() => setIsEditingTask(true)}
                 className="bg-background-gray text-beak-orange rounded-lg py-2 px-4 m-2"
