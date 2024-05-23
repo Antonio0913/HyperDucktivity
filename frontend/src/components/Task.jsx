@@ -7,13 +7,13 @@ import box from "../assets/box.png";
 
 function Task({ task, updateTask, deleteTask, completeTask, prioritizeTask, textSize}) {
   const [isEditingTask, setIsEditingTask] = useState(false);
-  const [editedTask, setEditedTask] = useState({...task});
+  const [editedTask, setEditedTask] = useState(task);
 
   const taskStyle = `relative max-w-md mx-auto bg-white rounded-xl border border-beak-orange overflow-hidden md:max-w-2xl m-5 ${task.isComplete ? 'opacity-50' : ''}`;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateTask(task._id, editedTask);
+    updateTask(task._id, editedTask.title, editedTask.content);
     setIsEditingTask(false);
   };
 
@@ -50,16 +50,6 @@ function Task({ task, updateTask, deleteTask, completeTask, prioritizeTask, text
               required
               className="p-2 border border-gray-300 focus:outline-none focus:border-beak-orange focus:ring-2 focus:ring-beak-orange rounded-lg h-32"
             />
-            {!editedTask.dueDate ? (
-              <div className="text-gray-500">Undated</div>
-            ) : (
-              <input
-                type="date"
-                value={editedTask.dueDate}
-                onChange={(e) => setEditedTask({...editedTask, dueDate: e.target.value})}
-                className="p-2 border border-gray-300 focus:outline-none focus:border-beak-orange focus:ring-2 focus:ring-beak-orange rounded-lg"
-              />
-            )}
             <div className="flex justify-end space-x-2">
               <button
                 className="bg-background-gray text-beak-orange rounded-lg py-2 px-4"
@@ -98,11 +88,6 @@ function Task({ task, updateTask, deleteTask, completeTask, prioritizeTask, text
               <p className="font-medium text-black" style={{ fontSize: `${textSize / 1.2}px` }}>
                 {task.content}
               </p>
-              {task.dueDate && (
-              <p className="text-sm text-gray-500">
-                Due: {new Date(task.dueDate).toLocaleDateString()}
-              </p>
-            )}
               <button
                 onClick={() => setIsEditingTask(true)}
                 className="bg-background-gray text-beak-orange rounded-lg py-2 px-4 m-2"

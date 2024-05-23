@@ -5,7 +5,7 @@ const TaskSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     content: {
       type: String,
@@ -13,20 +13,14 @@ const TaskSchema = new mongoose.Schema(
       trim: true,
       validate(value) {
         if (value.length < 2)
-          throw new Error(
-            "Invalid job, must be at least 2 characters."
-          );
-      }
-    },
-    dueDate: {
-      type: Date,
-      required: false
+          throw new Error("Invalid job, must be at least 2 characters.");
+      },
     },
     isPriority: {
       type: Boolean,
       required: true,
       default: false
-    }
+    },
   },
   { collection: "tasks_list" }
 );
