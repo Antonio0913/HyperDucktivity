@@ -71,8 +71,20 @@ const TaskPage = () => {
     setTasks(updated);
   }
 
+  const prioritizeTask = (id) => {
+    const updatedTask = tasks.map((task) =>
+      task._id === id
+        ? {
+            ...task,
+            isPriority : !task.isPriority
+          }
+        : task
+    );
+    setTasks(updatedTask);
+  };
+
   const addTask = (title, content) => {
-    const task = { title, content, priority: false };
+    const task = { title, content, isPriority: false };
     // setTasks([...tasks, newTask]);
     postTasks(task)
       .then((res) => {
@@ -143,17 +155,22 @@ const TaskPage = () => {
           textSize={textSize}
           setTextSize={setTextSize}
         ></FontSize>
-        {filteredTasks.sort((a, b) => b.priority - a.priority).map((task) => (
-          <Task
-            key={task._id}
-            task={task}
-            updateTask={updateTask}
-            deleteTask={removeOneTask}
-            textSize={textSize}
-            completeTask={completeTask}
-          />
-        ))}
-      </div>
+        {filteredTasks.sort((a, b) => b.isPriority - a.isPriority)
+        .map((task, index) => {
+          console.log(task.isPriority);
+          return (
+            <Task
+              key={task._id}
+              task={task}
+              updateTask={updateTask}
+              deleteTask={removeOneTask}
+              textSize={textSize}
+              completeTask={completeTask}
+              prioritizeTask={prioritizeTask}
+            />
+          );
+        })}
+    </div>
     </>
   );
 };
