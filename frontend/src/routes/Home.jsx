@@ -19,7 +19,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="absolute top-0 left-0">
+      <div className="absolute top-2 left-2">
         <div className="flex items-center space-x-4">
           <h1 className="text-background-gray">
             HyperDucktivity
@@ -40,31 +40,19 @@ const Home = () => {
           <Link to="/taskPage">View TaskPage</Link>
         </nav>
         <br />
-
-        <br />
-        <header>
-          <SignedOut>
-            <SignInButton />
-            <SignUpButton style={{ marginLeft: "10px" }} />
-            <p>User is not signed in</p>
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-            <p>User is signed in</p>
-            {isLoaded && user && (
-              <p>Clerk User ID: {user.id}</p>
-            )}
-          </SignedIn>
-        </header>
+        <p>User is signed in</p>
+        {isLoaded && user && <p>Clerk User ID: {user.id}</p>}
       </div>
-      <div className="absolute bottom-0 left-0 flex items-center space-x-4">
-        <button>
-          <img
-            src={ProfileIcon}
-            alt="Profile Icon"
-            className="w-31 h-17"
-          />
-        </button>
+
+      <div className="absolute bottom-3 left-3 flex items-center space-x-4">
+        <SignedOut>
+          <SignInButton />
+          <SignUpButton style={{ marginLeft: "10px" }} />
+          <p>User is not signed in</p>
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
         <Link to="/settings">
           <img
             src={SettingsIcon}
@@ -72,11 +60,7 @@ const Home = () => {
             className="w-31 h-17"
           />
         </Link>
-        <img
-          src={LogoutIcon}
-          alt="Logout Icon"
-          className="w-31 h-17"
-        />
+        {/* <img src={LogoutIcon} alt="Logout Icon" className="w-31 h-17" /> */}
       </div>
       <NewCategory />
     </>
