@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const TaskSchema = new mongoose.Schema(
   {
+    // _id: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     auto: true
+    // },
+    //dont think its needed
     title: {
       type: String,
       required: true,
