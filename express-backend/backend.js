@@ -2,11 +2,89 @@ import express from "express";
 import cors from "cors";
 import categoryServices from "./models/category-services.js";
 import taskServices from "./models/task-services.js";
+import userServices from "./models/user-services.js";
 const app = express();
 const port = 8000;
 
 app.use(cors());
 app.use(express.json());
+
+
+app.get('/users', async (req, res) => {
+  try {
+    const users = await userServices.getUsers();
+    res.status(200).send(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.get('/users/:clerkUserId', async (req, res) => {
+  const clerkUserId = req.params['clerkUserId'];
+  try {
+    const user = await userServices.findUserByClerkUserId(clerkUserId);
+    if (user) {
+      res.status(200).send(user);
+    } else {
+      res.status(404).send('User not found.');
+    }
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.post('/users', async (req, res) => {
+  const { username, password, clerkUserId } = req.body;
+  console.log('Received request to create user:', req.body);
+
+  if (!username || !password || !clerkUserId) {
+    return res.status(400).send({ message: 'Missing username, password, or clerkUserId' });
+  }
+
+  try {
+    const existingUser = await userServices.findUserByClerkUserId(clerkUserId);
+    if (existingUser) {
+      return res.status(409).send({ message: 'User already exists' });
+    }
+    const user = await userServices.addUser({ username, password, clerkUserId });
+    res.status(201).send(user);
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(400).send(error.message);
+  }
+});
+
+app.get('/users/:id', async (req, res) => {
+  const id = req.params['id'];
+  try {
+    const user = await userServices.findUserById(id);
+    if (user) {
+      res.status(200).send(user);
+    } else {
+      res.status(404).send('User not found.');
+    }
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.delete('/users/:id', async (req, res) => {
+  const id = req.params['id'];
+  try {
+    const delUser = await userServices.removeUser(id);
+    if (delUser) {
+      res.status(204).send();
+    } else {
+      res.status(404).send('User not found.');
+    }
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 app.get("/tasks", async (req, res) => {
   const task = req.query["title"];

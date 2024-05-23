@@ -5,6 +5,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import { ClerkProvider, RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react';
 import Home from "./routes/Home.jsx";
 import Settings from "./routes/Settings.jsx";
 import NewTask from "./components/NewTask.jsx";
@@ -21,6 +22,10 @@ function App() {
       element: <Home />
     },
     {
+      path: "/home",
+      element: <Home />
+    },
+    {
       path: "/taskPage",
       element: <TaskPage />
     },
@@ -31,6 +36,15 @@ function App() {
     {
       path: "/settings",
       element: <Settings />
+    }
+    ,
+    {
+      path: "/sign-in",
+      element: <RedirectToSignIn />
+    },
+    {
+      path: "*",
+      element: <Home />
     }
   ]);
 
