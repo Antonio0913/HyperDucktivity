@@ -6,12 +6,12 @@ import {
   Route
 } from "react-router-dom";
 import Home from "./routes/Home.jsx";
-import Categories from "./routes/Categories.jsx";
 import Settings from "./routes/Settings.jsx";
 import NewTask from "./components/NewTask.jsx";
 import FontSize from "./components/fontSize.jsx";
 import Task from "./components/Task.jsx";
 import TaskPage from "./routes/TaskPage.jsx";
+import TaskPageForCategory from "./routes/TaskPageForCategory.jsx";
 
 function App() {
   // Add new routes here
@@ -21,12 +21,12 @@ function App() {
       element: <Home />
     },
     {
-      path: "/categories",
-      element: <Categories />
-    },
-    {
       path: "/taskPage",
       element: <TaskPage />
+    },
+    {
+      path: "/taskPage/:id",
+      element: <TaskPageForCategory /> // This will be the main task page after backend is set up
     },
     {
       path: "/settings",
