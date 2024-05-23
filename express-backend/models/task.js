@@ -16,6 +16,10 @@ const TaskSchema = new mongoose.Schema(
       //     throw new Error("Invalid job, must be at least 2 characters.");
       // },
     },
+    dueDate: {
+      type: Date,
+      required: false
+    },
     isPriority: {
       type: Boolean,
       required: true,

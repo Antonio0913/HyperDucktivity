@@ -3,13 +3,15 @@ import { useState } from "react";
 function NewTask({ addTask }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [dueDate, setDueDate] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTask(title, content);
+    addTask(title, content, dueDate || null);
     setTitle("");
     setContent("");
+    setDueDate("");
     setIsOpen(false);
   };
 
@@ -43,6 +45,12 @@ function NewTask({ addTask }) {
               placeholder="Describe your task..."
               required
               className="p-2 border border-gray-300 focus:outline-none focus:border-beak-orange focus:ring-2 focus:ring-beak-orange rounded-lg h-32"
+            />
+            <input
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              className="p-2 border border-gray-300 focus:outline-none focus:border-beak-orange focus:ring-2 focus:ring-beak-orange rounded-lg"
             />
             <button
               className="self-end bg-background-gray text-beak-orange rounded-lg py-2 px-4"
