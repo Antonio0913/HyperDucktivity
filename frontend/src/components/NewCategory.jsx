@@ -138,7 +138,9 @@ function Category() {
       <div>
       {categories.map((category) => (
           <div key={category._id} className="flex items-center justify-between mb-2">
-            <CategoryItem category={category} />
+             <div className="flex-grow">
+              <CategoryItem category={category} />
+            </div>
             <div className="relative">
               <button
                 onClick={() => startEditingCategory(category)}
@@ -154,13 +156,15 @@ function Category() {
               </button>
               {editingCategoryId === category._id && showDropdown && (
                 <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10">
+                  Edit Title
                   <input
                     type="text"
                     value={editingCategoryName}
                     onChange={(e) => setEditingCategoryName(e.target.value)}
-                    placeholder="Edit category name"
+                    placeholder="Edit category Title"
                     className="w-full p-2 border border-gray-300 rounded-lg mb-2"
                   />
+                  
                   <div className="flex justify-end space-x-2">
                     <button
                       className="bg-background-gray text-beak-orange rounded-lg py-2 px-4"
