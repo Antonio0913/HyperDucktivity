@@ -3,6 +3,13 @@ import userModel from './userModel.js';
 
 mongoose.set('debug', true);
 
+mongoose
+  .connect("mongodb://localhost:27017/user", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .catch((error) => console.log(error));
+
 function getUsers() {
   return userModel.find();
 }
