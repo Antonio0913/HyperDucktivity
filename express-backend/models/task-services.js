@@ -1,14 +1,13 @@
-import mongoose from "mongoose";
 import taskModel from "./task.js";
 
-mongoose.set("debug", true);
+/*mongoose.set("debug", true);
 
 mongoose
   .connect("mongodb://localhost:27017/tasks", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .catch((error) => console.log(error));
+  .catch((error) => console.log(error));*/
 
 function getTasks(title) {
   let promise;
