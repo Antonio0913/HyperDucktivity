@@ -39,14 +39,21 @@ const TaskPage = () => {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     }
 
-  useEffect(() => {
-    fetchTasks(categoryId)
-      .then((res) => res.json())
-      .then((json) => setTasks(json))
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [categoryId]);
+  
+    useEffect(() => {
+      if (categoryId) {
+        console.log('categoryId:', categoryId); // Debugging line
+        fetchTasks(categoryId)
+          .then((res) => res.json())
+          .then((json) => {
+            console.log('Fetched tasks:', json.tasks_list); // Debugging line
+            setTasks(json.tasks_list || []); // Ensure tasks_list is always an array
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    }, [categoryId]);
 
   function removeOneTask(Id) {
     const promise = fetch(`http://localhost:8000/tasks/${Id}`, {
@@ -100,9 +107,7 @@ const TaskPage = () => {
   };
 
   const addTask = (title, content, dueDate) => {
-    console.log(categoryId);
     const task = { title, content, dueDate, isPriority: false, category: categoryId };
-    // setTasks([...tasks, newTask]);
     postTasks(task)
       .then((res) => {
         if (res.status == 201) {
@@ -136,7 +141,7 @@ const TaskPage = () => {
   };
 
   const fetchTasks = (categoryId) => {
-    return fetch(`http://localhost:8000/tasks?category=${categoryId}`);
+    return fetch(`http://localhost:8001/tasks?category=${categoryId}`);
   };
 
   function postTasks(task) {
@@ -176,7 +181,7 @@ const TaskPage = () => {
           setTextSize={setTextSize}
         ></FontSize>
         {filteredTasks.sort((a, b) => b.isPriority - a.isPriority)
-        .map((task, index) => {
+        .map((task) => {
           console.log(task.isPriority);
           return (
             <Task

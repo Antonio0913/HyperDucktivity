@@ -30,7 +30,7 @@ function App() {
       element: <TaskPage />
     },
     {
-      path: "/taskPage/:id",
+      path: "/taskPage/:categoryId",
       element: <TaskPage/> // This will be the main task page after backend is set up
     },
     {
