@@ -93,7 +93,7 @@ const Home = () => {
           <Link to="/taskPage">View TaskPage</Link>
         </nav>
         <br />
-        <p>User is signed in</p>
+        {isLoaded && user && <p>User is signed in</p>}
         {isLoaded && user && <p>Clerk User ID: {user.id}</p>}
         <NewCategory />
       </div>
