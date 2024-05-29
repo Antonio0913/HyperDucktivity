@@ -120,13 +120,13 @@ app.delete("/users/:id", async (req, res) => {
 });
 
 app.get("/tasks", async (req, res) => {
-  const task = req.query["title"];
+  const query = req.query;
   try {
-    const result = await taskServices.getTasks(task);
+    const result = await taskServices.getTasks(query);
     res.send({ tasks_list: result });
   } catch (error) {
     console.log(error);
-    res.status(500).send("An error ocurred in the server.");
+    res.status(500).send("An error occurred in the server.");
   }
 });
 

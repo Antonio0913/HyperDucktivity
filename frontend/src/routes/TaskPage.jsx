@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import "../App.css";
 import Task from "../components/Task.jsx";
@@ -8,6 +8,8 @@ import FontSize from "../components/fontSize.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 
 const TaskPage = () => {
+  const { categoryId } = useParams();
+
   const [tasks, setTasks] = useState([]);
   const [textSize, setTextSize] = useState(12);
   const [searchQuery, setSearchQuery] = useState('');
@@ -38,13 +40,13 @@ const TaskPage = () => {
     }
 
   useEffect(() => {
-    fetchTasks()
+    fetchTasks(categoryId)
       .then((res) => res.json())
-      .then((json) => setTasks(json["tasks_list"]))
+      .then((json) => setTasks(json))
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [categoryId]);
 
   function removeOneTask(Id) {
     const promise = fetch(`http://localhost:8000/tasks/${Id}`, {
@@ -98,7 +100,8 @@ const TaskPage = () => {
   };
 
   const addTask = (title, content, dueDate) => {
-    const task = { title, content, dueDate, isPriority: false };
+    console.log(categoryId);
+    const task = { title, content, dueDate, isPriority: false, category: categoryId };
     // setTasks([...tasks, newTask]);
     postTasks(task)
       .then((res) => {
@@ -132,10 +135,9 @@ const TaskPage = () => {
     setTasks(updatedTasks);
   };
 
-  function fetchTasks() {
-    const promise = fetch("http://localhost:8000/tasks");
-    return promise;
-  }
+  const fetchTasks = (categoryId) => {
+    return fetch(`http://localhost:8000/tasks?category=${categoryId}`);
+  };
 
   function postTasks(task) {
     const promise = fetch("http://localhost:8000/tasks", {
