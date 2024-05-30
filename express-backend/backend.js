@@ -8,24 +8,30 @@ import userServices from "./models/user-services.js";
 const app = express();
 const port = process.env.PORT || 8000;
 
-connectDB().then(() => {
-  const server = app.listen(port, () => {
-    console.log(`Server started on port ${server.address().port}`);
-  });
+connectDB()
+  .then(() => {
+    const server = app.listen(port, () => {
+      console.log(
+        `Server started on port ${server.address().port}`
+      );
+    });
 
-  server.on('error', (error) => {
-    if (error.code === 'EADDRINUSE') {
-      console.log(`Port ${port} is already in use, trying another port.`);
-      const newPort = port + 1; // Increment port number and try again
-      server.listen(newPort);
-    } else {
-      console.error('Failed to start server:', error);
-    }
+    server.on("error", (error) => {
+      if (error.code === "EADDRINUSE") {
+        console.log(
+          `Port ${port} is already in use, trying another port.`
+        );
+        const newPort = port + 1; // Increment port number and try again
+        server.listen(newPort);
+      } else {
+        console.error("Failed to start server:", error);
+      }
+    });
+  })
+  .catch((error) => {
+    console.error("Database connection failed:", error);
+    process.exit(1);
   });
-}).catch(error => {
-  console.error("Database connection failed:", error);
-  process.exit(1);
-});
 
 app.use(cors());
 app.use(express.json());
@@ -43,9 +49,8 @@ app.get("/users", async (req, res) => {
 app.get("/users/:clerkUserId", async (req, res) => {
   const clerkUserId = req.params["clerkUserId"];
   try {
-    const user = await userServices.findUserByClerkUserId(
-      clerkUserId
-    );
+    const user =
+      await userServices.findUserByClerkUserId(clerkUserId);
     if (user) {
       res.status(200).send(user);
     } else {
@@ -62,11 +67,9 @@ app.post("/users", async (req, res) => {
   console.log("Received request to create user:", req.body);
 
   if (!username || !password || !clerkUserId) {
-    return res
-      .status(400)
-      .send({
-        message: "Missing username, password, or clerkUserId"
-      });
+    return res.status(400).send({
+      message: "Missing username, password, or clerkUserId"
+    });
   }
 
   try {
@@ -189,9 +192,8 @@ app.delete("/categories/:id", async (req, res) => {
   try {
     const categoryIdToDel = req.params["id"];
     console.log(categoryIdToDel);
-    const delCategory = await categoryServices.removeCategory(
-      categoryIdToDel
-    );
+    const delCategory =
+      await categoryServices.removeCategory(categoryIdToDel);
     if (delCategory) {
       res.status(204).send();
     } else {
@@ -217,10 +219,13 @@ app.put("/categories/:id", async (req, res) => {
   const id = req.params["id"];
   const { title } = req.body;
 
-  console.log(`Received PUT request to update category with ID: ${id} and title: ${title}`);
+  console.log(
+    `Received PUT request to update category with ID: ${id} and title: ${title}`
+  );
 
   try {
-    const updatedCategory = await categoryServices.updateCategory(id, { title });
+    const updatedCategory =
+      await categoryServices.updateCategory(id, { title });
 
     if (updatedCategory) {
       res.status(200).send(updatedCategory);
@@ -232,7 +237,6 @@ app.put("/categories/:id", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

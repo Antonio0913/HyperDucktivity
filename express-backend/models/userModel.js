@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -6,26 +6,28 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      trim: true,
+      trim: true
     },
     password: {
-        type: String,
-        required: true,
-        trim: true,
-      },
+      type: String,
+      required: true,
+      trim: true
+    },
     clerkUserId: {
       type: String,
       required: true,
-      unique: true,
+      unique: true
     },
-    categories: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category'
-    }],
+    categories: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category"
+      }
+    ]
   },
-  { collection: 'users_list' }
+  { collection: "users_list" }
 );
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model("User", UserSchema);
 
 export default User;
