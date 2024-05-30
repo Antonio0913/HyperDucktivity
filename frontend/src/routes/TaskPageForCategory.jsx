@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars, no-unused-expressions */
+
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
