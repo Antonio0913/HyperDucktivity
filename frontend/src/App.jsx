@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   createBrowserRouter,
-  RouterProvider,
-  Routes,
-  Route
+  RouterProvider
 } from "react-router-dom";
-import { ClerkProvider, RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react';
+import { RedirectToSignIn } from "@clerk/clerk-react";
 import Home from "./routes/Home.jsx";
 import Settings from "./routes/Settings.jsx";
-import NewTask from "./components/NewTask.jsx";
-import FontSize from "./components/fontSize.jsx";
-import Task from "./components/Task.jsx";
 import TaskPage from "./routes/TaskPage.jsx";
 import TaskPageForCategory from "./routes/TaskPageForCategory.jsx";
 
@@ -36,8 +31,7 @@ function App() {
     {
       path: "/settings",
       element: <Settings />
-    }
-    ,
+    },
     {
       path: "/sign-in",
       element: <RedirectToSignIn />
