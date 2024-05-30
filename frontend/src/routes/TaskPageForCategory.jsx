@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars, no-unused-expressions */
+/* eslint-disable no-unused-vars*/
 
 import React from "react";
 import { Link, useParams } from "react-router-dom";
