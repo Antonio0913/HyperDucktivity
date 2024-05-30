@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../App.css";
 import Task from "../components/Task.jsx";
@@ -10,32 +9,37 @@ import SearchBar from "../components/SearchBar.jsx";
 const TaskPage = () => {
   const [tasks, setTasks] = useState([]);
   const [textSize, setTextSize] = useState(12);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortDirection, setSortDirection] = useState('asc');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortDirection, setSortDirection] = useState("asc");
 
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
 
   const filteredTasks = searchQuery
-    ? tasks.filter((task) =>
-        task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        task.content.toLowerCase().includes(searchQuery.toLowerCase())
+    ? tasks.filter(
+        (task) =>
+          task.title
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          task.content
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
       )
     : tasks;
 
-    function sortTasksByDueDate() {
-      const sortedTasks = [...filteredTasks].sort((a, b) => {
-        if (!a.dueDate && !b.dueDate) return 0;
-        if (!a.dueDate) return sortDirection === 'asc' ? 1 : -1;
-        if (!b.dueDate) return sortDirection === 'asc' ? -1 : 1;
-        return sortDirection === 'asc'
-          ? new Date(a.dueDate) - new Date(b.dueDate)
-          : new Date(b.dueDate) - new Date(a.dueDate);
-      });
-      setTasks(sortedTasks);
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    }
+  function sortTasksByDueDate() {
+    const sortedTasks = [...filteredTasks].sort((a, b) => {
+      if (!a.dueDate && !b.dueDate) return 0;
+      if (!a.dueDate) return sortDirection === "asc" ? 1 : -1;
+      if (!b.dueDate) return sortDirection === "asc" ? -1 : 1;
+      return sortDirection === "asc"
+        ? new Date(a.dueDate) - new Date(b.dueDate)
+        : new Date(b.dueDate) - new Date(a.dueDate);
+    });
+    setTasks(sortedTasks);
+    setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+  }
 
   useEffect(() => {
     fetchTasks()
@@ -47,7 +51,7 @@ const TaskPage = () => {
   }, []);
 
   function removeOneTask(Id) {
-    const promise = fetch(`http://localhost:8000/tasks/${Id}`, {
+    fetch(`http://localhost:8000/tasks/${Id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -90,7 +94,7 @@ const TaskPage = () => {
       task._id === id
         ? {
             ...task,
-            isPriority : !task.isPriority
+            isPriority: !task.isPriority
           }
         : task
     );
@@ -118,7 +122,12 @@ const TaskPage = () => {
       });
   };
 
-  const updateTask = (id, updatedTitle, updatedContent, dueDate) => {
+  const updateTask = (
+    id,
+    updatedTitle,
+    updatedContent,
+    dueDate
+  ) => {
     const updatedTasks = tasks.map((task) =>
       task._id === id
         ? {
@@ -162,33 +171,40 @@ const TaskPage = () => {
           <br />
           <br />
         </p>
-        <button onClick={sortTasksByDueDate} className="sort-button">
-          Sort by Due Date {sortDirection === 'asc' ? '↑' : '↓'}
-      </button>
+        <button
+          onClick={sortTasksByDueDate}
+          className="sort-button"
+        >
+          Sort by Due Date {sortDirection === "asc" ? "↑" : "↓"}
+        </button>
       </div>
       <div>
-      <SearchBar placeholder="Search your tasks..." onSearch={handleSearch} />
+        <SearchBar
+          placeholder="Search your tasks..."
+          onSearch={handleSearch}
+        />
         <NewTask addTask={addTask} />
         <FontSize
           textSize={textSize}
           setTextSize={setTextSize}
         ></FontSize>
-        {filteredTasks.sort((a, b) => b.isPriority - a.isPriority)
-        .map((task, index) => {
-          console.log(task.isPriority);
-          return (
-            <Task
-              key={task._id}
-              task={task}
-              updateTask={updateTask}
-              deleteTask={removeOneTask}
-              textSize={textSize}
-              completeTask={completeTask}
-              prioritizeTask={prioritizeTask}
-            />
-          );
-        })}
-    </div>
+        {filteredTasks
+          .sort((a, b) => b.isPriority - a.isPriority)
+          .map((task) => {
+            console.log(task.isPriority);
+            return (
+              <Task
+                key={task._id}
+                task={task}
+                updateTask={updateTask}
+                deleteTask={removeOneTask}
+                textSize={textSize}
+                completeTask={completeTask}
+                prioritizeTask={prioritizeTask}
+              />
+            );
+          })}
+      </div>
     </>
   );
 };
