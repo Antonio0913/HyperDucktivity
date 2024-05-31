@@ -51,12 +51,15 @@ const TaskPage = () => {
   }, []);
 
   function removeOneTask(Id) {
-    fetch(`http://localhost:8000/tasks/${Id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json"
+    fetch(
+      `http://hyperducktivity.azurewebsites.net/tasks/${Id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
-    })
+    )
       .then((res) => {
         if (res.status == 204) {
           deleteTask(Id);
@@ -142,18 +145,23 @@ const TaskPage = () => {
   };
 
   function fetchTasks() {
-    const promise = fetch("http://localhost:8000/tasks");
+    const promise = fetch(
+      "http://hyperducktivity.azurewebsites.net/tasks"
+    );
     return promise;
   }
 
   function postTasks(task) {
-    const promise = fetch("http://localhost:8000/tasks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(task)
-    });
+    const promise = fetch(
+      "http://hyperducktivity.azurewebsites.net/tasks",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(task)
+      }
+    );
 
     return promise;
   }
