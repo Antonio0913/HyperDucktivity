@@ -36,8 +36,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: release.zip
-        working-directory: express-backend
+          path: express-baclend/release.zip
 
   deploy:
     runs-on: ubuntu-latest
