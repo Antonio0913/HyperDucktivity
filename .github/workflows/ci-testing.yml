@@ -17,6 +17,6 @@ jobs:
       # - run: npm run lint:frontend
       # - run: npm run build:frontend
 
-      - run: npx eslint -c express-backend/eslint.config.js express-backend/
-      - run: npx eslint -c frontend/eslint.config.js frontend/
+      - run: npx eslint -c express-backend/eslint.config.mjs express-backend/
+      - run: npx eslint -c frontend/eslint.config.mjs frontend/
       - run: npm run build:frontend
