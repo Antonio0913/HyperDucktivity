@@ -11,7 +11,7 @@ const connectDB = async () => {
         "MONGO_URI not found in environment variables"
       );
     }
-    await mongoose.connect(process.env.MONGO_URI, {
+    await mongoose.connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
