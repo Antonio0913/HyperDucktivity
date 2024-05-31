@@ -52,7 +52,7 @@ const TaskPage = () => {
 
   function removeOneTask(Id) {
     fetch(
-      `http://hyperducktivity.azurewebsites.net/tasks/${Id}`,
+      `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
       {
         method: "DELETE",
         headers: {
@@ -146,14 +146,14 @@ const TaskPage = () => {
 
   function fetchTasks() {
     const promise = fetch(
-      "http://hyperducktivity.azurewebsites.net/tasks"
+      "https://hyperducktivity.azurewebsites.net/tasks"
     );
     return promise;
   }
 
   function postTasks(task) {
     const promise = fetch(
-      "http://hyperducktivity.azurewebsites.net/tasks",
+      "https://hyperducktivity.azurewebsites.net/tasks",
       {
         method: "POST",
         headers: {

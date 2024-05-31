@@ -13,7 +13,7 @@ function Category() {
   const fetchCategories = async () => {
     try {
       const response = await fetch(
-        "http://hyperducktivity.azurewebsites.net/categories"
+        "https://hyperducktivity.azurewebsites.net/categories"
       );
       const data = await response.json();
       setCategories(data);
@@ -26,7 +26,7 @@ function Category() {
     if (!newCategory) return;
     try {
       const response = await fetch(
-        "http://hyperducktivity.azurewebsites.net/categories",
+        "https://hyperducktivity.azurewebsites.net/categories",
         {
           method: "POST",
           headers: {
@@ -45,7 +45,7 @@ function Category() {
 
   function deleteCategory(categoryId) {
     fetch(
-      `http://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
+      `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
       {
         method: "DELETE",
         headers: {
@@ -93,7 +93,7 @@ function Category() {
 
     try {
       const response = await fetch(
-        `http://hyperducktivity.azurewebsites.net/categories/${id}`,
+        `https://hyperducktivity.azurewebsites.net/categories/${id}`,
         {
           method: "PUT",
           headers: {
