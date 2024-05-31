@@ -19,18 +19,18 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: "20.x"
 
       - name: npm install, build, and test
         run: |
           npm install --workspaces=false
           npm run -w express-backend build --if-present
           npm run -w express-backend test --if-present
-        working-directory: packages/express-backend
+        working-directory: express-backend
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
-        working-directory: packages/express-backend
+        working-directory: express-backend
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
@@ -55,7 +55,7 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-      
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -63,11 +63,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E0243C71EA224F54B29E0B369CC3E45E }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_AD04828411FE46D29487D98E481019D1 }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'HyperDucktivity'
-          slot-name: 'Production'
+          app-name: "HyperDucktivity"
+          slot-name: "Production"
           package: .
-          
