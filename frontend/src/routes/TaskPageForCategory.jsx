@@ -42,7 +42,7 @@ const TaskPageForCategory = () => {
 
   function removeOneTask(Id) {
     const promise = fetch(
-`http://hyperducktivity.azurewebsites.net/tasks/${Id}`,
+      `http://hyperducktivity.azurewebsites.net/tasks/${Id}`,
       {
         method: "DELETE",
         headers: {
