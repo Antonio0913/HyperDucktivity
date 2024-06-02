@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import "../App.css";
 import Task from "../components/Task.jsx";
@@ -6,7 +7,8 @@ import NewTask from "../components/NewTask.jsx";
 import FontSize from "../components/fontSize.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 
-const TaskPage = () => {
+const TaskPage = ({categoryId}) => {
+  //const { categoryId } = useParams();
   const [tasks, setTasks] = useState([]);
   const [textSize, setTextSize] = useState(12);
   const [searchQuery, setSearchQuery] = useState("");
@@ -41,18 +43,26 @@ const TaskPage = () => {
     setSortDirection(sortDirection === "asc" ? "desc" : "asc");
   }
 
-  useEffect(() => {
-    fetchTasks()
-      .then((res) => res.json())
-      .then((json) => setTasks(json["tasks_list"]))
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  
+    useEffect(() => {
+      if (categoryId) {
+        console.log('categoryId:', categoryId); // Debugging line
+        fetchTasks(categoryId)
+          .then((res) => res.json())
+          .then((json) => {
+            console.log('Fetched tasks:', json.tasks_list); // Debugging line
+            setTasks(json.tasks_list || []); // Ensure tasks_list is always an array
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    }, [categoryId]);
 
   function removeOneTask(Id) {
     fetch(
       `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
+      // `http://localhost:8000/tasks/${Id}`,
       {
         method: "DELETE",
         headers: {
@@ -105,8 +115,7 @@ const TaskPage = () => {
   };
 
   const addTask = (title, content, dueDate) => {
-    const task = { title, content, dueDate, isPriority: false };
-    // setTasks([...tasks, newTask]);
+    const task = { title, content, dueDate, isPriority: false, category: categoryId };
     postTasks(task)
       .then((res) => {
         if (res.status == 201) {
@@ -144,9 +153,10 @@ const TaskPage = () => {
     setTasks(updatedTasks);
   };
 
-  function fetchTasks() {
+  function fetchTasks(categoryId) {
     const promise = fetch(
-      "https://hyperducktivity.azurewebsites.net/tasks"
+     `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`
+      //`http://localhost:8000/tasks?category=${categoryId}`
     );
     return promise;
   }
@@ -154,6 +164,7 @@ const TaskPage = () => {
   function postTasks(task) {
     const promise = fetch(
       "https://hyperducktivity.azurewebsites.net/tasks",
+      //'http://localhost:8000/tasks',
       {
         method: "POST",
         headers: {
@@ -167,25 +178,12 @@ const TaskPage = () => {
   }
 
   return (
-    <>
-      <h1 className="text-background-gray">HyperDucktivity</h1>
-      <div>
-        <p className="text-beak-yellow">
-          {" "}
-          _<br />
-          &#62;(.)__
-          <br />
-          &#40;___/
-          <br />
-          <br />
-        </p>
+    <div className="relative w-full h-full">
         <button
           onClick={sortTasksByDueDate}
-          className="sort-button"
         >
           Sort by Due Date {sortDirection === "asc" ? "↑" : "↓"}
         </button>
-      </div>
       <div>
         <SearchBar
           placeholder="Search your tasks..."
@@ -213,7 +211,7 @@ const TaskPage = () => {
             );
           })}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import CategoryItem from "./CategoryItem";
+import TaskPage from "../routes/TaskPage";
 
-function Category() {
+function Category({onCategoryClick}) {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
   const [editingCategoryId, setEditingCategoryId] =
@@ -14,6 +15,7 @@ function Category() {
     try {
       const response = await fetch(
         "https://hyperducktivity.azurewebsites.net/categories"
+        //"http://localhost:8000/categories"
       );
       const data = await response.json();
       setCategories(data);
@@ -23,10 +25,12 @@ function Category() {
   };
 
   const createCategory = async () => {
-    if (!newCategory) return;
+    if (!newCategory) {
+      return;} 
     try {
       const response = await fetch(
         "https://hyperducktivity.azurewebsites.net/categories",
+        //"http://localhost:8000/categories",
         {
           method: "POST",
           headers: {
@@ -46,6 +50,7 @@ function Category() {
   function deleteCategory(categoryId) {
     fetch(
       `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
+      //`http://localhost:8000/categories/${categoryId}`,
       {
         method: "DELETE",
         headers: {
@@ -94,6 +99,7 @@ function Category() {
     try {
       const response = await fetch(
         `https://hyperducktivity.azurewebsites.net/categories/${id}`,
+        //`http://localhost:8000/categories/${id}`,
         {
           method: "PUT",
           headers: {
@@ -136,13 +142,14 @@ function Category() {
   }, []);
 
   return (
+    <>
     <div className="max-w-md mx-auto mt-10 p-6 border border-gray-300 rounded-lg bg-white">
       <div className="mb-6">
         <input
           type="text"
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
-          placeholder="Enter category name"
+          placeholder="Name your new category"
           className="w-full p-2 border border-gray-300 rounded-lg mb-2"
         />
         <button
@@ -159,7 +166,10 @@ function Category() {
             className="flex items-center justify-between mb-2"
           >
             <div className="flex-grow">
-              <CategoryItem category={category} />
+              <CategoryItem 
+              category={category}
+              onClick={onCategoryClick}
+              />
             </div>
             <div className="relative">
               <button
@@ -210,7 +220,9 @@ function Category() {
           </div>
         ))}
       </div>
+     
     </div>
+    </>
   );
 }
 

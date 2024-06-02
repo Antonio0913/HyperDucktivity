@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   SignedIn,
@@ -10,9 +10,15 @@ import {
 } from "@clerk/clerk-react";
 import SettingsIcon from "../assets/SettingsIcon.png";
 import NewCategory from "../components/NewCategory";
+import TaskPage from "./TaskPage";
 
 const Home = () => {
   const { user, isLoaded } = useUser();
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+
+  const handleCategoryClick = (categoryId) => {
+    setSelectedCategoryId(categoryId);
+  };
 
   useEffect(() => {
     const checkAndCreateUser = async () => {
@@ -24,6 +30,7 @@ const Home = () => {
           //Check if the user already exists
           const checkResponse = await fetch(
             `https://hyperducktivity.azurewebsites.net/users/${user.id}`
+            //`http://localhost:8000/users/${user.id}`
           );
           if (checkResponse.ok) {
             console.log("User already exists in backend.");
@@ -41,6 +48,7 @@ const Home = () => {
 
           const createResponse = await fetch(
             "https://hyperducktivity.azurewebsites.net/users",
+            //"http://localhost:8000/users",
             {
               method: "POST",
               headers: {
@@ -85,6 +93,7 @@ const Home = () => {
 
   return (
     <>
+     <div className="flex flex-row">
       <div className="absolute top-2 left-2">
         <div className="flex items-center space-x-4">
           <h1 className="text-background-gray">
@@ -102,14 +111,13 @@ const Home = () => {
             </p>
           </div>
         </div>
-        <nav>
-          <Link to="/taskPage">View TaskPage</Link>
-        </nav>
         <br />
         {isLoaded && user && <p>User is signed in</p>}
         {isLoaded && user && <p>Clerk User ID: {user.id}</p>}
-        <NewCategory />
+        <NewCategory onCategoryClick={handleCategoryClick}/>
       </div>
+      </div>
+  
 
       <div className="absolute bottom-3 left-3 flex items-center space-x-4">
         <SignedOut>
@@ -129,6 +137,12 @@ const Home = () => {
         </Link>
         {/* <img src={LogoutIcon} alt="Logout Icon" className="w-31 h-17" /> */}
       </div>
+
+      {selectedCategoryId ? (
+        <TaskPage categoryId={selectedCategoryId} />
+      ) : (
+         <p></p>
+      )}
     </>
   );
 };

@@ -7,7 +7,6 @@ import { RedirectToSignIn } from "@clerk/clerk-react";
 import Home from "./routes/Home.jsx";
 import Settings from "./routes/Settings.jsx";
 import TaskPage from "./routes/TaskPage.jsx";
-import TaskPageForCategory from "./routes/TaskPageForCategory.jsx";
 
 function App() {
   // Add new routes here
@@ -25,8 +24,8 @@ function App() {
       element: <TaskPage />
     },
     {
-      path: "/taskPage/:id",
-      element: <TaskPageForCategory /> // This will be the main task page after backend is set up
+      path: "/taskPage/:categoryId",
+      element: <TaskPage/> // This will be the main task page after backend is set up
     },
     {
       path: "/settings",
