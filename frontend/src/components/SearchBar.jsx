@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const SearchBar = ({ placeholder, onSearch }) => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
-  //searches on every input change for real time results 
+  //searches on every input change for real time results
   const handleInputChange = (e) => {
     setQuery(e.target.value);
-    onSearch(e.target.value); 
+    onSearch(e.target.value);
   };
 
   // const handleButtonClick = () => {
-  //   onSearch(query);  // Trigger search on button click, not used for now 
+  //   onSearch(query);  // Trigger search on button click, not used for now
   // };
 
   return (
@@ -34,4 +34,3 @@ const SearchBar = ({ placeholder, onSearch }) => {
 };
 
 export default SearchBar;
-

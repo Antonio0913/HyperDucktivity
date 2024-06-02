@@ -1,4 +1,4 @@
-import userModel from './userModel.js';
+import userModel from "./userModel.js";
 
 /*mongoose.set('debug', true);
 
@@ -39,5 +39,5 @@ export default {
   findUserById,
   findUserByUsername,
   removeUser,
-  findUserByClerkUserId,
+  findUserByClerkUserId
 };

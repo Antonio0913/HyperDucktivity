@@ -2,6 +2,17 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.2.0",
     "@fontsource/roboto": "^5.0.13",
+    "eslint": "^8.57.0",
     "react-router-dom": "^6.23.1"
+  },
+  "workspaces": [
+    "express-backend",
+    "frontend"
+  ],
+  "scripts": {
+    "build:backend": "npm run build --workspace=express-backend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "lint:backend": "npm run lint --workspace=express-backend",
+    "lint:frontend": "npm run lint --workspace=frontend"
   }
 }

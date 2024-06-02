@@ -9,7 +9,7 @@ mongoose
   })
   .catch((error) => console.log(error));*/
 
-function getCategories(title) {
+function getCategories() {
   let promise;
   promise = categoryModel.find().populate("taskList");
   //   if (title === undefined) {
@@ -45,9 +45,17 @@ function addTaskToCategory(categoryId, taskId) {
 }
 
 const updateCategory = async (id, updatedFields) => {
-  console.log(`Updating category with ID: ${id} with fields: ${JSON.stringify(updatedFields)}`);
+  console.log(
+    `Updating category with ID: ${id} with fields: ${JSON.stringify(
+      updatedFields
+    )}`
+  );
 
-  const updatedCategory = await categoryModel.findByIdAndUpdate(id, updatedFields, { new: true });
+  const updatedCategory = await categoryModel.findByIdAndUpdate(
+    id,
+    updatedFields,
+    { new: true }
+  );
   if (!updatedCategory) {
     throw new Error("Category not found");
   }

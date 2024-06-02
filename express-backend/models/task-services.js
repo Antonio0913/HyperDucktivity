@@ -39,10 +39,8 @@ function findTaskByName(title) {
   return taskModel.find({ title: title });
 }
 
-
-function removeTask(id){
+function removeTask(id) {
   return taskModel.findByIdAndDelete(id);
-
 }
 
 export default {
