@@ -62,7 +62,8 @@ const TaskPage = () => {
 
   function removeOneTask(Id) {
     fetch(
-      `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
+      // `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
+      `http://localhost:8000/tasks/${Id}`,
       {
         method: "DELETE",
         headers: {
@@ -155,14 +156,16 @@ const TaskPage = () => {
 
   function fetchTasks(categoryId) {
     const promise = fetch(
-      `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`
+      // `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`
+      `http://localhost:8000/tasks?category=${categoryId}`
     );
     return promise;
   }
 
   function postTasks(task) {
     const promise = fetch(
-      "https://hyperducktivity.azurewebsites.net/tasks",
+      // "https://hyperducktivity.azurewebsites.net/tasks",
+      'http://localhost:8000/tasks',
       {
         method: "POST",
         headers: {

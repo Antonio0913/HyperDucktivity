@@ -13,7 +13,8 @@ function Category() {
   const fetchCategories = async () => {
     try {
       const response = await fetch(
-        "https://hyperducktivity.azurewebsites.net/categories"
+        // "https://hyperducktivity.azurewebsites.net/categories"
+        "http://localhost:8000/categories"
       );
       const data = await response.json();
       setCategories(data);
@@ -23,10 +24,13 @@ function Category() {
   };
 
   const createCategory = async () => {
-    if (!newCategory) return;
+    if (!newCategory) {
+      console.log("KSLJNLKJSNDJKN");
+      return;} 
     try {
       const response = await fetch(
-        "https://hyperducktivity.azurewebsites.net/categories",
+        // "https://hyperducktivity.azurewebsites.net/categories",
+        "http://localhost:8000/categories",
         {
           method: "POST",
           headers: {
@@ -45,7 +49,8 @@ function Category() {
 
   function deleteCategory(categoryId) {
     fetch(
-      `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
+      // `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
+      `http://localhost:8000/categories/${categoryId}`,
       {
         method: "DELETE",
         headers: {
@@ -93,7 +98,8 @@ function Category() {
 
     try {
       const response = await fetch(
-        `https://hyperducktivity.azurewebsites.net/categories/${id}`,
+        // `https://hyperducktivity.azurewebsites.net/categories/${id}`,
+        `http://localhost:8000/categories/${id}`,
         {
           method: "PUT",
           headers: {
@@ -142,7 +148,7 @@ function Category() {
           type="text"
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
-          placeholder="Enter category name"
+          placeholder="Name your new category"
           className="w-full p-2 border border-gray-300 rounded-lg mb-2"
         />
         <button
