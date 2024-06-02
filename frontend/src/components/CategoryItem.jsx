@@ -1,19 +1,16 @@
 import React from "react";
 
-import { Link } from "react-router-dom";
-
-function CategoryItem({ category }) {
+const CategoryItem = ({ category, onClick }) => {
   return (
     <div className="flex justify-between items-center p-4 border border-gray-300 rounded-lg bg-gray-100 mb-4">
-      <Link
-        to={`/taskPage/${category._id}`}
-        //to={"/taskPage"}
+      <button
+         onClick={() => onClick(category._id)}
         className="font-bold text-lg text-blue-500 hover:underline"
       >
         {category.title}
-      </Link>
+      </button>
     </div>
   );
-}
+};
 
 export default CategoryItem;

@@ -7,9 +7,8 @@ import NewTask from "../components/NewTask.jsx";
 import FontSize from "../components/fontSize.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 
-const TaskPage = () => {
-  const { categoryId } = useParams();
-
+const TaskPage = ({categoryId}) => {
+  //const { categoryId } = useParams();
   const [tasks, setTasks] = useState([]);
   const [textSize, setTextSize] = useState(12);
   const [searchQuery, setSearchQuery] = useState("");
@@ -62,8 +61,8 @@ const TaskPage = () => {
 
   function removeOneTask(Id) {
     fetch(
-      // `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
-      `http://localhost:8000/tasks/${Id}`,
+      `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
+      // `http://localhost:8000/tasks/${Id}`,
       {
         method: "DELETE",
         headers: {
@@ -156,16 +155,16 @@ const TaskPage = () => {
 
   function fetchTasks(categoryId) {
     const promise = fetch(
-      // `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`
-      `http://localhost:8000/tasks?category=${categoryId}`
+     `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`
+      //`http://localhost:8000/tasks?category=${categoryId}`
     );
     return promise;
   }
 
   function postTasks(task) {
     const promise = fetch(
-      // "https://hyperducktivity.azurewebsites.net/tasks",
-      'http://localhost:8000/tasks',
+      "https://hyperducktivity.azurewebsites.net/tasks",
+      //'http://localhost:8000/tasks',
       {
         method: "POST",
         headers: {
@@ -179,25 +178,12 @@ const TaskPage = () => {
   }
 
   return (
-    <>
-      <h1 className="text-background-gray">HyperDucktivity</h1>
-      <div>
-        <p className="text-beak-yellow">
-          {" "}
-          _<br />
-          &#62;(.)__
-          <br />
-          &#40;___/
-          <br />
-          <br />
-        </p>
+    <div className="relative w-full h-full">
         <button
           onClick={sortTasksByDueDate}
-          className="sort-button"
         >
           Sort by Due Date {sortDirection === "asc" ? "↑" : "↓"}
         </button>
-      </div>
       <div>
         <SearchBar
           placeholder="Search your tasks..."
@@ -225,7 +211,7 @@ const TaskPage = () => {
             );
           })}
       </div>
-    </>
+    </div>
   );
 };
 
