@@ -9,6 +9,7 @@ import Settings from "./routes/Settings.jsx";
 import TaskPage from "./routes/TaskPage.jsx";
 import TestAuthPage from "./routes/TestAuthPage.jsx";
 import LoginPage from "./routes/LoginPage.jsx";
+import SignUpPage from "./routes/SignUpPage.jsx";
 
 function App() {
   // Add new routes here
@@ -48,6 +49,10 @@ function App() {
     {
       path: "login",
       element: <LoginPage />
+    },
+    {
+      path: "signup",
+      element: <SignUpPage />
     }
   ]);
 

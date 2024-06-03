@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function LoginPage(props) {
+function SignUpPage(props) {
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
@@ -15,36 +15,40 @@ function LoginPage(props) {
   };
 
   const submitForm = () => {
-    loginUser(creds).then(() =>
+    signupUser(creds).then(() =>
       setCreds({ username: "", pwd: "" })
     );
   };
 
-  const loginUser = async (creds) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8000/jwtlogin`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(creds)
+  const signupUser = async (creds) => {
+    const promise = fetch(`http://localhost:8000/jwtregister`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(creds)
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          response.json().then((payload) => {
+            localStorage.setItem("authToken", payload.token);
+            setMessage(
+              `Signup successful for user: ${creds.username}; auth token saved`
+            );
+          });
+        } else {
+          response.json().then((data) => {
+            setMessage(
+              `Signup Error ${response.status}: ${data.message}`
+            );
+          });
         }
-      );
+      })
+      .catch((error) => {
+        setMessage(`Signup Error: ${error}`);
+      });
 
-      if (response.status === 200) {
-        const payload = await response.json();
-        localStorage.setItem("authToken", payload.token);
-        setMessage(`Login successful; auth token saved`);
-      } else {
-        setMessage(
-          `Login Error ${response.status}: ${response.statusText}`
-        );
-      }
-    } catch (error) {
-      setMessage(`Login Error: ${error.message}`);
-    }
+    return promise;
   };
 
   return (
@@ -73,7 +77,7 @@ function LoginPage(props) {
         />
         <input
           type="button"
-          value={props.buttonLabel || "Log In"}
+          value={props.buttonLabel || "Sign Up"}
           onClick={submitForm}
         />
       </form>
@@ -81,4 +85,4 @@ function LoginPage(props) {
   );
 }
 
-export default LoginPage;
+export default SignUpPage;
