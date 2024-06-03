@@ -6,6 +6,7 @@ import Task from "../components/Task.jsx";
 import NewTask from "../components/NewTask.jsx";
 import FontSize from "../components/fontSize.jsx";
 import SearchBar from "../components/SearchBar.jsx";
+import { UNSAFE_convertRoutesToDataRoutes } from "@remix-run/router";
 
 const TaskPage = ({ categoryId }) => {
   //const { categoryId } = useParams();
@@ -60,8 +61,8 @@ const TaskPage = ({ categoryId }) => {
 
   function removeOneTask(Id) {
     fetch(
-      `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
-      // `http://localhost:8000/tasks/${Id}`,
+     // `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
+      `http://localhost:8000/tasks/${Id}`,
       {
         method: "DELETE",
         headers: {
@@ -101,6 +102,7 @@ const TaskPage = ({ categoryId }) => {
     setTasks(updated);
   }
 
+
   const prioritizeTask = (id) => {
     const updatedTask = tasks.map((task) =>
       task._id === id
@@ -111,6 +113,7 @@ const TaskPage = ({ categoryId }) => {
         : task
     );
     setTasks(updatedTask);
+    
   };
 
   const addTask = (title, content, dueDate) => {
@@ -139,37 +142,53 @@ const TaskPage = ({ categoryId }) => {
       });
   };
 
-  const updateTask = (
-    id,
-    updatedTitle,
-    updatedContent,
-    dueDate
-  ) => {
+const updateTasks = async (id, Title, Content, dueDate, priority) => {
+  try {
+    const response = 
+    // await fetch(`https://hyperducktivity.azurewebsites.net/tasks/${id}`, 
+    await fetch(`http://localhost:8000/tasks/${id}`,
+    
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title: Title, content: Content, dueDate: dueDate, isPriority: priority }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update task');
+    }
+
+    const updatedTask = await response.json();
+
     const updatedTasks = tasks.map((task) =>
-      task._id === id
-        ? {
-            ...task,
-            title: updatedTitle,
-            content: updatedContent,
-            dueDate: dueDate
-          }
-        : task
+      task._id === id ? updatedTask : task
     );
     setTasks(updatedTasks);
-  };
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+const updateTask = (id, Title, Content, dueDate, priority) => {
+  updateTasks(id, Title, Content, dueDate, priority);
+};
+
+
 
   function fetchTasks(categoryId) {
     const promise = fetch(
-      `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`
-      //`http://localhost:8000/tasks?category=${categoryId}`
+      // `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`
+      `http://localhost:8000/tasks?category=${categoryId}`
     );
     return promise;
   }
 
   function postTasks(task) {
     const promise = fetch(
-      "https://hyperducktivity.azurewebsites.net/tasks",
-      //'http://localhost:8000/tasks',
+      // "https://hyperducktivity.azurewebsites.net/tasks",
+      'http://localhost:8000/tasks',
       {
         method: "POST",
         headers: {
