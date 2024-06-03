@@ -63,6 +63,7 @@ export function authenticateUser(req, res, next) {
 }
 
 export function loginUser(req, res) {
+  console.log("user tried to login");
   const { username, pwd } = req.body; // from form
   const retrievedUser = creds.find(
     (c) => c.username === username
