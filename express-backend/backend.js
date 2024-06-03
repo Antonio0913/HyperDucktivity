@@ -4,6 +4,11 @@ import connectDB from "./database.js";
 import categoryServices from "./models/category-services.js";
 import taskServices from "./models/task-services.js";
 import userServices from "./models/user-services.js";
+import {
+  authenticateUser,
+  loginUser,
+  registerUser
+} from "./auth.js";
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -49,8 +54,9 @@ app.get("/users", async (req, res) => {
 app.get("/users/:clerkUserId", async (req, res) => {
   const clerkUserId = req.params["clerkUserId"];
   try {
-    const user =
-      await userServices.findUserByClerkUserId(clerkUserId);
+    const user = await userServices.findUserByClerkUserId(
+      clerkUserId
+    );
     if (user) {
       res.status(200).send(user);
     } else {
@@ -192,8 +198,9 @@ app.delete("/categories/:id", async (req, res) => {
   try {
     const categoryIdToDel = req.params["id"];
     console.log(categoryIdToDel);
-    const delCategory =
-      await categoryServices.removeCategory(categoryIdToDel);
+    const delCategory = await categoryServices.removeCategory(
+      categoryIdToDel
+    );
     if (delCategory) {
       res.status(204).send();
     } else {
@@ -241,3 +248,10 @@ app.put("/categories/:id", async (req, res) => {
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+app.get("/testingjwt", authenticateUser, (req, res) => {
+  res.send("Yay! You have access to this route");
+});
+
+app.post("/jwtlogin", loginUser);
+app.post("/jwtregister", registerUser);
