@@ -92,15 +92,37 @@ const TaskPage = ({ categoryId }) => {
     setTasks(updated);
   }
 
-  function completeTask(Id) {
-    const updated = tasks.map((task) => {
-      if (task._id === Id) {
-        return { ...task, isComplete: !task.isComplete };
+  // function completeTask(Id) {
+  //   const updated = tasks.map((task) => {
+  //     if (task._id === Id) {
+  //       return { ...task, isComplete: !task.isComplete };
+  //     }
+  //     return task;
+  //   });
+  //   setTasks(updated);
+  // }
+
+  const completeTask = async (id) => {
+    const taskToUpdate = tasks.find((task) => task._id === id);
+    if (taskToUpdate) {
+      const updatedTask = {
+        ...taskToUpdate,
+        isComplete: !taskToUpdate.isComplete,
+      };
+
+      const updatedTasks = tasks.map((task) =>
+        task._id === id ? updatedTask : task
+      );
+      setTasks(updatedTasks);
+  
+      try {
+        await updateTasks(updatedTask._id, updatedTask.title, updatedTask.content, updatedTask.dueDate, updatedTask.isPriority, updatedTask.isComplete);
+      } catch (error) {
+        console.error('Error updating task:', error);
+        setTasks(tasks);
       }
-      return task;
-    });
-    setTasks(updated);
-  }
+    }
+  };
 
   const prioritizeTask = async (id) => {
     const taskToUpdate = tasks.find((task) => task._id === id);
@@ -116,7 +138,7 @@ const TaskPage = ({ categoryId }) => {
       setTasks(updatedTasks);
   
       try {
-        await updateTasks(updatedTask._id, updatedTask.title, updatedTask.content, updatedTask.dueDate, updatedTask.isPriority);
+        await updateTasks(updatedTask._id, updatedTask.title, updatedTask.content, updatedTask.dueDate, updatedTask.isPriority, updatedTask.isComplete);
       } catch (error) {
         console.error('Error updating task:', error);
         setTasks(tasks);
@@ -151,14 +173,14 @@ const TaskPage = ({ categoryId }) => {
       });
   };
 
-  const updateTasks = async (id, title, content, dueDate, priority) => {
+  const updateTasks = async (id, title, content, dueDate, priority, isComplete) => {
     try {
       const response = await fetch(`http://localhost:8000/tasks/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title, content, dueDate, isPriority: priority }),
+        body: JSON.stringify({ title, content, dueDate, isPriority: priority, isComplete: isComplete }),
       });
   
       if (!response.ok) {
@@ -174,9 +196,9 @@ const TaskPage = ({ categoryId }) => {
   };
   
 
-  const updateTask = async (id, title, content, dueDate, priority) => {
+  const updateTask = async (id, title, content, dueDate, priority, isComplete) => {
     try {
-      const updatedTask = await updateTasks(id, title, content, dueDate, priority);
+      const updatedTask = await updateTasks(id, title, content, dueDate, priority, isComplete);
       const updatedTasks = tasks.map((task) =>
         task._id === id ? updatedTask : task
       );
