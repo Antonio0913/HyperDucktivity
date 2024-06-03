@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { addAuthHeader } from "../utilities/AuthHelper";
 
 function SignUpPage(props) {
   const INVALID_TOKEN = "INVALID_TOKEN";
@@ -51,8 +52,31 @@ function SignUpPage(props) {
     return promise;
   };
 
+  const testProtectedRoute = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/testingjwt`,
+        {
+          method: "GET",
+          headers: addAuthHeader({
+            "Content-Type": "application/json"
+          })
+        }
+      );
+
+      console.log(response);
+    } catch (error) {
+      setMessage(`Signup Error: ${error}`);
+    }
+  };
+
   return (
     <div>
+      <div>
+        <button onClick={testProtectedRoute}>
+          Test Protected Route
+        </button>
+      </div>
       {message === "" ? (
         <p>This is a message</p>
       ) : (

@@ -10,41 +10,43 @@ import TaskPage from "./routes/TaskPage.jsx";
 import TestAuthPage from "./routes/TestAuthPage.jsx";
 import LoginPage from "./routes/LoginPage.jsx";
 import SignUpPage from "./routes/SignUpPage.jsx";
+import ProtectedRoute from "./utilities/ProtectedRoute.jsx";
+import { AuthProvider } from "./utilities/AuthContext.jsx";
 
 function App() {
   // Add new routes here
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />
+      element: <ProtectedRoute element={<Home />} />
     },
     {
       path: "/home",
-      element: <Home />
+      element: <ProtectedRoute element={<Home />} />
     },
     {
       path: "/taskPage",
-      element: <TaskPage />
+      element: <ProtectedRoute element={<TaskPage />} />
     },
     {
       path: "/taskPage/:categoryId",
-      element: <TaskPage /> // This will be the main task page after backend is set up
+      element: <ProtectedRoute element={<TaskPage />} /> // This will be the main task page after backend is set up
     },
     {
       path: "/settings",
-      element: <Settings />
+      element: <ProtectedRoute element={<Settings />} />
     },
     {
       path: "/sign-in",
-      element: <RedirectToSignIn />
+      element: <ProtectedRoute element={<RedirectToSignIn />} />
     },
     {
       path: "*",
-      element: <Home />
+      element: <ProtectedRoute element={<Home />} />
     },
     {
       path: "testauthpage",
-      element: <TestAuthPage />
+      element: <ProtectedRoute element={<TestAuthPage />} />
     },
     {
       path: "login",
@@ -57,9 +59,9 @@ function App() {
   ]);
 
   return (
-    <RouterProvider router={router}>
-      <div></div>
-    </RouterProvider>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   );
 }
 

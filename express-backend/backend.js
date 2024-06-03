@@ -250,6 +250,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/testingjwt", authenticateUser, (req, res) => {
+  console.log("protect route called");
   res.send("Yay! You have access to this route");
 });
 

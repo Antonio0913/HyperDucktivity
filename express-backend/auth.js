@@ -40,7 +40,7 @@ function generateAccessToken(username) {
     jwt.sign(
       { username: username },
       TOKEN_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "30d" },
       (error, token) => {
         if (error) {
           reject(error);
