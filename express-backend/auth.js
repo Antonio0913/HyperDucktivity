@@ -1,27 +1,37 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import userServices from "./models/user-services.js";
 
 const creds = [];
 const TOKEN_SECRET = "some_random_value_123";
 
-export function registerUser(req, res) {
-  const { username, pwd } = req.body; // from form
+export async function registerUser(req, res) {
+  try {
+    console.log("User tried to sign up");
+    const { username, pwd } = req.body; // from form
 
-  if (!username || !pwd) {
-    res.status(400).send("Bad request: Invalid input data.");
-  } else if (creds.find((c) => c.username === username)) {
-    res.status(409).send("Username already taken");
-  } else {
-    bcrypt
-      .genSalt(10)
-      .then((salt) => bcrypt.hash(pwd, salt))
-      .then((hashedPassword) => {
-        generateAccessToken(username).then((token) => {
-          console.log("Token:", token);
-          res.status(201).send({ token: token });
-          creds.push({ username, hashedPassword });
-        });
-      });
+    if (!username || !pwd) {
+      res.status(400).send("Bad request: Invalid input data.");
+    }
+
+    const existingUser = await userServices.findUserByUsername(
+      username
+    );
+    if (existingUser) {
+      return res.status(409).send("Username already taken");
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(pwd, salt);
+    const newUser = { username, password: hashedPassword };
+    await userServices.addUser(newUser);
+
+    const token = await generateAccessToken(username);
+    console.log("Token:", token);
+    res.status(201).send({ token: token });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error adding user");
   }
 }
 
@@ -62,31 +72,28 @@ export function authenticateUser(req, res, next) {
   }
 }
 
-export function loginUser(req, res) {
+export async function loginUser(req, res) {
   console.log("user tried to login");
   const { username, pwd } = req.body; // from form
-  const retrievedUser = creds.find(
-    (c) => c.username === username
+  const retrievedUser = await userServices.findUserByUsername(
+    username
   );
 
   if (!retrievedUser) {
     // invalid username
     res.status(401).send("Unauthorized");
   } else {
-    bcrypt
-      .compare(pwd, retrievedUser.hashedPassword)
-      .then((matched) => {
-        if (matched) {
-          generateAccessToken(username).then((token) => {
-            res.status(200).send({ token: token });
-          });
-        } else {
-          // invalid password
-          res.status(401).send("Unauthorized");
-        }
-      })
-      .catch(() => {
-        res.status(401).send("Unauthorized");
-      });
+    const matched = await bcrypt.compare(
+      pwd,
+      retrievedUser.password
+    );
+    if (matched) {
+      const token = await generateAccessToken(username);
+      console.log(`User logged in and jwt is ${token}`);
+      return res.status(200).send({ token: token });
+    } else {
+      // invalid password
+      return res.status(401).send("Unauthorized");
+    }
   }
 }
