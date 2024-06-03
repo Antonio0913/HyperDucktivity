@@ -6,6 +6,7 @@ import Task from "../components/Task.jsx";
 import NewTask from "../components/NewTask.jsx";
 import FontSize from "../components/fontSize.jsx";
 import SearchBar from "../components/SearchBar.jsx";
+import { addAuthHeader } from "../utilities/AuthHelper.jsx";
 
 const TaskPage = ({ categoryId }) => {
   //const { categoryId } = useParams();
@@ -60,13 +61,13 @@ const TaskPage = ({ categoryId }) => {
 
   function removeOneTask(Id) {
     fetch(
-      `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
-      // `http://localhost:8000/tasks/${Id}`,
+      // `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
+      `http://localhost:8000/tasks/${Id}`,
       {
         method: "DELETE",
-        headers: {
+        headers: addAuthHeader({
           "Content-Type": "application/json"
-        }
+        })
       }
     )
       .then((res) => {
@@ -160,21 +161,24 @@ const TaskPage = ({ categoryId }) => {
 
   function fetchTasks(categoryId) {
     const promise = fetch(
-      `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`
-      //`http://localhost:8000/tasks?category=${categoryId}`
+      // `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
+      `http://localhost:8000/tasks?category=${categoryId}`,
+      {
+        headers: addAuthHeader()
+      }
     );
     return promise;
   }
 
   function postTasks(task) {
     const promise = fetch(
-      "https://hyperducktivity.azurewebsites.net/tasks",
-      //'http://localhost:8000/tasks',
+      // "https://hyperducktivity.azurewebsites.net/tasks",
+      "http://localhost:8000/tasks",
       {
         method: "POST",
-        headers: {
+        headers: addAuthHeader({
           "Content-Type": "application/json"
-        },
+        }),
         body: JSON.stringify(task)
       }
     );

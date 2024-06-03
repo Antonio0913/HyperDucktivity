@@ -11,6 +11,7 @@ import {
 import SettingsIcon from "../assets/SettingsIcon.png";
 import NewCategory from "../components/NewCategory";
 import TaskPage from "./TaskPage";
+import { addAuthHeader } from "../utilities/AuthHelper";
 
 const Home = () => {
   const { user, isLoaded } = useUser();
@@ -30,8 +31,11 @@ const Home = () => {
         try {
           //Check if the user already exists
           const checkResponse = await fetch(
-            `https://hyperducktivity.azurewebsites.net/users/${user.id}`
-            //`http://localhost:8000/users/${user.id}`
+            // `https://hyperducktivity.azurewebsites.net/users/${user.id}`,
+            `http://localhost:8000/users/${user.id}`,
+            {
+              headers: addAuthHeader()
+            }
           );
           if (checkResponse.ok) {
             console.log("User already exists in backend.");
@@ -48,13 +52,13 @@ const Home = () => {
           console.log("Sending payload:", payload);
 
           const createResponse = await fetch(
-            "https://hyperducktivity.azurewebsites.net/users",
-            //"http://localhost:8000/users",
+            // "https://hyperducktivity.azurewebsites.net/users",
+            "http://localhost:8000/users",
             {
               method: "POST",
-              headers: {
+              headers: addAuthHeader({
                 "Content-Type": "application/json"
-              },
+              }),
               body: JSON.stringify(payload)
             }
           );
