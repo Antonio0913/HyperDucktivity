@@ -94,6 +94,7 @@ const TaskPage = ({ categoryId }) => {
 
   const completeTask = async (id) => {
     const taskToUpdate = tasks.find((task) => task._id === id);
+    //update complete task on front end
     if (taskToUpdate) {
       const updatedTask = {
         ...taskToUpdate,
@@ -104,7 +105,7 @@ const TaskPage = ({ categoryId }) => {
         task._id === id ? updatedTask : task
       );
       setTasks(updatedTasks);
-  
+      //for backend update
       try {
         await updateTasks(updatedTask._id, updatedTask.title, updatedTask.content, updatedTask.dueDate, updatedTask.isPriority, updatedTask.isComplete);
       } catch (error) {
@@ -117,16 +118,16 @@ const TaskPage = ({ categoryId }) => {
   const prioritizeTask = async (id) => {
     const taskToUpdate = tasks.find((task) => task._id === id);
     if (taskToUpdate) {
+      //finds tasks to update and changes priority
       const updatedTask = {
         ...taskToUpdate,
         isPriority: !taskToUpdate.isPriority,
       };
-
       const updatedTasks = tasks.map((task) =>
         task._id === id ? updatedTask : task
       );
       setTasks(updatedTasks);
-  
+      //backend update
       try {
         await updateTasks(updatedTask._id, updatedTask.title, updatedTask.content, updatedTask.dueDate, updatedTask.isPriority, updatedTask.isComplete);
       } catch (error) {
@@ -166,6 +167,7 @@ const TaskPage = ({ categoryId }) => {
   const updateTasks = async (id, title, content, dueDate, priority, isComplete) => {
     try {
       const response = await fetch(`http://localhost:8000/tasks/${id}`, {
+        //using put for updating
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -181,7 +183,8 @@ const TaskPage = ({ categoryId }) => {
       return updatedTask;
     } catch (error) {
       console.error('Error:', error);
-      throw error; // Re-throw the error to handle it in the caller function
+      throw error; // Re-throw the error to handle it in the caller function 
+      //needed so we can find error
     }
   };
   
@@ -196,6 +199,7 @@ const TaskPage = ({ categoryId }) => {
     } catch (error) {
       console.error('Error updating task:', error);
       // Optionally, revert the state update if the server update fails
+      //good so front end matches backend
       setTasks(tasks);
     }
   };
