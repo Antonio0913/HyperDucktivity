@@ -140,6 +140,7 @@ app.post("/tasks", async (req, res) => {
   else res.status(500).end();
 });
 
+
 app.get("/tasks/:id", async (req, res) => {
   const id = req.params["id"];
   const result = await taskServices.findTaskById(id);
@@ -162,6 +163,26 @@ app.delete("/tasks/:id", async (req, res) => {
     }
   } catch (error) {
     console.error("Error during deletion:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.put("/tasks/:id", async (req, res) => {
+  const id = req.params["id"];
+  const { title, content, dueDate, isPriority, isComplete } = req.body;
+
+  console.log(`Received PUT request to update task with ID: ${id}`);
+
+  try {
+    const updatedTask = await taskServices.updateTask(id, { title, content, dueDate, isPriority, isComplete });
+
+    if (updatedTask) {
+      res.status(200).send(updatedTask);
+    } else {
+      res.status(404).send("Task not found.");
+    }
+  } catch (error) {
+    console.error("Error updating task:", error);
     res.status(500).send("Internal Server Error");
   }
 });

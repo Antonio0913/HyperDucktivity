@@ -43,11 +43,27 @@ function removeTask(id) {
   return taskModel.findByIdAndDelete(id);
 }
 
+const updateTask = async (id, updatedFields) => {
+  console.log(
+    `Updating Task with ID: ${id} with fields: ${JSON.stringify(
+      updatedFields
+    )}`
+  );
+  try {
+    const updatedTask = await taskModel.findByIdAndUpdate(id, updatedFields, { new: true });
+    return updatedTask;
+  } catch (error) {
+    console.error("Error updating task:", error);
+    throw error;
+  }
+}
+
 export default {
   addTask,
   getTasks,
   findTaskById,
   findTaskByName,
   removeTask,
-  findTaskByCategory
+  findTaskByCategory,
+  updateTask
 };
