@@ -102,19 +102,28 @@ const TaskPage = ({ categoryId }) => {
     setTasks(updated);
   }
 
+  const prioritizeTask = async (id) => {
+    const taskToUpdate = tasks.find((task) => task._id === id);
+    if (taskToUpdate) {
+      const updatedTask = {
+        ...taskToUpdate,
+        isPriority: !taskToUpdate.isPriority,
+      };
 
-  const prioritizeTask = (id) => {
-    const updatedTask = tasks.map((task) =>
-      task._id === id
-        ? {
-            ...task,
-            isPriority: !task.isPriority
-          }
-        : task
-    );
-    setTasks(updatedTask);
-    
+      const updatedTasks = tasks.map((task) =>
+        task._id === id ? updatedTask : task
+      );
+      setTasks(updatedTasks);
+  
+      try {
+        await updateTasks(updatedTask._id, updatedTask.title, updatedTask.content, updatedTask.dueDate, updatedTask.isPriority);
+      } catch (error) {
+        console.error('Error updating task:', error);
+        setTasks(tasks);
+      }
+    }
   };
+  
 
   const addTask = (title, content, dueDate) => {
     const task = {
@@ -142,38 +151,43 @@ const TaskPage = ({ categoryId }) => {
       });
   };
 
-const updateTasks = async (id, Title, Content, dueDate, priority) => {
-  try {
-    const response = 
-    // await fetch(`https://hyperducktivity.azurewebsites.net/tasks/${id}`, 
-    await fetch(`http://localhost:8000/tasks/${id}`,
-    
-    {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ title: Title, content: Content, dueDate: dueDate, isPriority: priority }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to update task');
+  const updateTasks = async (id, title, content, dueDate, priority) => {
+    try {
+      const response = await fetch(`http://localhost:8000/tasks/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, content, dueDate, isPriority: priority }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to update task');
+      }
+  
+      const updatedTask = await response.json();
+      return updatedTask;
+    } catch (error) {
+      console.error('Error:', error);
+      throw error; // Re-throw the error to handle it in the caller function
     }
+  };
+  
 
-    const updatedTask = await response.json();
-
-    const updatedTasks = tasks.map((task) =>
-      task._id === id ? updatedTask : task
-    );
-    setTasks(updatedTasks);
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
-
-const updateTask = (id, Title, Content, dueDate, priority) => {
-  updateTasks(id, Title, Content, dueDate, priority);
-};
+  const updateTask = async (id, title, content, dueDate, priority) => {
+    try {
+      const updatedTask = await updateTasks(id, title, content, dueDate, priority);
+      const updatedTasks = tasks.map((task) =>
+        task._id === id ? updatedTask : task
+      );
+      setTasks(updatedTasks);
+    } catch (error) {
+      console.error('Error updating task:', error);
+      // Optionally, revert the state update if the server update fails
+      setTasks(tasks);
+    }
+  };
+  
 
 
 
