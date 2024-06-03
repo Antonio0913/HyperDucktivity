@@ -92,16 +92,6 @@ const TaskPage = ({ categoryId }) => {
     setTasks(updated);
   }
 
-  // function completeTask(Id) {
-  //   const updated = tasks.map((task) => {
-  //     if (task._id === Id) {
-  //       return { ...task, isComplete: !task.isComplete };
-  //     }
-  //     return task;
-  //   });
-  //   setTasks(updated);
-  // }
-
   const completeTask = async (id) => {
     const taskToUpdate = tasks.find((task) => task._id === id);
     if (taskToUpdate) {
