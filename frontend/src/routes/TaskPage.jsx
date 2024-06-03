@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../App.css";
 import Task from "../components/Task.jsx";
@@ -7,7 +7,7 @@ import NewTask from "../components/NewTask.jsx";
 import FontSize from "../components/fontSize.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 
-const TaskPage = ({categoryId}) => {
+const TaskPage = ({ categoryId }) => {
   //const { categoryId } = useParams();
   const [tasks, setTasks] = useState([]);
   const [textSize, setTextSize] = useState(12);
@@ -43,21 +43,20 @@ const TaskPage = ({categoryId}) => {
     setSortDirection(sortDirection === "asc" ? "desc" : "asc");
   }
 
-  
-    useEffect(() => {
-      if (categoryId) {
-        console.log('categoryId:', categoryId); // Debugging line
-        fetchTasks(categoryId)
-          .then((res) => res.json())
-          .then((json) => {
-            console.log('Fetched tasks:', json.tasks_list); // Debugging line
-            setTasks(json.tasks_list || []); // Ensure tasks_list is always an array
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    }, [categoryId]);
+  useEffect(() => {
+    if (categoryId) {
+      console.log("categoryId:", categoryId); // Debugging line
+      fetchTasks(categoryId)
+        .then((res) => res.json())
+        .then((json) => {
+          console.log("Fetched tasks:", json.tasks_list); // Debugging line
+          setTasks(json.tasks_list || []); // Ensure tasks_list is always an array
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [categoryId]);
 
   function removeOneTask(Id) {
     fetch(
@@ -115,7 +114,13 @@ const TaskPage = ({categoryId}) => {
   };
 
   const addTask = (title, content, dueDate) => {
-    const task = { title, content, dueDate, isPriority: false, category: categoryId };
+    const task = {
+      title,
+      content,
+      dueDate,
+      isPriority: false,
+      category: categoryId
+    };
     postTasks(task)
       .then((res) => {
         if (res.status == 201) {
@@ -155,7 +160,7 @@ const TaskPage = ({categoryId}) => {
 
   function fetchTasks(categoryId) {
     const promise = fetch(
-     `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`
+      `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`
       //`http://localhost:8000/tasks?category=${categoryId}`
     );
     return promise;
@@ -179,11 +184,9 @@ const TaskPage = ({categoryId}) => {
 
   return (
     <div className="relative w-full h-full">
-        <button
-          onClick={sortTasksByDueDate}
-        >
-          Sort by Due Date {sortDirection === "asc" ? "↑" : "↓"}
-        </button>
+      <button onClick={sortTasksByDueDate}>
+        Sort by Due Date {sortDirection === "asc" ? "↑" : "↓"}
+      </button>
       <div>
         <SearchBar
           placeholder="Search your tasks..."

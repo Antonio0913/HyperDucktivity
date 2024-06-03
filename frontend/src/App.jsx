@@ -25,7 +25,7 @@ function App() {
     },
     {
       path: "/taskPage/:categoryId",
-      element: <TaskPage/> // This will be the main task page after backend is set up
+      element: <TaskPage /> // This will be the main task page after backend is set up
     },
     {
       path: "/settings",

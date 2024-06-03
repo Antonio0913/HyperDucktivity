@@ -14,7 +14,8 @@ import TaskPage from "./TaskPage";
 
 const Home = () => {
   const { user, isLoaded } = useUser();
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [selectedCategoryId, setSelectedCategoryId] =
+    useState(null);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategoryId(categoryId);
@@ -93,31 +94,30 @@ const Home = () => {
 
   return (
     <>
-     <div className="flex flex-row">
-      <div className="absolute top-2 left-2">
-        <div className="flex items-center space-x-4">
-          <h1 className="text-background-gray">
-            HyperDucktivity
-          </h1>
-          <div>
-            <p className="text-beak-yellow">
-              {" "}
-              _<br />
-              &#62;(.)__
-              <br />
-              &#40;___/
-              <br />
-              <br />
-            </p>
+      <div className="flex flex-row">
+        <div className="absolute top-2 left-2">
+          <div className="flex items-center space-x-4">
+            <h1 className="text-background-gray">
+              HyperDucktivity
+            </h1>
+            <div>
+              <p className="text-beak-yellow">
+                {" "}
+                _<br />
+                &#62;(.)__
+                <br />
+                &#40;___/
+                <br />
+                <br />
+              </p>
+            </div>
           </div>
+          <br />
+          {isLoaded && user && <p>User is signed in</p>}
+          {isLoaded && user && <p>Clerk User ID: {user.id}</p>}
+          <NewCategory onCategoryClick={handleCategoryClick} />
         </div>
-        <br />
-        {isLoaded && user && <p>User is signed in</p>}
-        {isLoaded && user && <p>Clerk User ID: {user.id}</p>}
-        <NewCategory onCategoryClick={handleCategoryClick}/>
       </div>
-      </div>
-  
 
       <div className="absolute bottom-3 left-3 flex items-center space-x-4">
         <SignedOut>
@@ -141,7 +141,7 @@ const Home = () => {
       {selectedCategoryId ? (
         <TaskPage categoryId={selectedCategoryId} />
       ) : (
-         <p></p>
+        <p></p>
       )}
     </>
   );

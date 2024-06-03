@@ -10,7 +10,7 @@ const TaskSchema = new mongoose.Schema(
     content: {
       type: String,
       required: true,
-      trim: true,
+      trim: true
     },
     dueDate: {
       type: Date,
@@ -23,9 +23,9 @@ const TaskSchema = new mongoose.Schema(
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category',
-      required: true,
-    },
+      ref: "Category",
+      required: true
+    }
   },
   { collection: "tasks_list" }
 );

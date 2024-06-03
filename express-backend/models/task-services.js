@@ -9,21 +9,21 @@ mongoose
   })
   .catch((error) => console.log(error));*/
 
-  function getTasks(query) {
-    let promise;
-    if (query.title) {
-      promise = findTaskByName(query.title);
-    } else if (query.category) {
-      promise = findTaskByCategory(query.category);
-    } else {
-      promise = taskModel.find();
-    }
-    return promise;
+function getTasks(query) {
+  let promise;
+  if (query.title) {
+    promise = findTaskByName(query.title);
+  } else if (query.category) {
+    promise = findTaskByCategory(query.category);
+  } else {
+    promise = taskModel.find();
   }
-  
-  function findTaskByCategory(categoryId) {
-    return taskModel.find({ category: categoryId });
-  }
+  return promise;
+}
+
+function findTaskByCategory(categoryId) {
+  return taskModel.find({ category: categoryId });
+}
 
 function findTaskById(id) {
   return taskModel.findById(id);
@@ -49,5 +49,5 @@ export default {
   findTaskById,
   findTaskByName,
   removeTask,
-  findTaskByCategory,
+  findTaskByCategory
 };

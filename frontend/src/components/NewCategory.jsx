@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import CategoryItem from "./CategoryItem";
 import TaskPage from "../routes/TaskPage";
 
-function Category({onCategoryClick}) {
+function Category({ onCategoryClick }) {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
   const [editingCategoryId, setEditingCategoryId] =
@@ -26,7 +26,8 @@ function Category({onCategoryClick}) {
 
   const createCategory = async () => {
     if (!newCategory) {
-      return;} 
+      return;
+    }
     try {
       const response = await fetch(
         "https://hyperducktivity.azurewebsites.net/categories",
@@ -143,85 +144,84 @@ function Category({onCategoryClick}) {
 
   return (
     <>
-    <div className="max-w-md mx-auto mt-10 p-6 border border-gray-300 rounded-lg bg-white">
-      <div className="mb-6">
-        <input
-          type="text"
-          value={newCategory}
-          onChange={(e) => setNewCategory(e.target.value)}
-          placeholder="Name your new category"
-          className="w-full p-2 border border-gray-300 rounded-lg mb-2"
-        />
-        <button
-          onClick={createCategory}
-          className="w-full p-2 bg-blue-500 text-white rounded-lg"
-        >
-          Create
-        </button>
-      </div>
-      <div>
-        {categories.map((category) => (
-          <div
-            key={category._id}
-            className="flex items-center justify-between mb-2"
+      <div className="max-w-md mx-auto mt-10 p-6 border border-gray-300 rounded-lg bg-white">
+        <div className="mb-6">
+          <input
+            type="text"
+            value={newCategory}
+            onChange={(e) => setNewCategory(e.target.value)}
+            placeholder="Name your new category"
+            className="w-full p-2 border border-gray-300 rounded-lg mb-2"
+          />
+          <button
+            onClick={createCategory}
+            className="w-full p-2 bg-blue-500 text-white rounded-lg"
           >
-            <div className="flex-grow">
-              <CategoryItem 
-              category={category}
-              onClick={onCategoryClick}
-              />
-            </div>
-            <div className="relative">
-              <button
-                onClick={() => startEditingCategory(category)}
-                className="ml-4 p-2 bg-yellow-500 text-white rounded-lg"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => deleteCategory(category._id)}
-                className="ml-4 p-2 bg-red-500 text-white rounded-lg"
-              >
-                Delete
-              </button>
-              {editingCategoryId === category._id &&
-                showDropdown && (
-                  <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10">
-                    Edit Title
-                    <input
-                      type="text"
-                      value={editingCategoryName}
-                      onChange={(e) =>
-                        setEditingCategoryName(e.target.value)
-                      }
-                      placeholder="Edit category Title"
-                      className="w-full p-2 border border-gray-300 rounded-lg mb-2"
-                    />
-                    <div className="flex justify-end space-x-2">
-                      <button
-                        className="bg-background-gray text-beak-orange rounded-lg py-2 px-4"
-                        onClick={handleSaveClick}
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="bg-gray-300 text-black rounded-lg py-2 px-4"
-                        onClick={() => {
-                          setEditingCategoryId(null);
-                          setShowDropdown(false);
-                        }}
-                      >
-                        Exit
-                      </button>
+            Create
+          </button>
+        </div>
+        <div>
+          {categories.map((category) => (
+            <div
+              key={category._id}
+              className="flex items-center justify-between mb-2"
+            >
+              <div className="flex-grow">
+                <CategoryItem
+                  category={category}
+                  onClick={onCategoryClick}
+                />
+              </div>
+              <div className="relative">
+                <button
+                  onClick={() => startEditingCategory(category)}
+                  className="ml-4 p-2 bg-yellow-500 text-white rounded-lg"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => deleteCategory(category._id)}
+                  className="ml-4 p-2 bg-red-500 text-white rounded-lg"
+                >
+                  Delete
+                </button>
+                {editingCategoryId === category._id &&
+                  showDropdown && (
+                    <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10">
+                      Edit Title
+                      <input
+                        type="text"
+                        value={editingCategoryName}
+                        onChange={(e) =>
+                          setEditingCategoryName(e.target.value)
+                        }
+                        placeholder="Edit category Title"
+                        className="w-full p-2 border border-gray-300 rounded-lg mb-2"
+                      />
+                      <div className="flex justify-end space-x-2">
+                        <button
+                          className="bg-background-gray text-beak-orange rounded-lg py-2 px-4"
+                          onClick={handleSaveClick}
+                        >
+                          Save
+                        </button>
+                        <button
+                          className="bg-gray-300 text-black rounded-lg py-2 px-4"
+                          onClick={() => {
+                            setEditingCategoryId(null);
+                            setShowDropdown(false);
+                          }}
+                        >
+                          Exit
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-     
-    </div>
     </>
   );
 }
