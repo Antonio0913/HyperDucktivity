@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CategoryItem from "./CategoryItem";
 import TaskPage from "../routes/TaskPage";
+import { addAuthHeader } from "../utilities/AuthHelper";
 
 function Category({ onCategoryClick }) {
   const [categories, setCategories] = useState([]);
@@ -14,8 +15,12 @@ function Category({ onCategoryClick }) {
   const fetchCategories = async () => {
     try {
       const response = await fetch(
-        //"https://hyperducktivity.azurewebsites.net/categories"
-        "http://localhost:8000/categories"
+
+        // "https://hyperducktivity.azurewebsites.net/categories",
+        "https://hyperducktivity.azurewebsites.net/categories",
+        {
+          headers: addAuthHeader()
+        }
       );
       const data = await response.json();
       setCategories(data);
@@ -30,13 +35,14 @@ function Category({ onCategoryClick }) {
     }
     try {
       const response = await fetch(
-        //"https://hyperducktivity.azurewebsites.net/categories",
-        "http://localhost:8000/categories",
+
+        // "https://hyperducktivity.azurewebsites.net/categories",
+        "https://hyperducktivity.azurewebsites.net/categories",
         {
           method: "POST",
-          headers: {
+          headers: addAuthHeader({
             "Content-Type": "application/json"
-          },
+          }),
           body: JSON.stringify({ title: newCategory })
         }
       );
@@ -50,13 +56,14 @@ function Category({ onCategoryClick }) {
 
   function deleteCategory(categoryId) {
     fetch(
-      //`https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
-      `http://localhost:8000/categories/${categoryId}`,
+
+      // `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
+      `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
       {
         method: "DELETE",
-        headers: {
+        headers: addAuthHeader({
           "Content-Type": "application/json"
-        }
+        })
       }
     )
       .then((res) => {
@@ -99,13 +106,14 @@ function Category({ onCategoryClick }) {
 
     try {
       const response = await fetch(
-        //`https://hyperducktivity.azurewebsites.net/categories/${id}`,
-        `http://localhost:8000/categories/${id}`,
+
+        // `https://hyperducktivity.azurewebsites.net/categories/${id}`,
+        `https://hyperducktivity.azurewebsites.net/categories/${id}`,
         {
           method: "PUT",
-          headers: {
+          headers: addAuthHeader({
             "Content-Type": "application/json"
-          },
+          }),
           body: JSON.stringify({ title: updatedTitle })
         }
       );

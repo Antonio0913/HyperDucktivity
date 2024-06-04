@@ -15,10 +15,15 @@ const CLERK_PUBLISHABLE_KEY =
 const root = ReactDOM.createRoot(
   document.getElementById("root")
 );
+
+import { AuthProvider } from "./utilities/AuthContext.jsx";
+
 root.render(
   <React.StrictMode>
-    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
-      <App />
-    </ClerkProvider>
+    <AuthProvider>
+      <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
+        <App />
+      </ClerkProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
