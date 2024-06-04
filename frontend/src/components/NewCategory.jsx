@@ -15,6 +15,7 @@ function Category({ onCategoryClick }) {
   const fetchCategories = async () => {
     try {
       const response = await fetch(
+
         // "https://hyperducktivity.azurewebsites.net/categories",
         "https://hyperducktivity.azurewebsites.net/categories",
         {
@@ -34,6 +35,7 @@ function Category({ onCategoryClick }) {
     }
     try {
       const response = await fetch(
+
         // "https://hyperducktivity.azurewebsites.net/categories",
         "https://hyperducktivity.azurewebsites.net/categories",
         {
@@ -54,6 +56,7 @@ function Category({ onCategoryClick }) {
 
   function deleteCategory(categoryId) {
     fetch(
+
       // `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
       `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
       {
@@ -103,6 +106,7 @@ function Category({ onCategoryClick }) {
 
     try {
       const response = await fetch(
+
         // `https://hyperducktivity.azurewebsites.net/categories/${id}`,
         `https://hyperducktivity.azurewebsites.net/categories/${id}`,
         {
@@ -164,13 +168,13 @@ function Category({ onCategoryClick }) {
             Create
           </button>
         </div>
-        <div>
+        <div style={{ maxHeight: '450px', overflowY: 'auto' }}>
           {categories.map((category) => (
             <div
               key={category._id}
               className="flex items-center justify-between mb-2"
             >
-              <div className="flex-grow">
+              <div className="flex-grow" style={{ flexBasis: 'auto', flexGrow: 1 }}>
                 <CategoryItem
                   category={category}
                   onClick={onCategoryClick}
@@ -191,7 +195,14 @@ function Category({ onCategoryClick }) {
                 </button>
                 {editingCategoryId === category._id &&
                   showDropdown && (
-                    <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10">
+                    <div
+                      className="absolute right-0 mt-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10"
+                      style={{
+                        opacity: 1,
+                        backgroundColor:
+                          "rgb(68, 65, 65, 1)"
+                      }}
+                    >
                       Edit Title
                       <input
                         type="text"
