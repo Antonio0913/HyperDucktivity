@@ -30,8 +30,8 @@ const Home = () => {
         try {
           //Check if the user already exists
           const checkResponse = await fetch(
-            `https://hyperducktivity.azurewebsites.net/users/${user.id}`
-            //`http://localhost:8000/users/${user.id}`
+            //`https://hyperducktivity.azurewebsites.net/users/${user.id}`
+            `http://localhost:8000/users/${user.id}`
           );
           if (checkResponse.ok) {
             console.log("User already exists in backend.");
@@ -48,8 +48,8 @@ const Home = () => {
           console.log("Sending payload:", payload);
 
           const createResponse = await fetch(
-            "https://hyperducktivity.azurewebsites.net/users",
-            //"http://localhost:8000/users",
+            //"https://hyperducktivity.azurewebsites.net/users",
+            "http://localhost:8000/users",
             {
               method: "POST",
               headers: {
