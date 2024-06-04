@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { addAuthHeader } from "../utilities/AuthHelper";
+import { useNavigate } from "react-router-dom";
 
 function SignUpPage(props) {
   const INVALID_TOKEN = "INVALID_TOKEN";
@@ -9,6 +10,12 @@ function SignUpPage(props) {
     username: "",
     pwd: ""
   });
+
+  const navigate = useNavigate();
+
+  const navigateHome = () => {
+    navigate("/home");
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -22,66 +29,39 @@ function SignUpPage(props) {
   };
 
   const signupUser = async (creds) => {
-    const promise = fetch(`http://localhost:8000/jwtregister`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(creds)
-    })
-      .then((response) => {
-        if (response.status === 201) {
-          response.json().then((payload) => {
-            localStorage.setItem("authToken", payload.token);
-            setMessage(
-              `Signup successful for user: ${creds.username}; auth token saved`
-            );
-          });
-        } else {
-          response.json().then((data) => {
-            setMessage(
-              `Signup Error ${response.status}: ${data.message}`
-            );
-          });
-        }
-      })
-      .catch((error) => {
-        setMessage(`Signup Error: ${error}`);
-      });
-
-    return promise;
-  };
-
-  const testProtectedRoute = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8000/testingjwt`,
+        `http://localhost:8000/jwtregister`,
         {
-          method: "GET",
-          headers: addAuthHeader({
+          method: "POST",
+          headers: {
             "Content-Type": "application/json"
-          })
+          },
+          body: JSON.stringify(creds)
         }
       );
 
-      console.log(response);
+      if (response.status === 201) {
+        const payload = await response.json();
+        localStorage.setItem("authToken", payload.token);
+        localStorage.setItem("username", creds.username);
+        setMessage(
+          `Signup successful for user: ${creds.username}. Auth token saved`
+        );
+      } else {
+        const data = await response.json();
+        setMessage(
+          `Signup Error ${response.status}: ${data.message}`
+        );
+      }
     } catch (error) {
-      setMessage(`Signup Error: ${error}`);
+      setMessage(`Signup Error: ${error.message}`);
     }
   };
 
   return (
     <div>
-      <div>
-        <button onClick={testProtectedRoute}>
-          Test Protected Route
-        </button>
-      </div>
-      {message === "" ? (
-        <p>This is a message</p>
-      ) : (
-        <p>{message}</p>
-      )}
+      {message === "" ? <p></p> : <p>{message}</p>}
       <form>
         <label htmlFor="username">UserName</label>
         <input
@@ -105,6 +85,15 @@ function SignUpPage(props) {
           onClick={submitForm}
         />
       </form>
+      <div>
+        {localStorage.getItem("authToken") !== null ? (
+          <div>
+            <button onClick={navigateHome}>Go to Home</button>{" "}
+          </div>
+        ) : (
+          <p></p>
+        )}
+      </div>
     </div>
   );
 }

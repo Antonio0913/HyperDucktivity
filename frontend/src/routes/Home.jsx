@@ -17,12 +17,20 @@ import { AuthContext } from "../utilities/AuthContext.jsx";
 const Home = () => {
   const { user, isLoaded } = useUser();
   const { setAuthToken } = useContext(AuthContext);
+  const [username, setUsername] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] =
     useState(null);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategoryId(categoryId);
   };
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
 
   useEffect(() => {
     const checkAndCreateUser = async () => {
@@ -100,6 +108,7 @@ const Home = () => {
 
   const logout = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("username");
     setAuthToken(null);
     window.location.reload();
   };
@@ -132,14 +141,7 @@ const Home = () => {
       </div>
 
       <div className="absolute bottom-3 left-3 flex items-center space-x-4">
-        {/* <SignedOut>
-          <SignInButton />
-          <SignUpButton style={{ marginLeft: "10px" }} />
-          <p>User is not signed in</p>
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn> */}
+        <div>{username}</div>
         <button onClick={logout}>Logout</button>
         <Link to="/settings">
           <img

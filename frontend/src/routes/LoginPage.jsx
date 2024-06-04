@@ -45,11 +45,12 @@ function LoginPage(props) {
 
       if (response.ok) {
         const payload = await response.json();
-        setMessage(`Login successful; auth token saved`);
+        setMessage(`Login successful. Auth token saved`);
         console.log(
           "Login successful; auth token saved, navigating to home"
         );
         localStorage.setItem("authToken", payload.token);
+        localStorage.setItem("username", creds.username);
 
         // navigate("/home");
       } else {
@@ -64,25 +65,7 @@ function LoginPage(props) {
 
   return (
     <div>
-      <div>
-        {localStorage.getItem("authToken") !== null ? (
-          <div>
-            {" "}
-            You successfully logged in. <br /> Click here to go
-            to home element :{" "}
-            <button onClick={navigateHome}>
-              Go to Home
-            </button>{" "}
-          </div>
-        ) : (
-          <p>no</p>
-        )}
-      </div>
-      {message === "" ? (
-        <p>This is a message</p>
-      ) : (
-        <p>{message}</p>
-      )}
+      {message === "" ? <p></p> : <p>{message}</p>}
       <form>
         <label htmlFor="username">UserName</label>
         <input
@@ -106,6 +89,15 @@ function LoginPage(props) {
           onClick={submitForm}
         />
       </form>
+      <div>
+        {localStorage.getItem("authToken") !== null ? (
+          <div>
+            <button onClick={navigateHome}>Go to Home</button>{" "}
+          </div>
+        ) : (
+          <p></p>
+        )}
+      </div>
     </div>
   );
 }

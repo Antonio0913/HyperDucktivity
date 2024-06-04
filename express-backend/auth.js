@@ -18,7 +18,9 @@ export async function registerUser(req, res) {
       username
     );
     if (existingUser) {
-      return res.status(409).send("Username already taken");
+      return res
+        .status(409)
+        .send({ message: "Username already taken" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -31,7 +33,7 @@ export async function registerUser(req, res) {
     res.status(201).send({ token: token });
   } catch (error) {
     console.log(error);
-    res.status(500).send("Error adding user");
+    res.status(500).send({ message: "Error adding user" });
   }
 }
 
