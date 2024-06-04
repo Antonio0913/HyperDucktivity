@@ -4,6 +4,11 @@ import connectDB from "./database.js";
 import categoryServices from "./models/category-services.js";
 import taskServices from "./models/task-services.js";
 import userServices from "./models/user-services.js";
+import {
+  authenticateUser,
+  loginUser,
+  registerUser
+} from "./auth.js";
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -36,7 +41,7 @@ connectDB()
 app.use(cors());
 app.use(express.json());
 
-app.get("/users", async (req, res) => {
+app.get("/users", authenticateUser, async (req, res) => {
   try {
     const users = await userServices.getUsers();
     res.status(200).send(users);
@@ -46,23 +51,28 @@ app.get("/users", async (req, res) => {
   }
 });
 
-app.get("/users/:clerkUserId", async (req, res) => {
-  const clerkUserId = req.params["clerkUserId"];
-  try {
-    const user =
-      await userServices.findUserByClerkUserId(clerkUserId);
-    if (user) {
-      res.status(200).send(user);
-    } else {
-      res.status(404).send("User not found.");
+app.get(
+  "/users/:clerkUserId",
+  authenticateUser,
+  async (req, res) => {
+    const clerkUserId = req.params["clerkUserId"];
+    try {
+      const user = await userServices.findUserByClerkUserId(
+        clerkUserId
+      );
+      if (user) {
+        res.status(200).send(user);
+      } else {
+        res.status(404).send("User not found.");
+      }
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).send("Internal Server Error");
     }
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).send("Internal Server Error");
   }
-});
+);
 
-app.post("/users", async (req, res) => {
+app.post("/users", authenticateUser, async (req, res) => {
   const { username, password, clerkUserId } = req.body;
   console.log("Received request to create user:", req.body);
 
@@ -92,7 +102,7 @@ app.post("/users", async (req, res) => {
   }
 });
 
-app.get("/users/:id", async (req, res) => {
+app.get("/users/:id", authenticateUser, async (req, res) => {
   const id = req.params["id"];
   try {
     const user = await userServices.findUserById(id);
@@ -107,7 +117,7 @@ app.get("/users/:id", async (req, res) => {
   }
 });
 
-app.delete("/users/:id", async (req, res) => {
+app.delete("/users/:id", authenticateUser, async (req, res) => {
   const id = req.params["id"];
   try {
     const delUser = await userServices.removeUser(id);
@@ -122,7 +132,7 @@ app.delete("/users/:id", async (req, res) => {
   }
 });
 
-app.get("/tasks", async (req, res) => {
+app.get("/tasks", authenticateUser, async (req, res) => {
   const query = req.query;
   try {
     const result = await taskServices.getTasks(query);
@@ -133,15 +143,14 @@ app.get("/tasks", async (req, res) => {
   }
 });
 
-app.post("/tasks", async (req, res) => {
+app.post("/tasks", authenticateUser, async (req, res) => {
   const task = req.body;
   const savedTask = await taskServices.addTask(task);
   if (savedTask) res.status(201).send(savedTask);
   else res.status(500).end();
 });
 
-
-app.get("/tasks/:id", async (req, res) => {
+app.get("/tasks/:id", authenticateUser, async (req, res) => {
   const id = req.params["id"];
   const result = await taskServices.findTaskById(id);
   if (result === undefined || result === null)
@@ -151,7 +160,7 @@ app.get("/tasks/:id", async (req, res) => {
   }
 });
 
-app.delete("/tasks/:id", async (req, res) => {
+app.delete("/tasks/:id", authenticateUser, async (req, res) => {
   try {
     const taskIdToDel = req.params["id"];
     console.log(taskIdToDel);
@@ -187,7 +196,7 @@ app.put("/tasks/:id", async (req, res) => {
   }
 });
 
-app.get("/categories", async (req, res) => {
+app.get("/categories", authenticateUser, async (req, res) => {
   try {
     const categories = await categoryServices.getCategories();
     res.status(200).send(categories);
@@ -197,7 +206,7 @@ app.get("/categories", async (req, res) => {
   }
 });
 
-app.post("/categories", async (req, res) => {
+app.post("/categories", authenticateUser, async (req, res) => {
   const { title } = req.body;
   try {
     const category = await categoryServices.addCategory({
@@ -209,56 +218,77 @@ app.post("/categories", async (req, res) => {
   }
 });
 
-app.delete("/categories/:id", async (req, res) => {
-  try {
-    const categoryIdToDel = req.params["id"];
-    console.log(categoryIdToDel);
-    const delCategory =
-      await categoryServices.removeCategory(categoryIdToDel);
-    if (delCategory) {
-      res.status(204).send();
-    } else {
-      res.status(404).send("404, category not found");
+app.delete(
+  "/categories/:id",
+  authenticateUser,
+  async (req, res) => {
+    try {
+      const categoryIdToDel = req.params["id"];
+      console.log(categoryIdToDel);
+      const delCategory = await categoryServices.removeCategory(
+        categoryIdToDel
+      );
+      if (delCategory) {
+        res.status(204).send();
+      } else {
+        res.status(404).send("404, category not found");
+      }
+    } catch (error) {
+      console.error("Error during deletion:", error);
+      res.status(500).send("Internal Server Error");
     }
-  } catch (error) {
-    console.error("Error during deletion:", error);
-    res.status(500).send("Internal Server Error");
   }
-});
+);
 
-app.get("/categories/:id", async (req, res) => {
-  const id = req.params["id"];
-  const result = await categoryServices.findCategoryById(id);
-  if (result === undefined || result === null)
-    res.status(404).send("Resource not found.");
-  else {
-    res.send({ category_list: result });
-  }
-});
-
-app.put("/categories/:id", async (req, res) => {
-  const id = req.params["id"];
-  const { title } = req.body;
-
-  console.log(
-    `Received PUT request to update category with ID: ${id} and title: ${title}`
-  );
-
-  try {
-    const updatedCategory =
-      await categoryServices.updateCategory(id, { title });
-
-    if (updatedCategory) {
-      res.status(200).send(updatedCategory);
-    } else {
-      res.status(404).send("Category not found.");
+app.get(
+  "/categories/:id",
+  authenticateUser,
+  async (req, res) => {
+    const id = req.params["id"];
+    const result = await categoryServices.findCategoryById(id);
+    if (result === undefined || result === null)
+      res.status(404).send("Resource not found.");
+    else {
+      res.send({ category_list: result });
     }
-  } catch (error) {
-    console.error("Error updating category:", error);
-    res.status(500).send("Internal Server Error");
   }
-});
+);
+
+app.put(
+  "/categories/:id",
+  authenticateUser,
+  async (req, res) => {
+    const id = req.params["id"];
+    const { title } = req.body;
+
+    console.log(
+      `Received PUT request to update category with ID: ${id} and title: ${title}`
+    );
+
+    try {
+      const updatedCategory =
+        await categoryServices.updateCategory(id, { title });
+
+      if (updatedCategory) {
+        res.status(200).send(updatedCategory);
+      } else {
+        res.status(404).send("Category not found.");
+      }
+    } catch (error) {
+      console.error("Error updating category:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+app.get("/testingjwt", authenticateUser, (req, res) => {
+  console.log("protect route called");
+  res.send("Yay! You have access to this route");
+});
+
+app.post("/jwtlogin", loginUser);
+app.post("/jwtregister", registerUser);
