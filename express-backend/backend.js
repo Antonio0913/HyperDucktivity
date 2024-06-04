@@ -57,9 +57,8 @@ app.get(
   async (req, res) => {
     const clerkUserId = req.params["clerkUserId"];
     try {
-      const user = await userServices.findUserByClerkUserId(
-        clerkUserId
-      );
+      const user =
+        await userServices.findUserByClerkUserId(clerkUserId);
       if (user) {
         res.status(200).send(user);
       } else {
@@ -178,12 +177,21 @@ app.delete("/tasks/:id", authenticateUser, async (req, res) => {
 
 app.put("/tasks/:id", async (req, res) => {
   const id = req.params["id"];
-  const { title, content, dueDate, isPriority, isComplete } = req.body;
+  const { title, content, dueDate, isPriority, isComplete } =
+    req.body;
 
-  console.log(`Received PUT request to update task with ID: ${id}`);
+  console.log(
+    `Received PUT request to update task with ID: ${id}`
+  );
 
   try {
-    const updatedTask = await taskServices.updateTask(id, { title, content, dueDate, isPriority, isComplete });
+    const updatedTask = await taskServices.updateTask(id, {
+      title,
+      content,
+      dueDate,
+      isPriority,
+      isComplete
+    });
 
     if (updatedTask) {
       res.status(200).send(updatedTask);
@@ -225,9 +233,8 @@ app.delete(
     try {
       const categoryIdToDel = req.params["id"];
       console.log(categoryIdToDel);
-      const delCategory = await categoryServices.removeCategory(
-        categoryIdToDel
-      );
+      const delCategory =
+        await categoryServices.removeCategory(categoryIdToDel);
       if (delCategory) {
         res.status(204).send();
       } else {

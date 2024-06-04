@@ -14,9 +14,8 @@ export async function registerUser(req, res) {
       res.status(400).send("Bad request: Invalid input data.");
     }
 
-    const existingUser = await userServices.findUserByUsername(
-      username
-    );
+    const existingUser =
+      await userServices.findUserByUsername(username);
     if (existingUser) {
       return res
         .status(409)
@@ -77,9 +76,8 @@ export function authenticateUser(req, res, next) {
 export async function loginUser(req, res) {
   console.log("user tried to login");
   const { username, pwd } = req.body; // from form
-  const retrievedUser = await userServices.findUserByUsername(
-    username
-  );
+  const retrievedUser =
+    await userServices.findUserByUsername(username);
 
   if (!retrievedUser) {
     // invalid username

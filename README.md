@@ -2,13 +2,11 @@
 
 HyperDucktivity: a duck-themed todo list with modern features
 
-Users create, edit, and delete tasks and the categories that hold them for a streamlined organizational tool. All data is stored in the cloud, and accounts are secured with login and authentication. 
+Users create, edit, and delete tasks and the categories that hold them for a streamlined organizational tool. All data is stored in the cloud, and accounts are secured with login and authentication.
 
-Project additions are checked with CI/CD and a testing process. 
+Project additions are checked with CI/CD and a testing process.
 
 ## Deployment: https://red-field-047362a1e.5.azurestaticapps.net/
-
-
 
 ## Development Environment Setup
 
@@ -28,16 +26,19 @@ git clone https://github.com/your-username/your-repo.git
 cd your-repo
 ```
 
-### Install Dependencies 
+### Install Dependencies
+
 ```bash
 npm install
 ```
 
 ### Install VSCode Extensions
+
 - ESLint
 - Prettier
 
 ### Environment Variables
+
 Create a .env file in the root of your project and add the following environment variables. Replace placeholders with your provided developer Username/Password.
 
 ```bash
@@ -45,6 +46,7 @@ MONGO_URI="mongodb+srv://Username:Password@cluster0.qercnku.mongodb.net/?retryWr
 ```
 
 ### Start Development
+
 Now you can run the development server:
 
 ```bash
@@ -59,7 +61,7 @@ cd backend
 node backend.js
 ```
 
-and access the site on localhost. Push feature branches to Github for evaluation and build. 
+and access the site on localhost. Push feature branches to Github for evaluation and build.
 
 ## Diagrams and UI/UX
 

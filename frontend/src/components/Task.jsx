@@ -21,7 +21,12 @@ function Task({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateTask(task._id, editedTask.title, editedTask.content, editedTask.dueDate);
+    updateTask(
+      task._id,
+      editedTask.title,
+      editedTask.content,
+      editedTask.dueDate
+    );
     setIsEditingTask(false);
   };
 
