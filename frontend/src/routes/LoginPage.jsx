@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../utilities/AuthContext.jsx";
+
 function LoginPage(props) {
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
@@ -11,6 +13,7 @@ function LoginPage(props) {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const navigate = useNavigate();
+  const { setAuthToken } = useAuth();
 
   const navigateHome = () => {
     navigate("/home");
@@ -49,6 +52,7 @@ function LoginPage(props) {
           "Login successful; auth token saved, navigating to home"
         );
         localStorage.setItem("authToken", payload.token);
+        setAuthToken(payload.token);
         localStorage.setItem("username", creds.username);
 
         // navigate("/home");

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { addAuthHeader } from "../utilities/AuthHelper";
+import { useAuth } from "../utilities/AuthContext.jsx";
 import { useNavigate, Link } from "react-router-dom";
 
 function SignUpPage(props) {
@@ -12,6 +12,7 @@ function SignUpPage(props) {
   });
 
   const navigate = useNavigate();
+  const { setAuthToken } = useAuth();
 
   const navigateHome = () => {
     navigate("/home");
@@ -44,6 +45,7 @@ function SignUpPage(props) {
       if (response.status === 201) {
         const payload = await response.json();
         localStorage.setItem("authToken", payload.token);
+        setAuthToken(payload.token);
         localStorage.setItem("username", creds.username);
         setMessage(
           `Signup successful for user: ${creds.username}. Auth token saved`
@@ -99,7 +101,7 @@ function SignUpPage(props) {
       <div>
         <p>
           Already have an account?{" "}
-          <Link to="/login">Sign up</Link>
+          <Link to="/login">Log in</Link>
         </p>
       </div>
     </div>
