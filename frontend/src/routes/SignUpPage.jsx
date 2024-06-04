@@ -31,7 +31,7 @@ function SignUpPage(props) {
   const signupUser = async (creds) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/jwtregister`,
+        `https://hyperducktivity.azurewebsites.net/jwtregister`,
         {
           method: "POST",
           headers: {

@@ -63,7 +63,7 @@ const TaskPage = ({ categoryId }) => {
   function removeOneTask(Id) {
     fetch(
       // `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
-      `http://localhost:8000/tasks/${Id}`,
+      `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
       {
         method: "DELETE",
         headers: addAuthHeader({
@@ -99,7 +99,7 @@ const TaskPage = ({ categoryId }) => {
     if (taskToUpdate) {
       const updatedTask = {
         ...taskToUpdate,
-        isComplete: !taskToUpdate.isComplete,
+        isComplete: !taskToUpdate.isComplete
       };
 
       const updatedTasks = tasks.map((task) =>
@@ -108,9 +108,16 @@ const TaskPage = ({ categoryId }) => {
       setTasks(updatedTasks);
       //for backend update
       try {
-        await updateTasks(updatedTask._id, updatedTask.title, updatedTask.content, updatedTask.dueDate, updatedTask.isPriority, updatedTask.isComplete);
+        await updateTasks(
+          updatedTask._id,
+          updatedTask.title,
+          updatedTask.content,
+          updatedTask.dueDate,
+          updatedTask.isPriority,
+          updatedTask.isComplete
+        );
       } catch (error) {
-        console.error('Error updating task:', error);
+        console.error("Error updating task:", error);
         setTasks(tasks);
       }
     }
@@ -122,7 +129,7 @@ const TaskPage = ({ categoryId }) => {
       //finds tasks to update and changes priority
       const updatedTask = {
         ...taskToUpdate,
-        isPriority: !taskToUpdate.isPriority,
+        isPriority: !taskToUpdate.isPriority
       };
       const updatedTasks = tasks.map((task) =>
         task._id === id ? updatedTask : task
@@ -130,14 +137,20 @@ const TaskPage = ({ categoryId }) => {
       setTasks(updatedTasks);
       //backend update
       try {
-        await updateTasks(updatedTask._id, updatedTask.title, updatedTask.content, updatedTask.dueDate, updatedTask.isPriority, updatedTask.isComplete);
+        await updateTasks(
+          updatedTask._id,
+          updatedTask.title,
+          updatedTask.content,
+          updatedTask.dueDate,
+          updatedTask.isPriority,
+          updatedTask.isComplete
+        );
       } catch (error) {
-        console.error('Error updating task:', error);
+        console.error("Error updating task:", error);
         setTasks(tasks);
       }
     }
   };
-  
 
   const addTask = (title, content, dueDate) => {
     const task = {
@@ -165,56 +178,80 @@ const TaskPage = ({ categoryId }) => {
       });
   };
 
-  const updateTasks = async (id, title, content, dueDate, priority, isComplete) => {
+  const updateTasks = async (
+    id,
+    title,
+    content,
+    dueDate,
+    priority,
+    isComplete
+  ) => {
     try {
       const response = await fetch(
         `https://hyperducktivity.azurewebsites.net/tasks/${id}`,
-        // `http://localhost:8000/tasks/${id}`, 
+        // `https://hyperducktivity.azurewebsites.net/tasks/${id}`,
         {
-        //using put for updating
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ title, content, dueDate, isPriority: priority, isComplete: isComplete }),
-      });
-  
+          //using put for updating
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            title,
+            content,
+            dueDate,
+            isPriority: priority,
+            isComplete: isComplete
+          })
+        }
+      );
+
       if (!response.ok) {
-        throw new Error('Failed to update task');
+        throw new Error("Failed to update task");
       }
-  
+
       const updatedTask = await response.json();
       return updatedTask;
     } catch (error) {
-      console.error('Error:', error);
-      throw error; // Re-throw the error to handle it in the caller function 
+      console.error("Error:", error);
+      throw error; // Re-throw the error to handle it in the caller function
       //needed so we can find error
     }
   };
-  
 
-  const updateTask = async (id, title, content, dueDate, priority, isComplete) => {
+  const updateTask = async (
+    id,
+    title,
+    content,
+    dueDate,
+    priority,
+    isComplete
+  ) => {
     try {
-      const updatedTask = await updateTasks(id, title, content, dueDate, priority, isComplete);
+      const updatedTask = await updateTasks(
+        id,
+        title,
+        content,
+        dueDate,
+        priority,
+        isComplete
+      );
       const updatedTasks = tasks.map((task) =>
         task._id === id ? updatedTask : task
       );
       setTasks(updatedTasks);
     } catch (error) {
-      console.error('Error updating task:', error);
+      console.error("Error updating task:", error);
       // Optionally, revert the state update if the server update fails
       //good so front end matches backend
       setTasks(tasks);
     }
   };
-  
-
-
 
   function fetchTasks(categoryId) {
     const promise = fetch(
       // `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
-      `http://localhost:8000/tasks?category=${categoryId}`,
+      `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
       {
         headers: addAuthHeader()
       }
@@ -225,7 +262,7 @@ const TaskPage = ({ categoryId }) => {
   function postTasks(task) {
     const promise = fetch(
       // "https://hyperducktivity.azurewebsites.net/tasks",
-      "http://localhost:8000/tasks",
+      "https://hyperducktivity.azurewebsites.net/tasks",
       {
         method: "POST",
         headers: addAuthHeader({
