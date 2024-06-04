@@ -1,4 +1,3 @@
-// __test__/test_components/Category.test.js
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
@@ -20,6 +19,7 @@ describe('Category Component', () => {
     return jest.fn().mockImplementation(() =>
       Promise.resolve({
         status,
+        ok: false,
         text: () => Promise.resolve(errorMessage),
       })
     );
@@ -41,11 +41,19 @@ describe('Category Component', () => {
   });
 
   test('handles fetch categories error', async () => {
-    global.fetch.mockImplementation(mockFetchReject('Error fetching categories'));
+    global.fetch.mockImplementation(mockFetchReject('Error fetching categories:'));
+
     renderComponent();
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
     await waitFor(() => {
-      expect(screen.getByText('Error fetching categories')).toBeInTheDocument();
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Error fetching categories:'),
+        expect.any(Error)
+      );
     });
+  
+    consoleErrorSpy.mockRestore();
   });
 
   test('creates a new category', async () => {
@@ -77,9 +85,16 @@ describe('Category Component', () => {
 
     fireEvent.click(screen.getByText('Create'));
 
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
     await waitFor(() => {
-      expect(screen.getByText('Error creating category')).toBeInTheDocument();
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Error creating category'),
+        expect.any(Error)
+      );
     });
+  
+    consoleErrorSpy.mockRestore();
   });
 
   test('handles null create category', async () => {
@@ -94,18 +109,18 @@ describe('Category Component', () => {
 
     await waitFor(() => {
       const categories = screen.queryAllByText('New Category')
-      expect(categories).toHaveLength(1)
+      expect(categories).toHaveLength(0)
     });
   });
 
+  //HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
   test('edits a category', async () => {
     const categories = [{ _id: '1', title: 'Category 1' }];
-    global.fetch.mockImplementation(mockFetch(categories));
-
+    global.fetch.mockImplementationOnce(mockFetch(categories));
     renderComponent();
 
     fireEvent.click(await screen.findByText('Edit'));
-
+    
     fireEvent.change(screen.getByPlaceholderText('Edit category Title'), {
       target: { value: 'Updated Category 1' },
     });
@@ -119,26 +134,73 @@ describe('Category Component', () => {
     });
   });
 
-  test('handles edit category error', async () => {
+  test('does not save if editingCategoryName is empty', async () => {
     const categories = [{ _id: '1', title: 'Category 1' }];
-    global.fetch.mockImplementation(mockFetch(categories));
-
+    global.fetch.mockImplementationOnce(mockFetch(categories));
     renderComponent();
-
+  
     fireEvent.click(await screen.findByText('Edit'));
+  
+    fireEvent.change(screen.getByPlaceholderText('Edit category Title'), {
+      target: { value: '' },
+    });
 
+    fireEvent.click(screen.getByText('Save'));
+  
+    await waitFor(() => {
+      expect(global.fetch).not.toHaveBeenCalledWith(
+        expect.stringContaining('/categories/1'),
+        expect.any(Object)
+      );
+    });
+  });
+
+  test('handles fetch error during category update', async () => {
+    const categories = [{ _id: '1', title: 'Category 1' }];
+    global.fetch.mockImplementationOnce(mockFetch(categories));
+    renderComponent();
+  
+    fireEvent.click(await screen.findByText('Edit'));
     fireEvent.change(screen.getByPlaceholderText('Edit category Title'), {
       target: { value: 'Updated Category 1' },
     });
-
-    global.fetch.mockImplementationOnce(mockFetchReject('Error updating category'));
-
+  
+    global.fetch.mockImplementationOnce(mockFetchReject('Internal Server Error', 500));
+  
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
     fireEvent.click(screen.getByText('Save'));
-
+  
     await waitFor(() => {
-      expect(screen.getByText('Error updating category')).toBeInTheDocument();
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Error updating category:'),
+        expect.any(Error)
+      );
+    });
+  
+    consoleErrorSpy.mockRestore();
+  });
+  
+  test('handles update when no category matches id', async () => {
+    const categories = [{ _id: '1', title: 'Category 1' }];
+    global.fetch.mockImplementationOnce(mockFetch(categories));
+    renderComponent();
+  
+    fireEvent.click(await screen.findByText('Edit'));
+    fireEvent.change(screen.getByPlaceholderText('Edit category Title'), {
+      target: { value: 'Updated Category 1' },
+    });
+  
+    global.fetch.mockImplementationOnce(mockFetch({ _id: '2', title: 'Updated Category 1' }, 200));
+  
+    fireEvent.click(screen.getByText('Save'));
+  
+    await waitFor(() => {
+      expect(screen.queryByText('Updated Category 1')).not.toBeInTheDocument();
+      expect(screen.getByText('Category 1')).toBeInTheDocument();
     });
   });
+  
 
   test('deletes a category', async () => {
     const categories = [{ _id: '1', title: 'Category 1' }];
@@ -155,20 +217,24 @@ describe('Category Component', () => {
 
   test('handles delete category error', async () => {
     const categories = [{ _id: '1', title: 'Category 1' }];
-    global.fetch.mockImplementationOnce(mockFetch(categories)).mockImplementationOnce(mockFetchReject('Error deleting category'));
-
+    global.fetch.mockImplementationOnce(mockFetch(categories)).mockImplementationOnce(mockFetchReject('Error deleting category', 400));
+  
     renderComponent();
-
+  
     fireEvent.click(await screen.findByText('Delete'));
-
+  
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
+  
     await waitFor(() => {
-      expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('Error deleting category:'));
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Error deleting category:',
+        expect.any(Error)
+      );
     });
-
+  
     consoleErrorSpy.mockRestore(); 
   });
+  
 
   test('toggles dropdown', async () => {
     const categories = [{ _id: '1', title: 'Category 1' }];

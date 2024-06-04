@@ -95,7 +95,7 @@ function Category({ onCategoryClick }) {
       category._id === id ? updatedCategory : category
     );
     setCategories(updatedCategories);
-
+    
     try {
       const response = await fetch(
         `https://hyperducktivity.azurewebsites.net/categories/${id}`,
@@ -108,7 +108,6 @@ function Category({ onCategoryClick }) {
           body: JSON.stringify({ title: updatedTitle })
         }
       );
-
       if (!response.ok) {
         const errorText = await response.text();
         console.error(
@@ -171,6 +170,7 @@ function Category({ onCategoryClick }) {
                 <button
                   onClick={() => startEditingCategory(category)}
                   className="ml-4 p-2 bg-yellow-500 text-white rounded-lg"
+                  data-testid="edit-button"
                 >
                   Edit
                 </button>
@@ -197,6 +197,7 @@ function Category({ onCategoryClick }) {
                         <button
                           className="bg-background-gray text-beak-orange rounded-lg py-2 px-4"
                           onClick={handleSaveClick}
+                          data-testid="submit-edit-button"
                         >
                           Save
                         </button>
