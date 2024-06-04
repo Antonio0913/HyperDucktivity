@@ -21,6 +21,11 @@ const TaskSchema = new mongoose.Schema(
       required: true,
       default: false
     },
+    isComplete: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",

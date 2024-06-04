@@ -176,6 +176,26 @@ app.delete("/tasks/:id", authenticateUser, async (req, res) => {
   }
 });
 
+app.put("/tasks/:id", async (req, res) => {
+  const id = req.params["id"];
+  const { title, content, dueDate, isPriority, isComplete } = req.body;
+
+  console.log(`Received PUT request to update task with ID: ${id}`);
+
+  try {
+    const updatedTask = await taskServices.updateTask(id, { title, content, dueDate, isPriority, isComplete });
+
+    if (updatedTask) {
+      res.status(200).send(updatedTask);
+    } else {
+      res.status(404).send("Task not found.");
+    }
+  } catch (error) {
+    console.error("Error updating task:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 app.get("/categories", authenticateUser, async (req, res) => {
   try {
     const categories = await categoryServices.getCategories();
