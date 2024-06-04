@@ -1,4 +1,4 @@
-// AuthContext.js
+// utilities/AuthContext.jsx
 import React, {
   createContext,
   useState,
@@ -15,12 +15,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.getItem("authToken")
   );
 
-  // move this
-  const logout = () => {
-    localStorage.removeItem("authToken");
-    setAuthToken(null);
-  };
-
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -29,8 +23,10 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ authToken, logout }}>
+    <AuthContext.Provider value={{ authToken, setAuthToken }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export { AuthContext };

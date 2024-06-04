@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 function LoginPage(props) {
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
@@ -8,16 +9,25 @@ function LoginPage(props) {
     username: "",
     pwd: ""
   });
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+
+  const navigateHome = () => {
+    navigate("/home");
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setCreds({ ...creds, [name]: value });
   };
 
-  const submitForm = () => {
-    loginUser(creds).then(() =>
-      setCreds({ username: "", pwd: "" })
-    );
+  const submitForm = async () => {
+    const success = await loginUser(creds);
+    if (success) {
+      setLoggedIn(true);
+      setCreds({ username: "", pwd: "" });
+    }
   };
 
   const loginUser = async (creds) => {
@@ -33,10 +43,15 @@ function LoginPage(props) {
         }
       );
 
-      if (response.status === 200) {
+      if (response.ok) {
         const payload = await response.json();
-        localStorage.setItem("authToken", payload.token);
         setMessage(`Login successful; auth token saved`);
+        console.log(
+          "Login successful; auth token saved, navigating to home"
+        );
+        localStorage.setItem("authToken", payload.token);
+
+        // navigate("/home");
       } else {
         setMessage(
           `Login Error ${response.status}: ${response.statusText}`
@@ -49,6 +64,20 @@ function LoginPage(props) {
 
   return (
     <div>
+      <div>
+        {localStorage.getItem("authToken") !== null ? (
+          <div>
+            {" "}
+            You successfully logged in. <br /> Click here to go
+            to home element :{" "}
+            <button onClick={navigateHome}>
+              Go to Home
+            </button>{" "}
+          </div>
+        ) : (
+          <p>no</p>
+        )}
+      </div>
       {message === "" ? (
         <p>This is a message</p>
       ) : (

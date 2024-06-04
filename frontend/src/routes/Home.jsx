@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   SignedIn,
@@ -12,9 +12,11 @@ import SettingsIcon from "../assets/SettingsIcon.png";
 import NewCategory from "../components/NewCategory";
 import TaskPage from "./TaskPage";
 import { addAuthHeader } from "../utilities/AuthHelper";
+import { AuthContext } from "../utilities/AuthContext.jsx";
 
 const Home = () => {
   const { user, isLoaded } = useUser();
+  const { setAuthToken } = useContext(AuthContext);
   const [selectedCategoryId, setSelectedCategoryId] =
     useState(null);
 
@@ -96,6 +98,12 @@ const Home = () => {
     checkAndCreateUser();
   }, [isLoaded, user]);
 
+  const logout = () => {
+    localStorage.removeItem("authToken");
+    setAuthToken(null);
+    window.location.reload();
+  };
+
   return (
     <>
       <div className="flex flex-row">
@@ -124,14 +132,15 @@ const Home = () => {
       </div>
 
       <div className="absolute bottom-3 left-3 flex items-center space-x-4">
-        <SignedOut>
+        {/* <SignedOut>
           <SignInButton />
           <SignUpButton style={{ marginLeft: "10px" }} />
           <p>User is not signed in</p>
         </SignedOut>
         <SignedIn>
           <UserButton />
-        </SignedIn>
+        </SignedIn> */}
+        <button onClick={logout}>Logout</button>
         <Link to="/settings">
           <img
             src={SettingsIcon}
