@@ -49,11 +49,11 @@ function App() {
       element: <ProtectedRoute element={<TestAuthPage />} />
     },
     {
-      path: "login",
+      path: "/login",
       element: <LoginPage />
     },
     {
-      path: "signup",
+      path: "/signup",
       element: <SignUpPage />
     }
   ]);
