@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 function LoginPage(props) {
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
@@ -65,6 +64,8 @@ function LoginPage(props) {
 
   return (
     <div>
+      <div>Login Page</div>
+      <br />
       {message === "" ? <p></p> : <p>{message}</p>}
       <form>
         <label htmlFor="username">UserName</label>
@@ -97,6 +98,12 @@ function LoginPage(props) {
         ) : (
           <p></p>
         )}
+      </div>
+      <div>
+        <p>
+          Don't have an account?{" "}
+          <Link to="/signUp">Sign up</Link>
+        </p>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { addAuthHeader } from "../utilities/AuthHelper";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function SignUpPage(props) {
   const INVALID_TOKEN = "INVALID_TOKEN";
@@ -61,6 +61,8 @@ function SignUpPage(props) {
 
   return (
     <div>
+      <div>Sign Up Page</div>
+      <br />
       {message === "" ? <p></p> : <p>{message}</p>}
       <form>
         <label htmlFor="username">UserName</label>
@@ -93,6 +95,12 @@ function SignUpPage(props) {
         ) : (
           <p></p>
         )}
+      </div>
+      <div>
+        <p>
+          Already have an account?{" "}
+          <Link to="/login">Sign up</Link>
+        </p>
       </div>
     </div>
   );
