@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import CategoryItem from "./CategoryItem";
-import TaskPage from "../routes/TaskPage";
 
 function Category({ onCategoryClick }) {
   const [categories, setCategories] = useState([]);
@@ -123,10 +122,6 @@ function Category({ onCategoryClick }) {
             response.status
         );
       }
-
-      console.log(
-        "Category updated successfully on the server"
-      );
     } catch (error) {
       console.error("Error updating category:", error);
     }
