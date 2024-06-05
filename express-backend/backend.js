@@ -57,8 +57,9 @@ app.get(
   async (req, res) => {
     const clerkUserId = req.params["clerkUserId"];
     try {
-      const user =
-        await userServices.findUserByClerkUserId(clerkUserId);
+      const user = await userServices.findUserByClerkUserId(
+        clerkUserId
+      );
       if (user) {
         res.status(200).send(user);
       } else {
@@ -214,6 +215,26 @@ app.get("/categories", authenticateUser, async (req, res) => {
   }
 });
 
+app.post(
+  "/categoriesTwo",
+  authenticateUser,
+  async (req, res) => {
+    const { username } = req.body;
+    console.log(
+      `in post categoreis the username is ${username}`
+    );
+    try {
+      const categories = await categoryServices.getCategories(
+        username
+      );
+      res.status(200).send(categories);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
+
 app.post("/categories", authenticateUser, async (req, res) => {
   const { title } = req.body;
   try {
@@ -226,6 +247,26 @@ app.post("/categories", authenticateUser, async (req, res) => {
   }
 });
 
+app.post(
+  "/categoriesForUser",
+  authenticateUser,
+  async (req, res) => {
+    const { title, username } = req.body;
+    console.log(
+      `The title and username received is "${title}" and "${username}"`
+    );
+    try {
+      const category = await categoryServices.addCategoryThree(
+        { title },
+        username
+      );
+      res.status(201).send(category);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  }
+);
+
 app.delete(
   "/categories/:id",
   authenticateUser,
@@ -233,8 +274,9 @@ app.delete(
     try {
       const categoryIdToDel = req.params["id"];
       console.log(categoryIdToDel);
-      const delCategory =
-        await categoryServices.removeCategory(categoryIdToDel);
+      const delCategory = await categoryServices.removeCategory(
+        categoryIdToDel
+      );
       if (delCategory) {
         res.status(204).send();
       } else {
