@@ -9,10 +9,9 @@ import SearchBar from "../components/SearchBar.jsx";
 import { addAuthHeader } from "../utilities/AuthHelper.jsx";
 import { UNSAFE_convertRoutesToDataRoutes } from "@remix-run/router";
 
-const TaskPage = ({ categoryId }) => {
+const TaskPage = ({ categoryId, textSize }) => {
   //const { categoryId } = useParams();
   const [tasks, setTasks] = useState([]);
-  const [textSize, setTextSize] = useState(12);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
 
@@ -62,7 +61,6 @@ const TaskPage = ({ categoryId }) => {
 
   function removeOneTask(Id) {
     fetch(
-      // `https://localhost:8000/tasks/${Id}`,
       `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
       {
         method: "DELETE",
@@ -189,7 +187,6 @@ const TaskPage = ({ categoryId }) => {
     try {
       const response = await fetch(
         `https://hyperducktivity.azurewebsites.net/tasks/${id}`,
-        // `https://localhost:8000/tasks/${id}`,
         {
           //using put for updating
           method: "PUT",
@@ -250,7 +247,6 @@ const TaskPage = ({ categoryId }) => {
 
   function fetchTasks(categoryId) {
     const promise = fetch(
-      // `https://localhost:8000/tasks?category=${categoryId}`,
       `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
       {
         headers: addAuthHeader()
@@ -261,8 +257,7 @@ const TaskPage = ({ categoryId }) => {
 
   function postTasks(task) {
     const promise = fetch(
-      // "https://localhost:8000/tasks",
-      "https://hyperducktivity.azurewebsites.net/tasks",
+      'https://hyperducktivity.azurewebsites.net/tasks',
       {
         method: "POST",
         headers: addAuthHeader({
@@ -277,6 +272,7 @@ const TaskPage = ({ categoryId }) => {
 
   return (
     <div className="relative w-full h-full">
+      
       <button onClick={sortTasksByDueDate}>
         Sort by Due Date {sortDirection === "asc" ? "↑" : "↓"}
       </button>
@@ -286,10 +282,7 @@ const TaskPage = ({ categoryId }) => {
           onSearch={handleSearch}
         />
         <NewTask addTask={addTask} />
-        <FontSize
-          textSize={textSize}
-          setTextSize={setTextSize}
-        ></FontSize>
+  
         {filteredTasks
           .sort((a, b) => b.isPriority - a.isPriority)
           .map((task) => {
