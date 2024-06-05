@@ -8,17 +8,19 @@ import {
   useUser,
   SignUpButton
 } from "@clerk/clerk-react";
-import SettingsIcon from "../assets/SettingsIcon.png";
+// import SettingsIcon from "../assets/SettingsIcon.png";
 import NewCategory from "../components/NewCategory";
 import TaskPage from "./TaskPage";
 import { addAuthHeader } from "../utilities/AuthHelper";
 import { AuthContext } from "../utilities/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
+import SettingsDropDown from "../components/settingsDropDown";
 
 const Home = () => {
   const { user, isLoaded } = useUser();
   const { setAuthToken } = useContext(AuthContext);
   const [username, setUsername] = useState("");
+  const [textSize, setTextSize] = useState(12);
   const [selectedCategoryId, setSelectedCategoryId] =
     useState(null);
 
@@ -50,7 +52,6 @@ const Home = () => {
         try {
           //Check if the user already exists
           const checkResponse = await fetch(
-            // `https://hyperducktivity.azurewebsites.net/users/${user.id}`,
             `https://hyperducktivity.azurewebsites.net/users/${user.id}`,
             {
               headers: addAuthHeader()
@@ -71,7 +72,6 @@ const Home = () => {
           console.log("Sending payload:", payload);
 
           const createResponse = await fetch(
-            // "https://hyperducktivity.azurewebsites.net/users",
             "https://hyperducktivity.azurewebsites.net/users",
             {
               method: "POST",
@@ -149,25 +149,20 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-3 left-3 flex items-center space-x-4">
-        {username ? (
-          <p>{username}</p>
-        ) : (
-          <p>You are not logged in</p>
-        )}
-        <button onClick={logout}>Logout</button>
-        <Link to="/settings">
-          <img
-            src={SettingsIcon}
-            alt="Settings Icon"
-            className="w-31 h-17"
-          />
-        </Link>
-        {/* <img src={LogoutIcon} alt="Logout Icon" className="w-31 h-17" /> */}
+      <div className="absolute top-3 right-3 flex items-center space-x-4">
+        <SettingsDropDown
+          username={username}
+          logout={logout}
+          textSize={textSize}
+          setTextSize={setTextSize}
+        />
       </div>
 
       {selectedCategoryId ? (
-        <TaskPage categoryId={selectedCategoryId} />
+        <TaskPage
+          categoryId={selectedCategoryId}
+          textSize={textSize}
+        />
       ) : (
         <p></p>
       )}

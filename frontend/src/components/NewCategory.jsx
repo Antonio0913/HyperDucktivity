@@ -41,7 +41,6 @@ function Category({ onCategoryClick }) {
     }
     try {
       const response = await fetch(
-        // "https://hyperducktivity.azurewebsites.net/categories",
         "https://hyperducktivity.azurewebsites.net/categoriesForUser",
         {
           method: "POST",
@@ -64,7 +63,6 @@ function Category({ onCategoryClick }) {
 
   function deleteCategory(categoryId) {
     fetch(
-      // `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
       `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
       {
         method: "DELETE",
@@ -113,7 +111,6 @@ function Category({ onCategoryClick }) {
 
     try {
       const response = await fetch(
-        // `https://hyperducktivity.azurewebsites.net/categories/${id}`,
         `https://hyperducktivity.azurewebsites.net/categories/${id}`,
         {
           method: "PUT",
