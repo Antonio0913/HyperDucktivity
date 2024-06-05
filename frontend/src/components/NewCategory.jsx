@@ -66,7 +66,7 @@ function Category({ onCategoryClick }) {
               (category) => category._id !== categoryId
             )
           );
-          console.log("Category deleted successfully");
+          console.debug("Category deleted successfully");
         } else {
           throw new Error(
             "Failed to delete category with status: " +

@@ -31,6 +31,7 @@ describe('Category Component', () => {
 
   beforeEach(() => {
     global.fetch.mockClear();
+    jest.clearAllMocks();
   });
 
   test('renders Category component', async () => {
@@ -113,7 +114,6 @@ describe('Category Component', () => {
     });
   });
 
-  //HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
   test('edits a category', async () => {
     const categories = [{ _id: '1', title: 'Category 1' }];
     global.fetch.mockImplementationOnce(mockFetch(categories));
