@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CategoryItem from "./CategoryItem";
+import TaskPage from "../routes/TaskPage";
+import { addAuthHeader } from "../utilities/AuthHelper";
 
 function Category({ onCategoryClick }) {
   const [categories, setCategories] = useState([]);
@@ -8,13 +10,25 @@ function Category({ onCategoryClick }) {
     useState(null);
   const [editingCategoryName, setEditingCategoryName] =
     useState("");
+  const [editingCategoryColor, setEditingCategoryColor] =
+    useState("#ECD632");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [username, setUsername] = useState("");
 
   const fetchCategories = async () => {
     try {
       const response = await fetch(
-        "https://hyperducktivity.azurewebsites.net/categories"
-        //"http://localhost:8000/categories"
+        "https://hyperducktivity.azurewebsites.net/categoriesTwo",
+        {
+          method: "POST",
+          headers: {
+            ...addAuthHeader(),
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            username: localStorage.getItem("username")
+          })
+        }
       );
       const data = await response.json();
       setCategories(data);
@@ -29,14 +43,17 @@ function Category({ onCategoryClick }) {
     }
     try {
       const response = await fetch(
-        "https://hyperducktivity.azurewebsites.net/categories",
-        //"http://localhost:8000/categories",
+        // "https://hyperducktivity.azurewebsites.net/categories",
+        "https://hyperducktivity.azurewebsites.net/categoriesForUser",
         {
           method: "POST",
-          headers: {
+          headers: addAuthHeader({
             "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ title: newCategory })
+          }),
+          body: JSON.stringify({
+            title: newCategory,
+            username: username
+          })
         }
       );
       const data = await response.json();
@@ -49,13 +66,13 @@ function Category({ onCategoryClick }) {
 
   function deleteCategory(categoryId) {
     fetch(
+      // `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
       `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
-      //`http://localhost:8000/categories/${categoryId}`,
       {
         method: "DELETE",
-        headers: {
+        headers: addAuthHeader({
           "Content-Type": "application/json"
-        }
+        })
       }
     )
       .then((res) => {
@@ -82,13 +99,19 @@ function Category({ onCategoryClick }) {
   const startEditingCategory = (category) => {
     setEditingCategoryId(category._id);
     setEditingCategoryName(category.title);
+    setEditingCategoryColor(category.color);
     setShowDropdown(true);
   };
 
-  const updateCategory = async (id, updatedTitle) => {
+  const updateCategory = async (
+    id,
+    updatedTitle,
+    updatedColor
+  ) => {
     const updatedCategory = {
       _id: id,
-      title: updatedTitle
+      title: updatedTitle,
+      color: updatedColor
     };
 
     const updatedCategories = categories.map((category) =>
@@ -98,14 +121,17 @@ function Category({ onCategoryClick }) {
     
     try {
       const response = await fetch(
+        // `https://hyperducktivity.azurewebsites.net/categories/${id}`,
         `https://hyperducktivity.azurewebsites.net/categories/${id}`,
-        //`http://localhost:8000/categories/${id}`,
         {
           method: "PUT",
-          headers: {
+          headers: addAuthHeader({
             "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ title: updatedTitle })
+          }),
+          body: JSON.stringify({
+            title: updatedTitle,
+            color: updatedColor
+          })
         }
       );
       if (!response.ok) {
@@ -127,40 +153,49 @@ function Category({ onCategoryClick }) {
   };
 
   const handleSaveClick = () => {
-    if (editingCategoryName) {
-      updateCategory(editingCategoryId, editingCategoryName);
+    if (editingCategoryName && editingCategoryColor) {
+      updateCategory(
+        editingCategoryId,
+        editingCategoryName,
+        editingCategoryColor
+      );
     }
   };
 
   useEffect(() => {
     fetchCategories();
+    const username = localStorage.getItem("username");
+    setUsername(username);
   }, []);
 
   return (
     <>
-      <div className="max-w-md mx-auto mt-10 p-6 border border-gray-300 rounded-lg bg-white">
+      <div className="max-w-md mx-auto mt-10 p-6 border border-beak-yellow rounded-lg bg-white">
         <div className="mb-6">
           <input
             type="text"
             value={newCategory}
             onChange={(e) => setNewCategory(e.target.value)}
             placeholder="Name your new category"
-            className="w-full p-2 border border-gray-300 rounded-lg mb-2"
+            className="w-full p-2 border border-beak-orange rounded-lg mb-2"
           />
           <button
             onClick={createCategory}
-            className="w-full p-2 bg-blue-500 text-white rounded-lg"
+            className="w-full p-2 bg-blue-500 text-white rounded-lg border-beak-orange"
           >
             Create
           </button>
         </div>
-        <div>
+        <div style={{ maxHeight: "450px", overflowY: "auto" }}>
           {categories.map((category) => (
             <div
               key={category._id}
               className="flex items-center justify-between mb-2"
             >
-              <div className="flex-grow">
+              <div
+                className="flex-grow"
+                style={{ flexBasis: "auto", flexGrow: 1 }}
+              >
                 <CategoryItem
                   category={category}
                   onClick={onCategoryClick}
@@ -182,7 +217,7 @@ function Category({ onCategoryClick }) {
                 </button>
                 {editingCategoryId === category._id &&
                   showDropdown && (
-                    <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10">
+                    <div className="absolute right-0 mt-2 w-64 border border-beak-yellow rounded-lg shadow-lg p-4 z-10 bg-site-bg">
                       Edit Title
                       <input
                         type="text"
@@ -191,7 +226,17 @@ function Category({ onCategoryClick }) {
                           setEditingCategoryName(e.target.value)
                         }
                         placeholder="Edit category Title"
-                        className="w-full p-2 border border-gray-300 rounded-lg mb-2"
+                        className="w-full p-2 border border-beak-yellow rounded-lg mb-2"
+                      />
+                      <input
+                        type="color"
+                        value={editingCategoryColor}
+                        onChange={(e) =>
+                          setEditingCategoryColor(
+                            e.target.value
+                          )
+                        }
+                        className="w-full mb-2 h-8"
                       />
                       <div className="flex justify-end space-x-2">
                         <button

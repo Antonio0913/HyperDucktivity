@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   SignedIn,
@@ -8,18 +8,40 @@ import {
   useUser,
   SignUpButton
 } from "@clerk/clerk-react";
-import SettingsIcon from "../assets/SettingsIcon.png";
+// import SettingsIcon from "../assets/SettingsIcon.png";
 import NewCategory from "../components/NewCategory";
 import TaskPage from "./TaskPage";
+import { addAuthHeader } from "../utilities/AuthHelper";
+import { AuthContext } from "../utilities/AuthContext.jsx";
+import { useNavigate } from "react-router-dom";
+import SettingsDropDown from "../components/settingsDropDown";
 
 const Home = () => {
   const { user, isLoaded } = useUser();
+  const { setAuthToken } = useContext(AuthContext);
+  const [username, setUsername] = useState("");
+  const [textSize, setTextSize] = useState(12);
   const [selectedCategoryId, setSelectedCategoryId] =
     useState(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("authToken") === null) {
+      navigate("/login");
+    }
+  }, []);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategoryId(categoryId);
   };
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
 
   useEffect(() => {
     const checkAndCreateUser = async () => {
@@ -30,8 +52,10 @@ const Home = () => {
         try {
           //Check if the user already exists
           const checkResponse = await fetch(
-            `https://hyperducktivity.azurewebsites.net/users/${user.id}`
-            //`http://localhost:8000/users/${user.id}`
+            `https://hyperducktivity.azurewebsites.net/users/${user.id}`,
+            {
+              headers: addAuthHeader()
+            }
           );
           if (checkResponse.ok) {
             console.log("User already exists in backend.");
@@ -49,12 +73,11 @@ const Home = () => {
 
           const createResponse = await fetch(
             "https://hyperducktivity.azurewebsites.net/users",
-            //"http://localhost:8000/users",
             {
               method: "POST",
-              headers: {
+              headers: addAuthHeader({
                 "Content-Type": "application/json"
-              },
+              }),
               body: JSON.stringify(payload)
             }
           );
@@ -92,6 +115,13 @@ const Home = () => {
     checkAndCreateUser();
   }, [isLoaded, user]);
 
+  const logout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("username");
+    setAuthToken(null);
+    window.location.reload();
+  };
+
   return (
     <>
       <div className="flex flex-row">
@@ -119,27 +149,20 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-3 left-3 flex items-center space-x-4">
-        <SignedOut>
-          <SignInButton />
-          <SignUpButton style={{ marginLeft: "10px" }} />
-          <p>User is not signed in</p>
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-        <Link to="/settings">
-          <img
-            src={SettingsIcon}
-            alt="Settings Icon"
-            className="w-31 h-17"
-          />
-        </Link>
-        {/* <img src={LogoutIcon} alt="Logout Icon" className="w-31 h-17" /> */}
+      <div className="absolute top-3 right-3 flex items-center space-x-4">
+        <SettingsDropDown
+          username={username}
+          logout={logout}
+          textSize={textSize}
+          setTextSize={setTextSize}
+        />
       </div>
 
       {selectedCategoryId ? (
-        <TaskPage categoryId={selectedCategoryId} />
+        <TaskPage
+          categoryId={selectedCategoryId}
+          textSize={textSize}
+        />
       ) : (
         <p></p>
       )}

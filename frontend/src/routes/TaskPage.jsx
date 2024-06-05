@@ -6,12 +6,12 @@ import Task from "../components/Task.jsx";
 import NewTask from "../components/NewTask.jsx";
 import FontSize from "../components/fontSize.jsx";
 import SearchBar from "../components/SearchBar.jsx";
+import { addAuthHeader } from "../utilities/AuthHelper.jsx";
 import { UNSAFE_convertRoutesToDataRoutes } from "@remix-run/router";
 
-const TaskPage = ({ categoryId }) => {
+const TaskPage = ({ categoryId, textSize }) => {
   //const { categoryId } = useParams();
   const [tasks, setTasks] = useState([]);
-  const [textSize, setTextSize] = useState(12);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
 
@@ -61,13 +61,12 @@ const TaskPage = ({ categoryId }) => {
 
   function removeOneTask(Id) {
     fetch(
-     // `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
-      `http://localhost:8000/tasks/${Id}`,
+      `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
       {
         method: "DELETE",
-        headers: {
+        headers: addAuthHeader({
           "Content-Type": "application/json"
-        }
+        })
       }
     )
       .then((res) => {
@@ -98,7 +97,7 @@ const TaskPage = ({ categoryId }) => {
     if (taskToUpdate) {
       const updatedTask = {
         ...taskToUpdate,
-        isComplete: !taskToUpdate.isComplete,
+        isComplete: !taskToUpdate.isComplete
       };
 
       const updatedTasks = tasks.map((task) =>
@@ -107,9 +106,16 @@ const TaskPage = ({ categoryId }) => {
       setTasks(updatedTasks);
       //for backend update
       try {
-        await updateTasks(updatedTask._id, updatedTask.title, updatedTask.content, updatedTask.dueDate, updatedTask.isPriority, updatedTask.isComplete);
+        await updateTasks(
+          updatedTask._id,
+          updatedTask.title,
+          updatedTask.content,
+          updatedTask.dueDate,
+          updatedTask.isPriority,
+          updatedTask.isComplete
+        );
       } catch (error) {
-        console.error('Error updating task:', error);
+        console.error("Error updating task:", error);
         setTasks(tasks);
       }
     }
@@ -121,7 +127,7 @@ const TaskPage = ({ categoryId }) => {
       //finds tasks to update and changes priority
       const updatedTask = {
         ...taskToUpdate,
-        isPriority: !taskToUpdate.isPriority,
+        isPriority: !taskToUpdate.isPriority
       };
       const updatedTasks = tasks.map((task) =>
         task._id === id ? updatedTask : task
@@ -129,14 +135,20 @@ const TaskPage = ({ categoryId }) => {
       setTasks(updatedTasks);
       //backend update
       try {
-        await updateTasks(updatedTask._id, updatedTask.title, updatedTask.content, updatedTask.dueDate, updatedTask.isPriority, updatedTask.isComplete);
+        await updateTasks(
+          updatedTask._id,
+          updatedTask.title,
+          updatedTask.content,
+          updatedTask.dueDate,
+          updatedTask.isPriority,
+          updatedTask.isComplete
+        );
       } catch (error) {
-        console.error('Error updating task:', error);
+        console.error("Error updating task:", error);
         setTasks(tasks);
       }
     }
   };
-  
 
   const addTask = (title, content, dueDate) => {
     const task = {
@@ -164,66 +176,93 @@ const TaskPage = ({ categoryId }) => {
       });
   };
 
-  const updateTasks = async (id, title, content, dueDate, priority, isComplete) => {
+  const updateTasks = async (
+    id,
+    title,
+    content,
+    dueDate,
+    priority,
+    isComplete
+  ) => {
     try {
-      const response = await fetch(`http://localhost:8000/tasks/${id}`, {
-        //using put for updating
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ title, content, dueDate, isPriority: priority, isComplete: isComplete }),
-      });
-  
+      const response = await fetch(
+        `https://hyperducktivity.azurewebsites.net/tasks/${id}`,
+        {
+          //using put for updating
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            title,
+            content,
+            dueDate,
+            isPriority: priority,
+            isComplete: isComplete
+          })
+        }
+      );
+
       if (!response.ok) {
-        throw new Error('Failed to update task');
+        throw new Error("Failed to update task");
       }
-  
+
       const updatedTask = await response.json();
       return updatedTask;
     } catch (error) {
-      console.error('Error:', error);
-      throw error; // Re-throw the error to handle it in the caller function 
+      console.error("Error:", error);
+      throw error; // Re-throw the error to handle it in the caller function
       //needed so we can find error
     }
   };
-  
 
-  const updateTask = async (id, title, content, dueDate, priority, isComplete) => {
+  const updateTask = async (
+    id,
+    title,
+    content,
+    dueDate,
+    priority,
+    isComplete
+  ) => {
     try {
-      const updatedTask = await updateTasks(id, title, content, dueDate, priority, isComplete);
+      const updatedTask = await updateTasks(
+        id,
+        title,
+        content,
+        dueDate,
+        priority,
+        isComplete
+      );
       const updatedTasks = tasks.map((task) =>
         task._id === id ? updatedTask : task
       );
       setTasks(updatedTasks);
     } catch (error) {
-      console.error('Error updating task:', error);
+      console.error("Error updating task:", error);
       // Optionally, revert the state update if the server update fails
       //good so front end matches backend
       setTasks(tasks);
     }
   };
-  
-
-
 
   function fetchTasks(categoryId) {
     const promise = fetch(
-      // `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`
-      `http://localhost:8000/tasks?category=${categoryId}`
+      `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
+      {
+        headers: addAuthHeader()
+      }
     );
     return promise;
   }
 
   function postTasks(task) {
     const promise = fetch(
-      // "https://hyperducktivity.azurewebsites.net/tasks",
-      'http://localhost:8000/tasks',
+      'https://hyperducktivity.azurewebsites.net/tasks',
       {
         method: "POST",
-        headers: {
+        headers: addAuthHeader({
           "Content-Type": "application/json"
-        },
+        }),
         body: JSON.stringify(task)
       }
     );
@@ -233,6 +272,7 @@ const TaskPage = ({ categoryId }) => {
 
   return (
     <div className="relative w-full h-full">
+      
       <button onClick={sortTasksByDueDate}>
         Sort by Due Date {sortDirection === "asc" ? "↑" : "↓"}
       </button>
@@ -242,10 +282,7 @@ const TaskPage = ({ categoryId }) => {
           onSearch={handleSearch}
         />
         <NewTask addTask={addTask} />
-        <FontSize
-          textSize={textSize}
-          setTextSize={setTextSize}
-        ></FontSize>
+  
         {filteredTasks
           .sort((a, b) => b.isPriority - a.isPriority)
           .map((task) => {

@@ -13,11 +13,6 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    clerkUserId: {
-      type: String,
-      required: true,
-      unique: true
-    },
     categories: [
       {
         type: mongoose.Schema.Types.ObjectId,

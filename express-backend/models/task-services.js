@@ -50,13 +50,17 @@ const updateTask = async (id, updatedFields) => {
     )}`
   );
   try {
-    const updatedTask = await taskModel.findByIdAndUpdate(id, updatedFields, { new: true });
+    const updatedTask = await taskModel.findByIdAndUpdate(
+      id,
+      updatedFields,
+      { new: true }
+    );
     return updatedTask;
   } catch (error) {
     console.error("Error updating task:", error);
     throw error;
   }
-}
+};
 
 export default {
   addTask,

@@ -117,22 +117,17 @@ const TaskPageForCategory = () => {
   };
 
   function fetchTasks() {
-    const promise = fetch(
-      "https://hyperducktivity.azurewebsites.net/tasks"
-    );
+    const promise = fetch("https://localhost:8000/tasks");
     return promise;
   }
   function postTasks(task) {
-    const promise = fetch(
-      "https://hyperducktivity.azurewebsites.net/tasks",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(task)
-      }
-    );
+    const promise = fetch("https://localhost:8000/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(task)
+    });
 
     return promise;
   }
