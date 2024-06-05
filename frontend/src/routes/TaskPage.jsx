@@ -64,7 +64,7 @@ const TaskPage = ({ categoryId }) => {
     fetch(
 
       // `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
-      `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
+      `http://localhost:8000/tasks/${Id}`,
       {
         method: "DELETE",
         headers: addAuthHeader({
@@ -189,8 +189,8 @@ const TaskPage = ({ categoryId }) => {
   ) => {
     try {
       const response = await fetch(
-        `https://hyperducktivity.azurewebsites.net/tasks/${id}`,
         // `https://hyperducktivity.azurewebsites.net/tasks/${id}`,
+        `http://localhost:8000/tasks?category=${categoryId}`,
         {
           //using put for updating
           method: "PUT",
@@ -253,7 +253,7 @@ const TaskPage = ({ categoryId }) => {
     const promise = fetch(
 
       // `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
-      `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
+      `http://localhost:8000/tasks?category=${categoryId}`,
       {
         headers: addAuthHeader()
       }
@@ -265,7 +265,7 @@ const TaskPage = ({ categoryId }) => {
     const promise = fetch(
 
       // "https://hyperducktivity.azurewebsites.net/tasks",
-      "https://hyperducktivity.azurewebsites.net/tasks",
+      'http://localhost:8000/tasks',
       {
         method: "POST",
         headers: addAuthHeader({
@@ -280,6 +280,7 @@ const TaskPage = ({ categoryId }) => {
 
   return (
     <div className="relative w-full h-full">
+      
       <button onClick={sortTasksByDueDate}>
         Sort by Due Date {sortDirection === "asc" ? "↑" : "↓"}
       </button>
