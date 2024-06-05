@@ -43,7 +43,7 @@ const Home = () => {
           const checkResponse = await fetch(
 
             // `https://hyperducktivity.azurewebsites.net/users/${user.id}`,
-            `http://localhost:8000/users/${user.id}`
+            `http://localhost:8000/users/${user.id}`,
             {
               headers: addAuthHeader()
             }
@@ -142,13 +142,13 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="absolute Top-3 Right-3 flex items-center space-x-4">
+      <div className="absolute top-3 right-3 flex items-center space-x-4">
         <div>{username}</div>
         <button onClick={logout}>Logout</button>
         <Link to="/settings">
-          <img
-            src={SettingsIcon}
-            alt="Settings Icon"
+          <img 
+            src={SettingsIcon} 
+            alt="Settings Icon" 
             className="w-31 h-17"
           />
         </Link>
