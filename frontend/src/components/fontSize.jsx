@@ -9,7 +9,7 @@ const FontSize = ({ textSize, setTextSize }) => {
         value={textSize}
         onChange={(e) => setTextSize(Number(e.target.value))}
         style={{
-          width: "300px"
+          width: '100%'
         }}
       />
     </div>
