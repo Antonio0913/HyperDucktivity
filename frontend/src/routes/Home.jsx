@@ -143,11 +143,11 @@ const Home = () => {
             </div>
           </div>
           <br />
-          {isLoaded && user && <p>User is signed in</p>}
-          {isLoaded && user && <p>Clerk User ID: {user.id}</p>}
           <NewCategory onCategoryClick={handleCategoryClick} />
-        </div>
-      </div>
+          </div>
+          </div>
+          
+       
 
       <div className="absolute top-3 right-3 flex items-center space-x-4">
         <SettingsDropDown

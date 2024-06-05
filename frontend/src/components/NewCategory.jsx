@@ -182,11 +182,11 @@ function Category({ onCategoryClick }) {
             value={newCategory}
             onChange={(e) => setNewCategory(e.target.value)}
             placeholder="Name your new category"
-            className="w-full p-2 border border-beak-orange rounded-lg mb-2"
+            className="w-full p-2 border border-beak-yellow rounded-lg mb-2"
           />
           <button
             onClick={createCategory}
-            className="w-full p-2 bg-blue-500 text-white rounded-lg border-beak-orange"
+            className="w-full p-2 bg-blue-500 text-white rounded-lg border-beak-yellow"
           >
             Create
           </button>
