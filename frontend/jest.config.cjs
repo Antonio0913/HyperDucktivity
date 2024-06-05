@@ -3,6 +3,8 @@ module.exports = {
   testEnvironment: 'jest-environment-jsdom',
   moduleFileExtensions: ['js', 'jsx'],
   testMatch: ['**/?(*.)+(test).js?(x)'],
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
   transform: {
     '^.+\\.jsx?$': 'babel-jest',
     '\\.(css|less|scss|sass)$': 'jest-transform-stub',

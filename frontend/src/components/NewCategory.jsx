@@ -212,6 +212,7 @@ function Category({ onCategoryClick }) {
                 <button
                   onClick={() => deleteCategory(category._id)}
                   className="ml-4 p-2 bg-red-500 text-white rounded-lg"
+                  data-testid="delete-button"
                 >
                   Delete
                 </button>

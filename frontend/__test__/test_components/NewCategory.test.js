@@ -31,7 +31,7 @@ describe('Category Component', () => {
 
   beforeEach(() => {
     global.fetch.mockClear();
-    jest.clearAllMocks();
+  jest.clearAllMocks();
   });
 
   test('renders Category component', async () => {
