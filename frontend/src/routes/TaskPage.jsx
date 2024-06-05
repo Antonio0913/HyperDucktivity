@@ -62,7 +62,6 @@ const TaskPage = ({ categoryId }) => {
 
   function removeOneTask(Id) {
     fetch(
-
       // `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
       `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
       {
@@ -251,7 +250,6 @@ const TaskPage = ({ categoryId }) => {
 
   function fetchTasks(categoryId) {
     const promise = fetch(
-
       // `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
       `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
       {
@@ -263,7 +261,6 @@ const TaskPage = ({ categoryId }) => {
 
   function postTasks(task) {
     const promise = fetch(
-
       // "https://hyperducktivity.azurewebsites.net/tasks",
       "https://hyperducktivity.azurewebsites.net/tasks",
       {

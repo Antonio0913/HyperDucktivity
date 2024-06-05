@@ -11,15 +11,21 @@ function Category({ onCategoryClick }) {
   const [editingCategoryName, setEditingCategoryName] =
     useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [username, setUsername] = useState("");
 
   const fetchCategories = async () => {
     try {
       const response = await fetch(
-
-        // "https://hyperducktivity.azurewebsites.net/categories",
-        "https://hyperducktivity.azurewebsites.net/categories",
+        "https://hyperducktivity.azurewebsites.net/categoriesTwo",
         {
-          headers: addAuthHeader()
+          method: "POST",
+          headers: {
+            ...addAuthHeader(),
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            username: localStorage.getItem("username")
+          })
         }
       );
       const data = await response.json();
@@ -35,15 +41,17 @@ function Category({ onCategoryClick }) {
     }
     try {
       const response = await fetch(
-
         // "https://hyperducktivity.azurewebsites.net/categories",
-        "https://hyperducktivity.azurewebsites.net/categories",
+        "https://hyperducktivity.azurewebsites.net/categoriesForUser",
         {
           method: "POST",
           headers: addAuthHeader({
             "Content-Type": "application/json"
           }),
-          body: JSON.stringify({ title: newCategory })
+          body: JSON.stringify({
+            title: newCategory,
+            username: username
+          })
         }
       );
       const data = await response.json();
@@ -56,7 +64,6 @@ function Category({ onCategoryClick }) {
 
   function deleteCategory(categoryId) {
     fetch(
-
       // `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
       `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
       {
@@ -106,7 +113,6 @@ function Category({ onCategoryClick }) {
 
     try {
       const response = await fetch(
-
         // `https://hyperducktivity.azurewebsites.net/categories/${id}`,
         `https://hyperducktivity.azurewebsites.net/categories/${id}`,
         {
@@ -148,6 +154,8 @@ function Category({ onCategoryClick }) {
 
   useEffect(() => {
     fetchCategories();
+    const username = localStorage.getItem("username");
+    setUsername(username);
   }, []);
 
   return (
@@ -168,13 +176,16 @@ function Category({ onCategoryClick }) {
             Create
           </button>
         </div>
-        <div style={{ maxHeight: '450px', overflowY: 'auto' }}>
+        <div style={{ maxHeight: "450px", overflowY: "auto" }}>
           {categories.map((category) => (
             <div
               key={category._id}
               className="flex items-center justify-between mb-2"
             >
-              <div className="flex-grow" style={{ flexBasis: 'auto', flexGrow: 1 }}>
+              <div
+                className="flex-grow"
+                style={{ flexBasis: "auto", flexGrow: 1 }}
+              >
                 <CategoryItem
                   category={category}
                   onClick={onCategoryClick}
@@ -199,8 +210,7 @@ function Category({ onCategoryClick }) {
                       className="absolute right-0 mt-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10"
                       style={{
                         opacity: 1,
-                        backgroundColor:
-                          "rgb(68, 65, 65, 1)"
+                        backgroundColor: "rgb(68, 65, 65, 1)"
                       }}
                     >
                       Edit Title
