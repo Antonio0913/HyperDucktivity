@@ -271,8 +271,7 @@ const TaskPage = ({ categoryId, textSize }) => {
   }
 
   return (
-    <div className="relative w-full h-full">
-      
+    <div className="w-full h-full flex flex-col">
       <button onClick={sortTasksByDueDate}>
         Sort by Due Date {sortDirection === "asc" ? "↑" : "↓"}
       </button>
