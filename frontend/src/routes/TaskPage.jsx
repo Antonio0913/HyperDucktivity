@@ -9,10 +9,9 @@ import SearchBar from "../components/SearchBar.jsx";
 import { addAuthHeader } from "../utilities/AuthHelper.jsx";
 import { UNSAFE_convertRoutesToDataRoutes } from "@remix-run/router";
 
-const TaskPage = ({ categoryId }) => {
+const TaskPage = ({ categoryId, textSize }) => {
   //const { categoryId } = useParams();
   const [tasks, setTasks] = useState([]);
-  const [textSize, setTextSize] = useState(12);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
 
@@ -63,7 +62,7 @@ const TaskPage = ({ categoryId }) => {
   function removeOneTask(Id) {
     fetch(
       // `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
-      `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
+      `http://localhost:8000/tasks/${Id}`,
       {
         method: "DELETE",
         headers: addAuthHeader({
@@ -188,8 +187,8 @@ const TaskPage = ({ categoryId }) => {
   ) => {
     try {
       const response = await fetch(
-        `https://hyperducktivity.azurewebsites.net/tasks/${id}`,
         // `https://hyperducktivity.azurewebsites.net/tasks/${id}`,
+        `http://localhost:8000/tasks?category=${categoryId}`,
         {
           //using put for updating
           method: "PUT",
@@ -251,7 +250,7 @@ const TaskPage = ({ categoryId }) => {
   function fetchTasks(categoryId) {
     const promise = fetch(
       // `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
-      `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
+      `http://localhost:8000/tasks?category=${categoryId}`,
       {
         headers: addAuthHeader()
       }
@@ -262,7 +261,7 @@ const TaskPage = ({ categoryId }) => {
   function postTasks(task) {
     const promise = fetch(
       // "https://hyperducktivity.azurewebsites.net/tasks",
-      "https://hyperducktivity.azurewebsites.net/tasks",
+      'http://localhost:8000/tasks',
       {
         method: "POST",
         headers: addAuthHeader({
@@ -277,6 +276,7 @@ const TaskPage = ({ categoryId }) => {
 
   return (
     <div className="relative w-full h-full">
+      
       <button onClick={sortTasksByDueDate}>
         Sort by Due Date {sortDirection === "asc" ? "↑" : "↓"}
       </button>
@@ -286,10 +286,7 @@ const TaskPage = ({ categoryId }) => {
           onSearch={handleSearch}
         />
         <NewTask addTask={addTask} />
-        <FontSize
-          textSize={textSize}
-          setTextSize={setTextSize}
-        ></FontSize>
+  
         {filteredTasks
           .sort((a, b) => b.isPriority - a.isPriority)
           .map((task) => {

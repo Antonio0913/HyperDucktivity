@@ -16,7 +16,9 @@ function Category({ onCategoryClick }) {
   const fetchCategories = async () => {
     try {
       const response = await fetch(
-        "https://hyperducktivity.azurewebsites.net/categoriesTwo",
+
+        // "https://hyperducktivity.azurewebsites.net/categoriesTwo",
+        "http://localhost:8000/categoriesTwo",
         {
           method: "POST",
           headers: {
@@ -41,8 +43,8 @@ function Category({ onCategoryClick }) {
     }
     try {
       const response = await fetch(
-        // "https://hyperducktivity.azurewebsites.net/categories",
-        "https://hyperducktivity.azurewebsites.net/categoriesForUser",
+        // "https://hyperducktivity.azurewebsites.net/categoriesForUser",
+        "http://localhost:8000/categoriesForUser",
         {
           method: "POST",
           headers: addAuthHeader({
@@ -65,7 +67,7 @@ function Category({ onCategoryClick }) {
   function deleteCategory(categoryId) {
     fetch(
       // `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
-      `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
+      `http://localhost:8000/categories/${categoryId}`,
       {
         method: "DELETE",
         headers: addAuthHeader({
@@ -114,7 +116,7 @@ function Category({ onCategoryClick }) {
     try {
       const response = await fetch(
         // `https://hyperducktivity.azurewebsites.net/categories/${id}`,
-        `https://hyperducktivity.azurewebsites.net/categories/${id}`,
+        `http://localhost:8000/categories/${id}`,
         {
           method: "PUT",
           headers: addAuthHeader({
