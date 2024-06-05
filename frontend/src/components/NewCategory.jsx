@@ -17,8 +17,8 @@ function Category({ onCategoryClick }) {
     try {
       const response = await fetch(
 
-        // "https://hyperducktivity.azurewebsites.net/categories",
-        "http://localhost:8000/categories",
+        // "https://hyperducktivity.azurewebsites.net/categoriesTwo",
+        "http://localhost:8000/categoriesTwo",
         {
           method: "POST",
           headers: {
@@ -43,8 +43,8 @@ function Category({ onCategoryClick }) {
     }
     try {
       const response = await fetch(
-        // "https://hyperducktivity.azurewebsites.net/categories",
-        "http://localhost:8000/categories",
+        // "https://hyperducktivity.azurewebsites.net/categoriesForUser",
+        "http://localhost:8000/categoriesForUser",
         {
           method: "POST",
           headers: addAuthHeader({
