@@ -13,6 +13,7 @@ import NewCategory from "../components/NewCategory";
 import TaskPage from "./TaskPage";
 import { addAuthHeader } from "../utilities/AuthHelper";
 import { AuthContext } from "../utilities/AuthContext.jsx";
+import { useNavigate } from "react-router-dom";
 import SettingsDropDown from "../components/settingsDropDown";
 
 const Home = () => {
@@ -22,6 +23,14 @@ const Home = () => {
   const [textSize, setTextSize] = useState(12);
   const [selectedCategoryId, setSelectedCategoryId] =
     useState(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("authToken") === null) {
+      navigate("/login");
+    }
+  }, []);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategoryId(categoryId);
@@ -43,8 +52,7 @@ const Home = () => {
         try {
           //Check if the user already exists
           const checkResponse = await fetch(
-            // `https://hyperducktivity.azurewebsites.net/users/${user.id}`,
-            `http://localhost:8000/users/${user.id}`,
+            `https://hyperducktivity.azurewebsites.net/users/${user.id}`,
             {
               headers: addAuthHeader()
             }
@@ -64,8 +72,7 @@ const Home = () => {
           console.log("Sending payload:", payload);
 
           const createResponse = await fetch(
-            // "https://hyperducktivity.azurewebsites.net/users",
-            "http://localhost:8000/users",
+            "https://hyperducktivity.azurewebsites.net/users",
             {
               method: "POST",
               headers: addAuthHeader({
@@ -143,11 +150,19 @@ const Home = () => {
       </div>
 
       <div className="absolute top-3 right-3 flex items-center space-x-4">
-        <SettingsDropDown username={username} logout={logout} textSize={textSize} setTextSize={setTextSize}/> 
+        <SettingsDropDown
+          username={username}
+          logout={logout}
+          textSize={textSize}
+          setTextSize={setTextSize}
+        />
       </div>
 
       {selectedCategoryId ? (
-        <TaskPage categoryId={selectedCategoryId} textSize={textSize} />
+        <TaskPage
+          categoryId={selectedCategoryId}
+          textSize={textSize}
+        />
       ) : (
         <p></p>
       )}
