@@ -1,6 +1,9 @@
-import * as React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useAuth } from "../utilities/AuthContext.jsx";
+import {
+  useNavigate,
+  Link as RouterLink
+} from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,7 +17,6 @@ import {
   createTheme,
   ThemeProvider
 } from "@mui/material/styles";
-import { useAuth } from "../utilities/AuthContext.jsx";
 import DuckLogo from "../assets/DuckLogo.png";
 
 function Copyright(props) {
@@ -47,29 +49,38 @@ const customTheme = createTheme({
   }
 });
 
-export default function SignIn() {
-  const [creds, setCreds] = useState({ username: "", pwd: "" });
+function SignUpPage(props) {
+  const INVALID_TOKEN = "INVALID_TOKEN";
+  const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
+  const [creds, setCreds] = useState({
+    username: "",
+    pwd: ""
+  });
+
   const navigate = useNavigate();
   const { setAuthToken } = useAuth();
+
+  const navigateHome = () => {
+    navigate("/home");
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setCreds({ ...creds, [name]: value });
   };
 
-  const handleSubmit = async (event) => {
+  const submitForm = (event) => {
     event.preventDefault();
-    const success = await loginUser(creds);
-    if (success) {
-      setCreds({ username: "", pwd: "" });
-    }
+    signupUser(creds).then(() =>
+      setCreds({ username: "", pwd: "" })
+    );
   };
 
-  const loginUser = async (creds) => {
+  const signupUser = async (creds) => {
     try {
       const response = await fetch(
-        `https://hyperducktivity.azurewebsites.net/jwtlogin`,
+        `https://hyperducktivity.azurewebsites.net/jwtregister`,
         {
           method: "POST",
           headers: {
@@ -79,23 +90,23 @@ export default function SignIn() {
         }
       );
 
-      if (response.ok) {
+      if (response.status === 201) {
         const payload = await response.json();
-        setMessage(`Login successful. Auth token saved`);
-        console.log(
-          "Login successful; auth token saved, navigating to home"
-        );
         localStorage.setItem("authToken", payload.token);
         setAuthToken(payload.token);
         localStorage.setItem("username", creds.username);
+        setMessage(
+          `Signup successful for user: ${creds.username}. Auth token saved`
+        );
         navigate("/home");
       } else {
+        const data = await response.json();
         setMessage(
-          `Login Error ${response.status}: ${response.statusText}`
+          `Signup Error ${response.status}: ${data.message}`
         );
       }
     } catch (error) {
-      setMessage(`Login Error: ${error.message}`);
+      setMessage(`Signup Error: ${error.message}`);
     }
   };
 
@@ -111,22 +122,6 @@ export default function SignIn() {
             alignItems: "center"
           }}
         >
-          <div className="flex items-center space-x-4">
-            <h1 className="text-background-gray">
-              HyperDucktivity
-            </h1>
-            <div>
-              <p className="text-beak-yellow">
-                {" "}
-                _<br />
-                &#62;(.)__
-                <br />
-                &#40;___/
-                <br />
-                <br />
-              </p>
-            </div>
-          </div>
           <Avatar sx={{ m: 1, bgcolor: "#3f51b5" }}>
             <img
               src={DuckLogo}
@@ -135,11 +130,11 @@ export default function SignIn() {
             />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign Up
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={submitForm}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -167,24 +162,34 @@ export default function SignIn() {
               value={creds.pwd}
               onChange={handleChange}
             />
-            {message && (
-              <Typography color="error">{message}</Typography>
-            )}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Sign Up
             </Button>
+            {message && (
+              <Typography
+                variant="body2"
+                color="error"
+                align="center"
+              >
+                {message}
+              </Typography>
+            )}
             <Grid
               container
               justifyContent="center"
               alignItems="center"
             >
-              <Link href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link
+                component={RouterLink}
+                to="/login"
+                variant="body2"
+              >
+                {"Already have an account? Log in"}
               </Link>
             </Grid>
           </Box>
@@ -194,3 +199,5 @@ export default function SignIn() {
     </ThemeProvider>
   );
 }
+
+export default SignUpPage;

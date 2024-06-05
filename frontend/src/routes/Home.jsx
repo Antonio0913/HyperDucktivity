@@ -13,6 +13,7 @@ import NewCategory from "../components/NewCategory";
 import TaskPage from "./TaskPage";
 import { addAuthHeader } from "../utilities/AuthHelper";
 import { AuthContext } from "../utilities/AuthContext.jsx";
+import { useNavigate } from "react-router-dom";
 import SettingsDropDown from "../components/settingsDropDown";
 
 const Home = () => {
@@ -22,6 +23,14 @@ const Home = () => {
   const [textSize, setTextSize] = useState(12);
   const [selectedCategoryId, setSelectedCategoryId] =
     useState(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("authToken") === null) {
+      navigate("/login");
+    }
+  }, []);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategoryId(categoryId);
@@ -141,11 +150,19 @@ const Home = () => {
       </div>
 
       <div className="absolute top-3 right-3 flex items-center space-x-4">
-        <SettingsDropDown username={username} logout={logout} textSize={textSize} setTextSize={setTextSize}/> 
+        <SettingsDropDown
+          username={username}
+          logout={logout}
+          textSize={textSize}
+          setTextSize={setTextSize}
+        />
       </div>
 
       {selectedCategoryId ? (
-        <TaskPage categoryId={selectedCategoryId} textSize={textSize} />
+        <TaskPage
+          categoryId={selectedCategoryId}
+          textSize={textSize}
+        />
       ) : (
         <p></p>
       )}
