@@ -13,6 +13,7 @@ import NewCategory from "../components/NewCategory";
 import TaskPage from "./TaskPage";
 import { addAuthHeader } from "../utilities/AuthHelper";
 import { AuthContext } from "../utilities/AuthContext.jsx";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { user, isLoaded } = useUser();
@@ -20,6 +21,14 @@ const Home = () => {
   const [username, setUsername] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] =
     useState(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("authToken") === null) {
+      navigate("/login");
+    }
+  }, []);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategoryId(categoryId);
@@ -141,7 +150,11 @@ const Home = () => {
       </div>
 
       <div className="absolute bottom-3 left-3 flex items-center space-x-4">
-        <div>{username}</div>
+        {username ? (
+          <p>{username}</p>
+        ) : (
+          <p>You are not logged in</p>
+        )}
         <button onClick={logout}>Logout</button>
         <Link to="/settings">
           <img

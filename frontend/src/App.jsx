@@ -12,6 +12,7 @@ import LoginPage from "./routes/LoginPage.jsx";
 import SignUpPage from "./routes/SignUpPage.jsx";
 import ProtectedRoute from "./utilities/ProtectedRoute.jsx";
 import { AuthProvider } from "./utilities/AuthContext.jsx";
+import TestPage from "./routes/TestPage.jsx";
 
 function App() {
   // Add new routes here
@@ -38,7 +39,7 @@ function App() {
     },
     {
       path: "/sign-in",
-      element: <ProtectedRoute element={<RedirectToSignIn />} />
+      element: <ProtectedRoute element={<RedirectToSignIn />} /> // this is not used, see /login
     },
     {
       path: "*",
@@ -55,6 +56,10 @@ function App() {
     {
       path: "/signup",
       element: <SignUpPage />
+    },
+    {
+      path: "/testpage",
+      element: <TestPage />
     }
   ]);
 
