@@ -43,7 +43,6 @@ function Category({ onCategoryClick }) {
     }
     try {
       const response = await fetch(
-        // "https://hyperducktivity.azurewebsites.net/categories",
         "https://hyperducktivity.azurewebsites.net/categoriesForUser",
         {
           method: "POST",
@@ -66,7 +65,6 @@ function Category({ onCategoryClick }) {
 
   function deleteCategory(categoryId) {
     fetch(
-      // `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
       `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
       {
         method: "DELETE",
@@ -83,7 +81,7 @@ function Category({ onCategoryClick }) {
               (category) => category._id !== categoryId
             )
           );
-          console.log("Category deleted successfully");
+          console.debug("Category deleted successfully");
         } else {
           throw new Error(
             "Failed to delete category with status: " +
@@ -118,10 +116,9 @@ function Category({ onCategoryClick }) {
       category._id === id ? updatedCategory : category
     );
     setCategories(updatedCategories);
-
+    
     try {
       const response = await fetch(
-        // `https://hyperducktivity.azurewebsites.net/categories/${id}`,
         `https://hyperducktivity.azurewebsites.net/categories/${id}`,
         {
           method: "PUT",
@@ -134,7 +131,6 @@ function Category({ onCategoryClick }) {
           })
         }
       );
-
       if (!response.ok) {
         const errorText = await response.text();
         console.error(
@@ -148,10 +144,6 @@ function Category({ onCategoryClick }) {
             response.status
         );
       }
-
-      console.log(
-        "Category updated successfully on the server"
-      );
     } catch (error) {
       console.error("Error updating category:", error);
     }
@@ -210,12 +202,14 @@ function Category({ onCategoryClick }) {
                 <button
                   onClick={() => startEditingCategory(category)}
                   className="ml-4 p-2 bg-yellow-500 text-white rounded-lg"
+                  data-testid="edit-button"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => deleteCategory(category._id)}
                   className="ml-4 p-2 bg-red-500 text-white rounded-lg"
+                  data-testid="delete-button"
                 >
                   Delete
                 </button>
@@ -246,6 +240,7 @@ function Category({ onCategoryClick }) {
                         <button
                           className="bg-background-gray text-beak-orange rounded-lg py-2 px-4"
                           onClick={handleSaveClick}
+                          data-testid="submit-edit-button"
                         >
                           Save
                         </button>
