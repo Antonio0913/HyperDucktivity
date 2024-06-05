@@ -9,10 +9,9 @@ import SearchBar from "../components/SearchBar.jsx";
 import { addAuthHeader } from "../utilities/AuthHelper.jsx";
 import { UNSAFE_convertRoutesToDataRoutes } from "@remix-run/router";
 
-const TaskPage = ({ categoryId }) => {
+const TaskPage = ({ categoryId, textSize }) => {
   //const { categoryId } = useParams();
   const [tasks, setTasks] = useState([]);
-  const [textSize, setTextSize] = useState(12);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
 
@@ -290,10 +289,7 @@ const TaskPage = ({ categoryId }) => {
           onSearch={handleSearch}
         />
         <NewTask addTask={addTask} />
-        <FontSize
-          textSize={textSize}
-          setTextSize={setTextSize}
-        ></FontSize>
+  
         {filteredTasks
           .sort((a, b) => b.isPriority - a.isPriority)
           .map((task) => {
