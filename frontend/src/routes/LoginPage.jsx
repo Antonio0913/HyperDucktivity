@@ -35,7 +35,7 @@ function LoginPage(props) {
   const loginUser = async (creds) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/jwtlogin`,
+        `https://hyperducktivity.azurewebsites.net/jwtlogin`,
         {
           method: "POST",
           headers: {
