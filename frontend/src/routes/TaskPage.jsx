@@ -186,7 +186,7 @@ const TaskPage = ({ categoryId, textSize }) => {
   ) => {
     try {
       const response = await fetch(
-        `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
+        `https://hyperducktivity.azurewebsites.net/tasks/${id}`,
         {
           //using put for updating
           method: "PUT",
