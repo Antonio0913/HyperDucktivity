@@ -81,7 +81,7 @@ function addTaskToCategory(categoryId, taskId) {
 const updateCategory = async (id, updatedFields) => {
   console.log(
     `Updating category with ID: ${id} with fields: ${JSON.stringify(
-      updatedFields
+      updatedFieldsc
     )}`
   );
 

@@ -12,7 +12,11 @@ const CategorySchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Task"
       }
-    ]
+    ],
+    color: {
+      type: String,
+      default: "#bb4910"
+    }
   },
 
   // Maybe add theme related stuff here
