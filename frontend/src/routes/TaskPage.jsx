@@ -61,8 +61,7 @@ const TaskPage = ({ categoryId, textSize }) => {
 
   function removeOneTask(Id) {
     fetch(
-      // `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
-      `http://localhost:8000/tasks/${Id}`,
+      `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
       {
         method: "DELETE",
         headers: addAuthHeader({
@@ -187,8 +186,7 @@ const TaskPage = ({ categoryId, textSize }) => {
   ) => {
     try {
       const response = await fetch(
-        // `https://hyperducktivity.azurewebsites.net/tasks/${id}`,
-        `http://localhost:8000/tasks?category=${categoryId}`,
+        `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
         {
           //using put for updating
           method: "PUT",
@@ -249,8 +247,7 @@ const TaskPage = ({ categoryId, textSize }) => {
 
   function fetchTasks(categoryId) {
     const promise = fetch(
-      // `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
-      `http://localhost:8000/tasks?category=${categoryId}`,
+      `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
       {
         headers: addAuthHeader()
       }
@@ -260,8 +257,7 @@ const TaskPage = ({ categoryId, textSize }) => {
 
   function postTasks(task) {
     const promise = fetch(
-      // "https://hyperducktivity.azurewebsites.net/tasks",
-      'http://localhost:8000/tasks',
+      'https://hyperducktivity.azurewebsites.net/tasks',
       {
         method: "POST",
         headers: addAuthHeader({
