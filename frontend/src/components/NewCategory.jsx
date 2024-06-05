@@ -10,6 +10,8 @@ function Category({ onCategoryClick }) {
     useState(null);
   const [editingCategoryName, setEditingCategoryName] =
     useState("");
+  const [editingCategoryColor, setEditingCategoryColor] =
+    useState("#ECD632");
   const [showDropdown, setShowDropdown] = useState(false);
   const [username, setUsername] = useState("");
 
@@ -41,6 +43,7 @@ function Category({ onCategoryClick }) {
     }
     try {
       const response = await fetch(
+        // "https://hyperducktivity.azurewebsites.net/categories",
         "https://hyperducktivity.azurewebsites.net/categoriesForUser",
         {
           method: "POST",
@@ -63,6 +66,7 @@ function Category({ onCategoryClick }) {
 
   function deleteCategory(categoryId) {
     fetch(
+      // `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
       `https://hyperducktivity.azurewebsites.net/categories/${categoryId}`,
       {
         method: "DELETE",
@@ -95,13 +99,19 @@ function Category({ onCategoryClick }) {
   const startEditingCategory = (category) => {
     setEditingCategoryId(category._id);
     setEditingCategoryName(category.title);
+    setEditingCategoryColor(category.color);
     setShowDropdown(true);
   };
 
-  const updateCategory = async (id, updatedTitle) => {
+  const updateCategory = async (
+    id,
+    updatedTitle,
+    updatedColor
+  ) => {
     const updatedCategory = {
       _id: id,
-      title: updatedTitle
+      title: updatedTitle,
+      color: updatedColor
     };
 
     const updatedCategories = categories.map((category) =>
@@ -111,13 +121,17 @@ function Category({ onCategoryClick }) {
 
     try {
       const response = await fetch(
+        // `https://hyperducktivity.azurewebsites.net/categories/${id}`,
         `https://hyperducktivity.azurewebsites.net/categories/${id}`,
         {
           method: "PUT",
           headers: addAuthHeader({
             "Content-Type": "application/json"
           }),
-          body: JSON.stringify({ title: updatedTitle })
+          body: JSON.stringify({
+            title: updatedTitle,
+            color: updatedColor
+          })
         }
       );
 
@@ -144,8 +158,12 @@ function Category({ onCategoryClick }) {
   };
 
   const handleSaveClick = () => {
-    if (editingCategoryName) {
-      updateCategory(editingCategoryId, editingCategoryName);
+    if (editingCategoryName && editingCategoryColor) {
+      updateCategory(
+        editingCategoryId,
+        editingCategoryName,
+        editingCategoryColor
+      );
     }
   };
 
@@ -157,18 +175,18 @@ function Category({ onCategoryClick }) {
 
   return (
     <>
-      <div className="max-w-md mx-auto mt-10 p-6 border border-gray-300 rounded-lg bg-white">
+      <div className="max-w-md mx-auto mt-10 p-6 border border-beak-yellow rounded-lg bg-white">
         <div className="mb-6">
           <input
             type="text"
             value={newCategory}
             onChange={(e) => setNewCategory(e.target.value)}
             placeholder="Name your new category"
-            className="w-full p-2 border border-gray-300 rounded-lg mb-2"
+            className="w-full p-2 border border-beak-orange rounded-lg mb-2"
           />
           <button
             onClick={createCategory}
-            className="w-full p-2 bg-blue-500 text-white rounded-lg"
+            className="w-full p-2 bg-blue-500 text-white rounded-lg border-beak-orange"
           >
             Create
           </button>
@@ -203,13 +221,7 @@ function Category({ onCategoryClick }) {
                 </button>
                 {editingCategoryId === category._id &&
                   showDropdown && (
-                    <div
-                      className="absolute right-0 mt-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10"
-                      style={{
-                        opacity: 1,
-                        backgroundColor: "rgb(68, 65, 65, 1)"
-                      }}
-                    >
+                    <div className="absolute right-0 mt-2 w-64 border border-beak-yellow rounded-lg shadow-lg p-4 z-10 bg-site-bg">
                       Edit Title
                       <input
                         type="text"
@@ -218,7 +230,17 @@ function Category({ onCategoryClick }) {
                           setEditingCategoryName(e.target.value)
                         }
                         placeholder="Edit category Title"
-                        className="w-full p-2 border border-gray-300 rounded-lg mb-2"
+                        className="w-full p-2 border border-beak-yellow rounded-lg mb-2"
+                      />
+                      <input
+                        type="color"
+                        value={editingCategoryColor}
+                        onChange={(e) =>
+                          setEditingCategoryColor(
+                            e.target.value
+                          )
+                        }
+                        className="w-full mb-2 h-8"
                       />
                       <div className="flex justify-end space-x-2">
                         <button
