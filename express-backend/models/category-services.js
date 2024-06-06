@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-undef
+/* eslint-disable no-undef */
 import categoryModel from "./category.js";
 import User from "./userModel.js";
 
