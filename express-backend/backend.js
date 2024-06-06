@@ -57,9 +57,8 @@ app.get(
   async (req, res) => {
     const clerkUserId = req.params["clerkUserId"];
     try {
-      const user = await userServices.findUserByClerkUserId(
-        clerkUserId
-      );
+      const user =
+        await userServices.findUserByClerkUserId(clerkUserId);
       if (user) {
         res.status(200).send(user);
       } else {
@@ -224,9 +223,8 @@ app.post(
       `in post categoreis the username is ${username}`
     );
     try {
-      const categories = await categoryServices.getCategories(
-        username
-      );
+      const categories =
+        await categoryServices.getCategories(username);
       res.status(200).send(categories);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -274,9 +272,8 @@ app.delete(
     try {
       const categoryIdToDel = req.params["id"];
       console.log(categoryIdToDel);
-      const delCategory = await categoryServices.removeCategory(
-        categoryIdToDel
-      );
+      const delCategory =
+        await categoryServices.removeCategory(categoryIdToDel);
       if (delCategory) {
         res.status(204).send();
       } else {
@@ -316,7 +313,10 @@ app.put(
 
     try {
       const updatedCategory =
-        await categoryServices.updateCategory(id, { title, color });
+        await categoryServices.updateCategory(id, {
+          title,
+          color
+        });
 
       if (updatedCategory) {
         res.status(200).send(updatedCategory);

@@ -116,7 +116,7 @@ function Category({ onCategoryClick }) {
       category._id === id ? updatedCategory : category
     );
     setCategories(updatedCategories);
-    
+
     try {
       const response = await fetch(
         `https://hyperducktivity.azurewebsites.net/categories/${id}`,

@@ -257,7 +257,7 @@ const TaskPage = ({ categoryId, textSize }) => {
 
   function postTasks(task) {
     const promise = fetch(
-      'https://hyperducktivity.azurewebsites.net/tasks',
+      "https://hyperducktivity.azurewebsites.net/tasks",
       {
         method: "POST",
         headers: addAuthHeader({
@@ -281,7 +281,7 @@ const TaskPage = ({ categoryId, textSize }) => {
           onSearch={handleSearch}
         />
         <NewTask addTask={addTask} />
-  
+
         {filteredTasks
           .sort((a, b) => b.isPriority - a.isPriority)
           .map((task) => {

@@ -144,10 +144,8 @@ const Home = () => {
           </div>
           <br />
           <NewCategory onCategoryClick={handleCategoryClick} />
-          </div>
-          </div>
-          
-       
+        </div>
+      </div>
 
       <div className="absolute top-3 right-3 flex items-center space-x-4">
         <SettingsDropDown
