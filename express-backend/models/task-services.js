@@ -12,21 +12,21 @@ mongoose
 function getTasks(query) {
   let promise;
   if (query.title) {
-    promise = findTaskByName(query.title);
+    promise = findTaskByName(query.title).populate('category', 'color');
   } else if (query.category) {
     promise = findTaskByCategory(query.category);
   } else {
-    promise = taskModel.find();
+    promise = taskModel.find().populate('category', 'color');
   }
   return promise;
 }
 
 function findTaskByCategory(categoryId) {
-  return taskModel.find({ category: categoryId });
+  return taskModel.find({ category: categoryId }).populate('category', 'color');
 }
 
 function findTaskById(id) {
-  return taskModel.findById(id);
+  return taskModel.findById(id).populate('category', 'color');
 }
 
 function addTask(task) {
@@ -36,7 +36,7 @@ function addTask(task) {
 }
 
 function findTaskByName(title) {
-  return taskModel.find({ title: title });
+  return taskModel.find({ title: title }).populate('category', 'color');
 }
 
 function removeTask(id) {

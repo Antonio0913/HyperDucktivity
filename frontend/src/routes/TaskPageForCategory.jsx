@@ -41,15 +41,12 @@ const TaskPageForCategory = () => {
   }, []);
 
   function removeOneTask(Id) {
-    const promise = fetch(
-      `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json"
-        }
+    const promise = fetch(`http://localhost:8000/tasks/${Id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
       }
-    )
+    })
       .then((res) => {
         if (res.status == 204) {
           deleteTask(Id);

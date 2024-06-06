@@ -10,14 +10,18 @@ function Task({
   deleteTask,
   completeTask,
   prioritizeTask,
-  textSize
+  textSize,
+  categoryColor
 }) {
   const [isEditingTask, setIsEditingTask] = useState(false);
   const [editedTask, setEditedTask] = useState({ ...task });
 
-  const taskStyle = `relative max-w-md mx-auto bg-white rounded-xl border border-beak-orange overflow-hidden md:max-w-2xl m-5 ${
+  const taskStyle = `relative max-w-md mx-auto bg-white rounded-xl overflow-hidden border-beak-orange md:max-w-2xl m-5 ${
     task.isComplete ? "opacity-50" : ""
   }`;
+  const borderStyle = {
+    borderColor: categoryColor || '#bb4910'
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,7 +35,12 @@ function Task({
   };
 
   return (
-    <div className={taskStyle}>
+    <div
+      className={`relative max-w-md mx-auto bg-white rounded-xl overflow-hidden border md:max-w-2xl m-5 ${
+        task.isComplete ? "opacity-50" : ""
+      }`}
+      style={borderStyle}
+    >
       <div className="p-4">
         {isEditingTask ? (
           <form
@@ -117,8 +126,11 @@ function Task({
               </svg>
             </button>
             <div
-              className="uppercase text-beak-orange font-semibold"
-              style={{ fontSize: `${textSize}px` }}
+              className="uppercase font-semibold"
+              style={{
+                color: categoryColor || "#bb4910", 
+                fontSize: `${textSize}px`
+              }}
             >
               {task.title}
             </div>

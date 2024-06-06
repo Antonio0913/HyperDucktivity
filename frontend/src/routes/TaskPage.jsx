@@ -60,15 +60,12 @@ const TaskPage = ({ categoryId, textSize }) => {
   }, [categoryId]);
 
   function removeOneTask(Id) {
-    fetch(
-      `https://hyperducktivity.azurewebsites.net/tasks/${Id}`,
-      {
-        method: "DELETE",
-        headers: addAuthHeader({
-          "Content-Type": "application/json"
-        })
-      }
-    )
+    fetch(`http://localhost:8000/tasks/${Id}`, {
+      method: "DELETE",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      })
+    })
       .then((res) => {
         if (res.status == 204) {
           deleteTask(Id);
@@ -186,7 +183,7 @@ const TaskPage = ({ categoryId, textSize }) => {
   ) => {
     try {
       const response = await fetch(
-        `https://hyperducktivity.azurewebsites.net/tasks/${id}`,
+        `http://localhost:8000/tasks/${id}`,
         {
           //using put for updating
           method: "PUT",
@@ -246,33 +243,38 @@ const TaskPage = ({ categoryId, textSize }) => {
   };
 
   function fetchTasks(categoryId) {
+    console.log("Fetching tasks for category:", categoryId);
     const promise = fetch(
-      `https://hyperducktivity.azurewebsites.net/tasks?category=${categoryId}`,
+      `http://localhost:8000/tasks?category=${categoryId}`,
       {
         headers: addAuthHeader()
       }
-    );
+    )
+      .then((data) => {
+        console.log("Fetched tasks:", data); // Verify the structure of fetched data
+        return data;
+      })
+      .catch((error) => {
+        console.error("Failed to fetch tasks:", error);
+        throw error;
+      });
     return promise;
   }
 
   function postTasks(task) {
-    const promise = fetch(
-      'https://hyperducktivity.azurewebsites.net/tasks',
-      {
-        method: "POST",
-        headers: addAuthHeader({
-          "Content-Type": "application/json"
-        }),
-        body: JSON.stringify(task)
-      }
-    );
+    const promise = fetch("http://localhost:8000/tasks", {
+      method: "POST",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify(task)
+    });
 
     return promise;
   }
 
   return (
     <div className="relative w-full h-full">
-      
       <button onClick={sortTasksByDueDate}>
         Sort by Due Date {sortDirection === "asc" ? "↑" : "↓"}
       </button>
@@ -282,7 +284,7 @@ const TaskPage = ({ categoryId, textSize }) => {
           onSearch={handleSearch}
         />
         <NewTask addTask={addTask} />
-  
+
         {filteredTasks
           .sort((a, b) => b.isPriority - a.isPriority)
           .map((task) => {
@@ -296,6 +298,7 @@ const TaskPage = ({ categoryId, textSize }) => {
                 textSize={textSize}
                 completeTask={completeTask}
                 prioritizeTask={prioritizeTask}
+                categoryColor={task.category?.color}
               />
             );
           })}
