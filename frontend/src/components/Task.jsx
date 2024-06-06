@@ -82,6 +82,7 @@ function Task({
               <button
                 className="bg-background-gray text-beak-orange rounded-lg py-2 px-4"
                 type="submit"
+                data-testid="submit-edit-button"
               >
                 Save
               </button>
@@ -101,6 +102,7 @@ function Task({
             <button
               onClick={() => prioritizeTask(task._id)}
               className="focus:outline-none bg-site-bg border-none p-0 overflow-hidden absolute top-2 left-2"
+              data-testid="priority-button"
             >
               <svg
                 width="24"
