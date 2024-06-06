@@ -308,7 +308,7 @@ app.put(
   authenticateUser,
   async (req, res) => {
     const id = req.params["id"];
-    const { title, color } = req.body;
+    const { title } = req.body;
 
     console.log(
       `Received PUT request to update category with ID: ${id} and title: ${title}`
@@ -316,7 +316,7 @@ app.put(
 
     try {
       const updatedCategory =
-        await categoryServices.updateCategory(id, { title, color });
+        await categoryServices.updateCategory(id, { title });
 
       if (updatedCategory) {
         res.status(200).send(updatedCategory);
