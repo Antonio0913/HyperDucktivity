@@ -2,7 +2,7 @@
 
 ![Class Diagram](./UML.png)
 
-**Last Updated**: 2024-05-27
+**Last Updated**: 2024-06-05
 
 This document contains the UML Class Diagram for the project. The diagram was last updated on the date mentioned above.
 
