@@ -18,6 +18,7 @@ import {
   ThemeProvider
 } from "@mui/material/styles";
 import DuckLogo from "../assets/DuckLogo.png";
+import hyperduck_duck from "../assets/hyperduck_duck.png";
 
 function Copyright(props) {
   return (
@@ -120,17 +121,11 @@ function SignUpPage(props) {
             <h1 className="text-background-gray">
               HyperDucktivity
             </h1>
-            <div>
-              <p className="text-beak-yellow">
-                {" "}
-                _<br />
-                &#62;(.)__
-                <br />
-                &#40;___/
-                <br />
-                <br />
-              </p>
-            </div>
+            <img
+              src={hyperduck_duck}
+              alt="hyperduck_duck"
+              className="w-20 h-20"
+            />
           </div>
           <Avatar sx={{ m: 1, bgcolor: "#3f51b5" }}>
             <img
