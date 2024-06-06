@@ -1,5 +1,5 @@
+// eslint-disable-next-line no-undef
 import categoryModel from "./category.js";
-import userServices from "./user-services.js";
 import User from "./userModel.js";
 
 /*mongoose.set("debug", true);
