@@ -74,4 +74,10 @@ and access the site on localhost. Push feature branches to Github for evaluation
   - [Sign in](./docs/LoginSequenceDiagram.png)
   - [General](./docs/ProtectedRouteSequenceDiagram.png)
 
+## Test Coverage Report
+
+You can view the detailed coverage report for the NewCategory component [here](./docs/NewCategory.jsx.html).
+
+Extensive testing was also completed on most other components, visible in [__test__](./frontend/__test__/test_components/)
+
 Group Members: Antonio Chen, Brandon Wong, Justin Koida, Quinn Potter
