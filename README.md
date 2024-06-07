@@ -1,4 +1,5 @@
-# HyperDucktivity
+# HyperDucktivity 
+## Group Members: Antonio Chen, Brandon Wong, Justin Koida, Quinn Potter
 
 HyperDucktivity: a duck-themed todo list with modern features
 
@@ -22,8 +23,8 @@ Follow these instructions to set up your development environment for the project
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone https://github.com/Antonio0913/HyperDucktivity.git
+cd HyperDucktivity
 ```
 
 ### Install Dependencies
@@ -63,6 +64,8 @@ node backend.js
 
 and access the site on localhost. Push feature branches to Github for evaluation and build.
 
+Note: For testing on localhost, you also must switch every deployment link with a localhost link. A good method to accomplish this is find (https://hyperducktivity.azurewebsites.net) and replace all (http://localhost:8000). Make sure to change these links back before making a pull request. 
+
 ## Diagrams and UI/UX
 
 - [UI/UX](https://www.figma.com/design/AQ2A8JZ1UcukN1M0KmOwQ8/Hyperducktivity-UI-Prototype%2FStoryboard?node-id=0-1&t=NdCUSGFDL9p2E7JI-0)
@@ -76,8 +79,6 @@ and access the site on localhost. Push feature branches to Github for evaluation
 
 ## Test Coverage Report
 
-You can view the detailed coverage report for the NewCategory component [here](./docs/NewCategory.jsx.html).
+You can view the detailed coverage report for the NewCategory component [here](./docs/NewCategory.jsx.html). (download raw file and open in browser to display html report)
 
-Extensive testing was also completed on most other components, visible in [__test__](./frontend/__test__/test_components/)
-
-Group Members: Antonio Chen, Brandon Wong, Justin Koida, Quinn Potter
+Extensive testing was also completed on most other components, visible in [__test__](./frontend/__test__/test_components/).
