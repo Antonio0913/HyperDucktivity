@@ -1,16 +1,12 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../App.css";
 import Task from "../components/Task.jsx";
 import NewTask from "../components/NewTask.jsx";
-import FontSize from "../components/fontSize.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import { addAuthHeader } from "../utilities/AuthHelper.jsx";
-import { UNSAFE_convertRoutesToDataRoutes } from "@remix-run/router";
 
 const TaskPage = ({ categoryId, textSize }) => {
-  //const { categoryId } = useParams();
   const [tasks, setTasks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
@@ -46,11 +42,9 @@ const TaskPage = ({ categoryId, textSize }) => {
 
   useEffect(() => {
     if (categoryId) {
-      console.log("categoryId:", categoryId); // Debugging line
       fetchTasks(categoryId)
         .then((res) => res.json())
         .then((json) => {
-          console.log("Fetched tasks:", json.tasks_list); // Debugging line
           setTasks(json.tasks_list || []); // Ensure tasks_list is always an array
         })
         .catch((error) => {
@@ -239,7 +233,6 @@ const TaskPage = ({ categoryId, textSize }) => {
       setTasks(updatedTasks);
     } catch (error) {
       console.error("Error updating task:", error);
-      // Optionally, revert the state update if the server update fails
       //good so front end matches backend
       setTasks(tasks);
     }

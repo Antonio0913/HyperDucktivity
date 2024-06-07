@@ -50,8 +50,6 @@ const customTheme = createTheme({
 });
 
 function SignUpPage(props) {
-  const INVALID_TOKEN = "INVALID_TOKEN";
-  const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
   const [creds, setCreds] = useState({
     username: "",
@@ -60,10 +58,6 @@ function SignUpPage(props) {
 
   const navigate = useNavigate();
   const { setAuthToken } = useAuth();
-
-  const navigateHome = () => {
-    navigate("/home");
-  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;

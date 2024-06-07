@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import CategoryItem from "./CategoryItem";
-import TaskPage from "../routes/TaskPage";
 import { addAuthHeader } from "../utilities/AuthHelper";
 
 function Category({ onCategoryClick }) {
@@ -166,7 +165,6 @@ function Category({ onCategoryClick }) {
   }, []);
 
   return (
-    <>
       <div className="max-w-md mx-auto mt-10 p-6 border border-beak-yellow rounded-lg bg-white">
         <div className="mb-6">
           <input
@@ -261,7 +259,6 @@ function Category({ onCategoryClick }) {
           ))}
         </div>
       </div>
-    </>
   );
 }
 

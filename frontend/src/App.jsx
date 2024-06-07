@@ -5,7 +5,6 @@ import {
 } from "react-router-dom";
 import { RedirectToSignIn } from "@clerk/clerk-react";
 import Home from "./routes/Home.jsx";
-import Settings from "./routes/Settings.jsx";
 import TaskPage from "./routes/TaskPage.jsx";
 import TestAuthPage from "./routes/TestAuthPage.jsx";
 import LoginPage from "./routes/LoginPage.jsx";
@@ -32,10 +31,6 @@ function App() {
     {
       path: "/taskPage/:categoryId",
       element: <ProtectedRoute element={<TaskPage />} /> // This will be the main task page after backend is set up
-    },
-    {
-      path: "/settings",
-      element: <ProtectedRoute element={<Settings />} />
     },
     {
       path: "/sign-in",

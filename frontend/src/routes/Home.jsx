@@ -1,14 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-  useUser,
-  SignUpButton
-} from "@clerk/clerk-react";
-// import SettingsIcon from "../assets/SettingsIcon.png";
+import { useUser } from "@clerk/clerk-react";
 import NewCategory from "../components/NewCategory";
 import TaskPage from "./TaskPage";
 import { addAuthHeader } from "../utilities/AuthHelper";
