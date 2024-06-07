@@ -19,8 +19,6 @@ const CategorySchema = new mongoose.Schema(
     }
   },
 
-  // Maybe add theme related stuff here
-
   { collection: "categories_list" }
 );
 

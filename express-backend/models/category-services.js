@@ -1,15 +1,5 @@
-/* eslint-disable no-undef */
 import categoryModel from "./category.js";
 import User from "./userModel.js";
-
-/*mongoose.set("debug", true);
-
-mongoose
-  .connect("mongodb://localhost:27017/tasks", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .catch((error) => console.log(error));*/
 
 async function getCategories(username) {
   try {
@@ -100,7 +90,6 @@ export default {
   addCategory,
   getCategories,
   findCategoryById,
-  //   findCategoryByName,
   removeCategory,
   addTaskToCategory,
   updateCategory,
