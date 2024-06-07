@@ -1,5 +1,5 @@
+/* eslint-disable no-undef */
 import categoryModel from "./category.js";
-import userServices from "./user-services.js";
 import User from "./userModel.js";
 
 /*mongoose.set("debug", true);
@@ -81,7 +81,7 @@ function addTaskToCategory(categoryId, taskId) {
 const updateCategory = async (id, updatedFields) => {
   console.log(
     `Updating category with ID: ${id} with fields: ${JSON.stringify(
-      updatedFieldsc
+      updatedFields
     )}`
   );
 

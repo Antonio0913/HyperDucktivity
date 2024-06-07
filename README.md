@@ -70,7 +70,7 @@ and access the site on localhost. Push feature branches to Github for evaluation
 - [UML Class Diagram](./docs/uml.md)
 
 - Authentication Sequence Diagrams
-  - [Sign Up](./docs/SignUpSequenceDiagram.png) 
+  - [Sign Up](./docs/SignUpSequenceDiagram.png)
   - [Sign in](./docs/LoginSequenceDiagram.png)
   - [General](./docs/ProtectedRouteSequenceDiagram.png)
 
