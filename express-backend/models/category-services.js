@@ -19,7 +19,7 @@ async function getCategories(username) {
 }
 
 function findCategoryById(id) {
-  return categoryModel.findById(id).populate("taskList");
+  return categoryModel.findById(id);
 }
 
 function addCategory(category) {
@@ -58,16 +58,6 @@ function removeCategory(id) {
   return categoryModel.findByIdAndDelete(id);
 }
 
-function addTaskToCategory(categoryId, taskId) {
-  return categoryModel
-    .findByIdAndUpdate(
-      categoryId,
-      { $push: { taskList: taskId } },
-      { new: true, useFindAndModify: false }
-    )
-    .populate("taskList");
-}
-
 const updateCategory = async (id, updatedFields) => {
   console.log(
     `Updating category with ID: ${id} with fields: ${JSON.stringify(
@@ -91,7 +81,6 @@ export default {
   getCategories,
   findCategoryById,
   removeCategory,
-  addTaskToCategory,
   updateCategory,
   addCategoryThree
 };

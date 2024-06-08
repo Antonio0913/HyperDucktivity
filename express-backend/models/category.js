@@ -7,12 +7,6 @@ const CategorySchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    taskList: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Task"
-      }
-    ],
     color: {
       type: String,
       default: "#bb4910"
